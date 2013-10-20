@@ -1,0 +1,525 @@
+﻿using csmic;
+using System.Text;
+using System.Collections.Generic;
+
+COMPILER SCRIPT
+
+/*
+*
+*	Class Structures
+*
+*/
+
+private MacroOperation root = new MacroOperation(OperationType.Unknown);
+
+internal MacroOperation Root
+{
+	get
+	{
+		return this.root;
+	}
+	set
+	{
+		this.root = value;
+	}
+}
+
+bool IsFunctionCall()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.kind == _LPAREN && la.kind == _identifier)
+    return true;
+  return false;
+}
+
+bool IsCompare()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.kind == _COMPARER)
+    return true;
+  return false;
+}
+
+bool IsAssignment()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.val == "::" || next.val == ":=" || next.val == "->")
+    return true;
+  return false;
+}
+
+bool IsArrayCall()
+{
+	scanner.ResetPeek();
+	Token next = scanner.Peek();
+	if(next.val == "[")
+		return true;
+	return false;
+}
+	
+CHARACTERS
+
+	UpperLetter = 'A'..'Z'.
+	LowerLetter = 'a'..'z'.
+	letter = UpperLetter + LowerLetter.
+	NoQuote = ANY - '\"' .
+	digit = "0123456789" .
+	cr     = '\r' .
+	lf     = '\n' .
+	tab    = '\t' .
+	PM	   = "+-" .
+	
+TOKENS
+
+  identifier = letter { letter | digit }.
+  sign = PM .
+  binary = ( '0' | '1' ) { '0' | '1' } ('B' | 'b') .
+  hex = "0x" ( digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') ) { digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') } .
+  number = digit { digit }['.' {digit}] [('E'|'e')['+'|'-'] digit {digit}] .
+  newline = [cr] lf .
+  string = "\"" { NoQuote } "\"" .
+  LPAREN = '(' .
+  RPAREN = ')' .
+  COMPARER = "==" | "<" | ">" | "<=" | ">=" .
+  
+  COMMENTS FROM "/*" TO "*/" NESTED
+  COMMENTS FROM "//" TO lf 
+  
+IGNORE cr + lf + tab
+
+/*
+ *	Parser specification
+ *
+ */
+ 
+PRODUCTIONS
+
+SCRIPT								(. string statement = string.Empty; .)
+= 
+	{
+		Statement<out statement>	(.
+										MacroOperation operation = new MacroOperation(OperationType.Statement);
+										operation.Input.Add(statement);
+										this.root.Children.Add(operation);
+									.)
+		|
+		IfBlock<ref this.root>
+		|
+		WhileBlock<ref this.root>
+		|
+		FunctionDeclaration<ref this.root>
+		|
+		EchoStatement<ref this.root>
+		|
+		SayStatement<ref this.root>
+		|
+		DisplayStatement<ref this.root>
+		|
+		ForBlock<ref this.root>
+	}
+.
+
+IfBlock<ref MacroOperation parent>	(.  
+										MacroOperation ifBlock = new MacroOperation(OperationType.If);
+										MacroOperation elseBlock = new MacroOperation(OperationType.Else);
+										string ifStatement = string.Empty;
+										string statement = string.Empty;
+										StringBuilder builder = new StringBuilder();
+										bool hasElse = false;
+									.)
+=
+	"if"
+	LPAREN
+	Comparison<ref builder>			(. ifStatement = builder.ToString(); ifBlock.Input.Add(ifStatement); .)
+	RPAREN
+	'{'
+		{
+			Statement<out statement>	(.
+											MacroOperation operation = new MacroOperation(OperationType.Statement);
+											operation.Input.Add(statement);
+											ifBlock.Children.Add(operation);
+										.)
+			|
+			IfBlock<ref ifBlock>
+			|
+			WhileBlock<ref ifBlock>
+			|
+			EchoStatement<ref ifBlock>
+			|
+			SayStatement<ref ifBlock>
+			|
+			DisplayStatement<ref ifBlock>
+			|
+			ForBlock<ref ifBlock>
+		}
+	'}'
+	[
+		"else"								(. hasElse = true; .)
+		'{'
+			{
+				Statement<out statement>	(.
+												MacroOperation operation = new MacroOperation(OperationType.Statement);
+												operation.Input.Add(statement);
+												elseBlock.Children.Add(operation);
+											.)
+				|
+				IfBlock<ref elseBlock>
+				|
+				WhileBlock<ref elseBlock>
+				|
+				EchoStatement<ref elseBlock>
+				|
+				SayStatement<ref elseBlock>
+				|
+				DisplayStatement<ref elseBlock>
+				|
+				ForBlock<ref elseBlock>
+			}
+		'}'
+	]
+	(.
+		if(hasElse)
+		{
+			MacroOperation ifelse = new MacroOperation(OperationType.IfElse);
+			ifelse.Children.Add(ifBlock);
+			ifelse.Children.Add(elseBlock);
+			parent.Children.Add(ifelse);
+		}
+		else
+		{
+			parent.Children.Add(ifBlock);
+		}
+	.)
+.
+
+
+
+WhileBlock<ref MacroOperation parent>		(.
+												StringBuilder builder = new StringBuilder();
+												MacroOperation whileBlock = new MacroOperation(OperationType.While);
+												string statement = string.Empty;
+											.)
+=
+	"while"
+	LPAREN
+	Comparison<ref builder>					(. whileBlock.Input.Add(builder.ToString()); .)
+	RPAREN
+	'{'
+		{
+			Statement<out statement>	(.
+											MacroOperation operation = new MacroOperation(OperationType.Statement);
+											operation.Input.Add(statement);
+											whileBlock.Children.Add(operation);
+										.)
+			|
+			IfBlock<ref whileBlock>
+			|
+			WhileBlock<ref whileBlock>
+			|
+			EchoStatement<ref whileBlock>
+			|
+			SayStatement<ref whileBlock>
+			|
+			DisplayStatement<ref whileBlock>
+			|
+			ForBlock<ref whileBlock>
+		}
+	'}'
+	(.
+		parent.Children.Add(whileBlock);
+	.)
+.
+
+ForBlock<ref MacroOperation parent>				(.
+													StringBuilder builder = new StringBuilder();
+													string statement = string.Empty;
+													string statement2 = string.Empty;
+													MacroOperation forBlock = new MacroOperation(OperationType.For);
+												.)
+=
+	"for"
+	LPAREN
+	Statement<out statement>
+	','
+	Comparison<ref builder>
+	','
+	Statement<out statement2>					(. forBlock.Input.Add(statement); forBlock.Input.Add(builder.ToString()); forBlock.Input.Add(statement2); .)
+	RPAREN
+	'{'
+		{
+			Statement<out statement>	(.
+											MacroOperation operation = new MacroOperation(OperationType.Statement);
+											operation.Input.Add(statement);
+											forBlock.Children.Add(operation);
+										.)
+			|
+			IfBlock<ref forBlock>
+			|
+			WhileBlock<ref forBlock>
+			|
+			EchoStatement<ref forBlock>
+			|
+			SayStatement<ref forBlock>
+			|
+			DisplayStatement<ref forBlock>
+			|
+			ForBlock<ref forBlock>
+		}
+	'}'
+	(.
+		parent.Children.Add(forBlock);
+	.)
+.
+
+FunctionDeclaration<ref MacroOperation parent>	(.
+													StringBuilder builder = new StringBuilder();
+													string statement = string.Empty;
+													MacroOperation func = new MacroOperation(OperationType.FunctionDeclaration);
+												.)
+=
+	"function"
+	LPAREN
+	CommaList<ref builder>						(. string[] args = builder.ToString().Split(','); func.Input.AddRange(args); .)
+	RPAREN
+	'{'
+		{
+			Statement<out statement>	(.
+											MacroOperation operation = new MacroOperation(OperationType.Statement);
+											operation.Input.Add(statement);
+											func.Children.Add(operation);
+										.)
+			|
+			IfBlock<ref func>
+			|
+			WhileBlock<ref func>
+			|
+			EchoStatement<ref func>
+			|
+			SayStatement<ref func>
+			|
+			DisplayStatement<ref func>
+			|
+			ForBlock<ref func>
+		}
+	'}'
+	(.
+		parent.Children.Add(func);
+	.)
+.
+
+EchoStatement<ref MacroOperation parent>		(.
+													StringBuilder builder = new StringBuilder();
+													MacroOperation echoStatement = new MacroOperation(OperationType.Echo);
+													string statement = string.Empty;
+												.)
+=
+	"echo:"
+	Statement<out statement>					(.
+													MacroOperation operation = new MacroOperation(OperationType.Statement);
+													operation.Input.Add(statement);
+													echoStatement.Children.Add(operation);
+													parent.Children.Add(echoStatement);
+												.)
+.
+
+SayStatement<ref MacroOperation parent>			(.
+													StringBuilder builder = new StringBuilder();
+													MacroOperation sayStatement = new MacroOperation(OperationType.Say);
+													string statement = string.Empty;
+												.)
+=
+	"say:"
+	string										(.
+													statement = t.val.Replace("\"", "");
+													sayStatement.Input.Add(statement);
+													parent.Children.Add(sayStatement);
+												.)
+.
+
+DisplayStatement<ref MacroOperation parent>		(.
+													StringBuilder builder = new StringBuilder();
+													MacroOperation displayStatement = new MacroOperation(OperationType.Display);
+													string statement = string.Empty;
+												.)
+=
+	"display:"
+	(
+		Statement<out statement>				(.
+													MacroOperation operation = new MacroOperation(OperationType.Statement);
+													operation.Input.Add(statement);
+													displayStatement.Children.Add(operation);
+												.)
+		|
+		string									(.
+													statement = t.val.Replace("\"", "");
+													MacroOperation operation = new MacroOperation(OperationType.String);
+													operation.Input.Add(statement);
+													displayStatement.Children.Add(operation);
+												.)
+	)											
+	{
+		','
+		(
+			Statement<out statement>			(.
+													MacroOperation operation = new MacroOperation(OperationType.Statement);
+													operation.Input.Add(statement);
+													displayStatement.Children.Add(operation);
+												.)
+			|
+			string								(.
+													statement = t.val.Replace("\"", "");
+													MacroOperation operation = new MacroOperation(OperationType.String);
+													operation.Input.Add(statement);
+													displayStatement.Children.Add(operation);
+												.)
+		)										
+	}
+	(.
+		parent.Children.Add(displayStatement);
+	.)
+.
+
+Statement<out string value>		(.	
+									value = string.Empty;
+									StringBuilder builder = new StringBuilder();
+								.) 
+=
+	IF(IsAssignment())
+	Assignment<ref builder>			(. value = builder.ToString(); .)
+	|
+	Expression<ref builder>			(. value = builder.ToString(); .)
+.
+
+Expression<ref StringBuilder builder>		
+= 
+Term<ref builder>				
+{
+  '+' (. builder.Append(t.val); .) Term<ref builder>
+| 
+  '-' (. builder.Append(t.val); .) Term<ref builder>
+|
+  '%' (. builder.Append(t.val); .) Term<ref builder>
+}
+.
+
+Term<ref StringBuilder builder>
+= 
+  Factor<ref builder>		    
+ {
+  '*'							(. builder.Append(t.val); .)
+  Factor<ref builder>				      
+| 
+  '/'							(. builder.Append(t.val); .)
+  Factor<ref builder>			
+}
+. 
+
+Factor<ref StringBuilder builder>
+= 
+  Value<ref builder>			
+  {
+	'^'							(. builder.Append(t.val); .)
+	Value<ref builder>
+  }
+. 
+
+Value<ref StringBuilder builder>
+=   
+  
+ [
+  "+"					    (. builder.Append(t.val); .)
+   |
+  "-"						(. builder.Append(t.val); .)
+ ]
+(
+  IF(IsFunctionCall())
+  Function<ref builder>
+|
+  IF(IsArrayCall())
+  ArrayCall<ref builder>
+|
+  identifier				(. builder.Append(t.val); .)
+|
+ number						(. builder.Append(t.val); .)		
+|
+ hex						(. builder.Append(t.val); .)
+|
+ binary						(. builder.Append(t.val); .)
+|
+  '('						(. builder.Append(t.val); .)
+  Expression<ref builder>
+  ')'						(. builder.Append(t.val); .)			
+)
+.
+
+ArrayL<ref StringBuilder builder>
+=
+'['							(. builder.Append(t.val); .)
+CommaList<ref builder>
+']'							(. builder.Append(t.val); .)
+.
+
+CommaList<ref StringBuilder builder>
+=
+Expression<ref builder>				
+{
+	','								(. builder.Append(t.val); .)
+	Expression<ref builder>
+}
+.
+
+Assignment<ref StringBuilder builder>
+=
+identifier							(. builder.Append(t.val); .)
+(
+	(
+		"::"						(. builder.Append(t.val); .)
+		Expression<ref builder>		
+	)
+	|
+	(
+		":="						(. builder.Append(t.val); string value = string.Empty; .)
+		AnyExpression<out value>	(. builder.Append(value); .)
+		newline
+	)
+	|
+	(
+		"->"						(. builder.Append(t.val); .)
+		ArrayL<ref builder>
+	)
+)
+.
+
+Function<ref StringBuilder builder>			
+=
+identifier						(. builder.Append(t.val); .)
+'('								(. builder.Append(t.val); .)
+CommaList<ref builder>
+')'								(. builder.Append(t.val); .)
+.
+
+ArrayCall<ref StringBuilder builder>	
+=
+identifier						(. builder.Append(t.val); .)
+'['								(. builder.Append(t.val); .)
+	Expression<ref builder>			
+']'								(. builder.Append(t.val); .)
+.
+
+Comparison<ref StringBuilder result>
+=
+Expression<ref result>
+COMPARER						(. result.Append(t.val); .)
+Expression<ref result>
+.
+
+AnyExpression<out string value>	(. value = string.Empty; StringBuilder builder = new StringBuilder(); .)
+=
+ANY (. builder.Append(t.val); .) { ANY (. builder.Append(t.val); .) } '\n' (. value = builder.ToString(); .)
+.
+
+
+END SCRIPT.

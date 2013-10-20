@@ -1,0 +1,798 @@
+using csmic;
+using System.Text;
+using System.Collections.Generic;
+
+
+
+using System;
+using System.CodeDom.Compiler;
+
+namespace csmic.Scripting {
+
+
+
+[GeneratedCodeAttribute("Coco/R", "")]
+public class Parser {
+	public const int _EOF = 0;
+	public const int _identifier = 1;
+	public const int _sign = 2;
+	public const int _binary = 3;
+	public const int _hex = 4;
+	public const int _number = 5;
+	public const int _newline = 6;
+	public const int _string = 7;
+	public const int _LPAREN = 8;
+	public const int _RPAREN = 9;
+	public const int _COMPARER = 10;
+	public const int maxT = 34;
+
+	const bool T = true;
+	const bool x = false;
+	const int minErrDist = 2;
+	
+	public Scanner scanner;
+	public Errors  errors;
+
+	public Token t;    // last recognized token
+	public Token la;   // lookahead token
+	int errDist = minErrDist;
+
+private MacroOperation root = new MacroOperation(OperationType.Unknown);
+
+internal MacroOperation Root
+{
+	get
+	{
+		return this.root;
+	}
+	set
+	{
+		this.root = value;
+	}
+}
+
+bool IsFunctionCall()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.kind == _LPAREN && la.kind == _identifier)
+    return true;
+  return false;
+}
+
+bool IsCompare()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.kind == _COMPARER)
+    return true;
+  return false;
+}
+
+bool IsAssignment()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.val == "::" || next.val == ":=" || next.val == "->")
+    return true;
+  return false;
+}
+
+bool IsArrayCall()
+{
+	scanner.ResetPeek();
+	Token next = scanner.Peek();
+	if(next.val == "[")
+		return true;
+	return false;
+}
+	
+
+
+	public Parser(Scanner scanner) {
+		this.scanner = scanner;
+		errors = new Errors();
+	}
+
+	void SynErr (int n) {
+		if (errDist >= minErrDist) errors.SynErr(la.line, la.col, n);
+		errDist = 0;
+	}
+
+	public void SemErr (string msg) {
+		if (errDist >= minErrDist) errors.SemErr(t.line, t.col, msg);
+		errDist = 0;
+	}
+	
+	void Get () {
+		for (;;) {
+			t = la;
+			la = scanner.Scan();
+			if (la.kind <= maxT) { ++errDist; break; }
+
+			la = t;
+		}
+	}
+	
+	void Expect (int n) {
+		if (la.kind==n) Get(); else { SynErr(n); }
+	}
+	
+	bool StartOf (int s) {
+		return set[s, la.kind];
+	}
+	
+	void ExpectWeak (int n, int follow) {
+		if (la.kind == n) Get();
+		else {
+			SynErr(n);
+			while (!StartOf(follow)) Get();
+		}
+	}
+
+
+	bool WeakSeparator(int n, int syFol, int repFol) {
+		int kind = la.kind;
+		if (kind == n) {Get(); return true;}
+		else if (StartOf(repFol)) {return false;}
+		else {
+			SynErr(n);
+			while (!(set[syFol, kind] || set[repFol, kind] || set[0, kind])) {
+				Get();
+				kind = la.kind;
+			}
+			return StartOf(syFol);
+		}
+	}
+
+	
+	void SCRIPT() {
+		string statement = string.Empty; 
+		while (StartOf(1)) {
+			switch (la.kind) {
+			case 1: case 3: case 4: case 5: case 8: case 22: case 23: {
+				Statement(out statement);
+				MacroOperation operation = new MacroOperation(OperationType.Statement);
+				operation.Input.Add(statement);
+				this.root.Children.Add(operation);
+				
+				break;
+			}
+			case 11: {
+				IfBlock(ref this.root);
+				break;
+			}
+			case 15: {
+				WhileBlock(ref this.root);
+				break;
+			}
+			case 18: {
+				FunctionDeclaration(ref this.root);
+				break;
+			}
+			case 19: {
+				EchoStatement(ref this.root);
+				break;
+			}
+			case 20: {
+				SayStatement(ref this.root);
+				break;
+			}
+			case 21: {
+				DisplayStatement(ref this.root);
+				break;
+			}
+			case 16: {
+				ForBlock(ref this.root);
+				break;
+			}
+			}
+		}
+	}
+
+	void Statement(out string value) {
+		value = string.Empty;
+		StringBuilder builder = new StringBuilder();
+		
+		if (IsAssignment()) {
+			Assignment(ref builder);
+			value = builder.ToString(); 
+		} else if (StartOf(2)) {
+			Expression(ref builder);
+			value = builder.ToString(); 
+		} else SynErr(35);
+	}
+
+	void IfBlock(ref MacroOperation parent) {
+		MacroOperation ifBlock = new MacroOperation(OperationType.If);
+		MacroOperation elseBlock = new MacroOperation(OperationType.Else);
+		string ifStatement = string.Empty;
+		string statement = string.Empty;
+		StringBuilder builder = new StringBuilder();
+		bool hasElse = false;
+		
+		Expect(11);
+		Expect(8);
+		Comparison(ref builder);
+		ifStatement = builder.ToString(); ifBlock.Input.Add(ifStatement); 
+		Expect(9);
+		Expect(12);
+		while (StartOf(3)) {
+			switch (la.kind) {
+			case 1: case 3: case 4: case 5: case 8: case 22: case 23: {
+				Statement(out statement);
+				MacroOperation operation = new MacroOperation(OperationType.Statement);
+				operation.Input.Add(statement);
+				ifBlock.Children.Add(operation);
+				
+				break;
+			}
+			case 11: {
+				IfBlock(ref ifBlock);
+				break;
+			}
+			case 15: {
+				WhileBlock(ref ifBlock);
+				break;
+			}
+			case 19: {
+				EchoStatement(ref ifBlock);
+				break;
+			}
+			case 20: {
+				SayStatement(ref ifBlock);
+				break;
+			}
+			case 21: {
+				DisplayStatement(ref ifBlock);
+				break;
+			}
+			case 16: {
+				ForBlock(ref ifBlock);
+				break;
+			}
+			}
+		}
+		Expect(13);
+		if (la.kind == 14) {
+			Get();
+			hasElse = true; 
+			Expect(12);
+			while (StartOf(3)) {
+				switch (la.kind) {
+				case 1: case 3: case 4: case 5: case 8: case 22: case 23: {
+					Statement(out statement);
+					MacroOperation operation = new MacroOperation(OperationType.Statement);
+					operation.Input.Add(statement);
+					elseBlock.Children.Add(operation);
+					
+					break;
+				}
+				case 11: {
+					IfBlock(ref elseBlock);
+					break;
+				}
+				case 15: {
+					WhileBlock(ref elseBlock);
+					break;
+				}
+				case 19: {
+					EchoStatement(ref elseBlock);
+					break;
+				}
+				case 20: {
+					SayStatement(ref elseBlock);
+					break;
+				}
+				case 21: {
+					DisplayStatement(ref elseBlock);
+					break;
+				}
+				case 16: {
+					ForBlock(ref elseBlock);
+					break;
+				}
+				}
+			}
+			Expect(13);
+		}
+		if(hasElse)
+		{
+		MacroOperation ifelse = new MacroOperation(OperationType.IfElse);
+		ifelse.Children.Add(ifBlock);
+		ifelse.Children.Add(elseBlock);
+		parent.Children.Add(ifelse);
+		}
+		else
+		{
+		parent.Children.Add(ifBlock);
+		}
+		
+	}
+
+	void WhileBlock(ref MacroOperation parent) {
+		StringBuilder builder = new StringBuilder();
+		MacroOperation whileBlock = new MacroOperation(OperationType.While);
+		string statement = string.Empty;
+		
+		Expect(15);
+		Expect(8);
+		Comparison(ref builder);
+		whileBlock.Input.Add(builder.ToString()); 
+		Expect(9);
+		Expect(12);
+		while (StartOf(3)) {
+			switch (la.kind) {
+			case 1: case 3: case 4: case 5: case 8: case 22: case 23: {
+				Statement(out statement);
+				MacroOperation operation = new MacroOperation(OperationType.Statement);
+				operation.Input.Add(statement);
+				whileBlock.Children.Add(operation);
+				
+				break;
+			}
+			case 11: {
+				IfBlock(ref whileBlock);
+				break;
+			}
+			case 15: {
+				WhileBlock(ref whileBlock);
+				break;
+			}
+			case 19: {
+				EchoStatement(ref whileBlock);
+				break;
+			}
+			case 20: {
+				SayStatement(ref whileBlock);
+				break;
+			}
+			case 21: {
+				DisplayStatement(ref whileBlock);
+				break;
+			}
+			case 16: {
+				ForBlock(ref whileBlock);
+				break;
+			}
+			}
+		}
+		Expect(13);
+		parent.Children.Add(whileBlock);
+		
+	}
+
+	void FunctionDeclaration(ref MacroOperation parent) {
+		StringBuilder builder = new StringBuilder();
+		string statement = string.Empty;
+		MacroOperation func = new MacroOperation(OperationType.FunctionDeclaration);
+		
+		Expect(18);
+		Expect(8);
+		CommaList(ref builder);
+		string[] args = builder.ToString().Split(','); func.Input.AddRange(args); 
+		Expect(9);
+		Expect(12);
+		while (StartOf(3)) {
+			switch (la.kind) {
+			case 1: case 3: case 4: case 5: case 8: case 22: case 23: {
+				Statement(out statement);
+				MacroOperation operation = new MacroOperation(OperationType.Statement);
+				operation.Input.Add(statement);
+				func.Children.Add(operation);
+				
+				break;
+			}
+			case 11: {
+				IfBlock(ref func);
+				break;
+			}
+			case 15: {
+				WhileBlock(ref func);
+				break;
+			}
+			case 19: {
+				EchoStatement(ref func);
+				break;
+			}
+			case 20: {
+				SayStatement(ref func);
+				break;
+			}
+			case 21: {
+				DisplayStatement(ref func);
+				break;
+			}
+			case 16: {
+				ForBlock(ref func);
+				break;
+			}
+			}
+		}
+		Expect(13);
+		parent.Children.Add(func);
+		
+	}
+
+	void EchoStatement(ref MacroOperation parent) {
+		StringBuilder builder = new StringBuilder();
+		MacroOperation echoStatement = new MacroOperation(OperationType.Echo);
+		string statement = string.Empty;
+		
+		Expect(19);
+		Statement(out statement);
+		MacroOperation operation = new MacroOperation(OperationType.Statement);
+		operation.Input.Add(statement);
+		echoStatement.Children.Add(operation);
+		parent.Children.Add(echoStatement);
+		
+	}
+
+	void SayStatement(ref MacroOperation parent) {
+		StringBuilder builder = new StringBuilder();
+		MacroOperation sayStatement = new MacroOperation(OperationType.Say);
+		string statement = string.Empty;
+		
+		Expect(20);
+		Expect(7);
+		statement = t.val.Replace("\"", "");
+		sayStatement.Input.Add(statement);
+		parent.Children.Add(sayStatement);
+		
+	}
+
+	void DisplayStatement(ref MacroOperation parent) {
+		StringBuilder builder = new StringBuilder();
+		MacroOperation displayStatement = new MacroOperation(OperationType.Display);
+		string statement = string.Empty;
+		
+		Expect(21);
+		if (StartOf(2)) {
+			Statement(out statement);
+			MacroOperation operation = new MacroOperation(OperationType.Statement);
+			operation.Input.Add(statement);
+			displayStatement.Children.Add(operation);
+			
+		} else if (la.kind == 7) {
+			Get();
+			statement = t.val.Replace("\"", "");
+			MacroOperation operation = new MacroOperation(OperationType.String);
+			operation.Input.Add(statement);
+			displayStatement.Children.Add(operation);
+			
+		} else SynErr(36);
+		while (la.kind == 17) {
+			Get();
+			if (StartOf(2)) {
+				Statement(out statement);
+				MacroOperation operation = new MacroOperation(OperationType.Statement);
+				operation.Input.Add(statement);
+				displayStatement.Children.Add(operation);
+				
+			} else if (la.kind == 7) {
+				Get();
+				statement = t.val.Replace("\"", "");
+				MacroOperation operation = new MacroOperation(OperationType.String);
+				operation.Input.Add(statement);
+				displayStatement.Children.Add(operation);
+				
+			} else SynErr(37);
+		}
+		parent.Children.Add(displayStatement);
+		
+	}
+
+	void ForBlock(ref MacroOperation parent) {
+		StringBuilder builder = new StringBuilder();
+		string statement = string.Empty;
+		string statement2 = string.Empty;
+		MacroOperation forBlock = new MacroOperation(OperationType.For);
+		
+		Expect(16);
+		Expect(8);
+		Statement(out statement);
+		Expect(17);
+		Comparison(ref builder);
+		Expect(17);
+		Statement(out statement2);
+		forBlock.Input.Add(statement); forBlock.Input.Add(builder.ToString()); forBlock.Input.Add(statement2); 
+		Expect(9);
+		Expect(12);
+		while (StartOf(3)) {
+			switch (la.kind) {
+			case 1: case 3: case 4: case 5: case 8: case 22: case 23: {
+				Statement(out statement);
+				MacroOperation operation = new MacroOperation(OperationType.Statement);
+				operation.Input.Add(statement);
+				forBlock.Children.Add(operation);
+				
+				break;
+			}
+			case 11: {
+				IfBlock(ref forBlock);
+				break;
+			}
+			case 15: {
+				WhileBlock(ref forBlock);
+				break;
+			}
+			case 19: {
+				EchoStatement(ref forBlock);
+				break;
+			}
+			case 20: {
+				SayStatement(ref forBlock);
+				break;
+			}
+			case 21: {
+				DisplayStatement(ref forBlock);
+				break;
+			}
+			case 16: {
+				ForBlock(ref forBlock);
+				break;
+			}
+			}
+		}
+		Expect(13);
+		parent.Children.Add(forBlock);
+		
+	}
+
+	void Comparison(ref StringBuilder result) {
+		Expression(ref result);
+		Expect(10);
+		result.Append(t.val); 
+		Expression(ref result);
+	}
+
+	void CommaList(ref StringBuilder builder) {
+		Expression(ref builder);
+		while (la.kind == 17) {
+			Get();
+			builder.Append(t.val); 
+			Expression(ref builder);
+		}
+	}
+
+	void Assignment(ref StringBuilder builder) {
+		Expect(1);
+		builder.Append(t.val); 
+		if (la.kind == 30) {
+			Get();
+			builder.Append(t.val); 
+			Expression(ref builder);
+		} else if (la.kind == 31) {
+			Get();
+			builder.Append(t.val); string value = string.Empty; 
+			AnyExpression(out value);
+			builder.Append(value); 
+			Expect(6);
+		} else if (la.kind == 32) {
+			Get();
+			builder.Append(t.val); 
+			ArrayL(ref builder);
+		} else SynErr(38);
+	}
+
+	void Expression(ref StringBuilder builder) {
+		Term(ref builder);
+		while (la.kind == 22 || la.kind == 23 || la.kind == 24) {
+			if (la.kind == 22) {
+				Get();
+				builder.Append(t.val); 
+				Term(ref builder);
+			} else if (la.kind == 23) {
+				Get();
+				builder.Append(t.val); 
+				Term(ref builder);
+			} else {
+				Get();
+				builder.Append(t.val); 
+				Term(ref builder);
+			}
+		}
+	}
+
+	void Term(ref StringBuilder builder) {
+		Factor(ref builder);
+		while (la.kind == 25 || la.kind == 26) {
+			if (la.kind == 25) {
+				Get();
+				builder.Append(t.val); 
+				Factor(ref builder);
+			} else {
+				Get();
+				builder.Append(t.val); 
+				Factor(ref builder);
+			}
+		}
+	}
+
+	void Factor(ref StringBuilder builder) {
+		Value(ref builder);
+		while (la.kind == 27) {
+			Get();
+			builder.Append(t.val); 
+			Value(ref builder);
+		}
+	}
+
+	void Value(ref StringBuilder builder) {
+		if (la.kind == 22 || la.kind == 23) {
+			if (la.kind == 22) {
+				Get();
+				builder.Append(t.val); 
+			} else {
+				Get();
+				builder.Append(t.val); 
+			}
+		}
+		if (IsFunctionCall()) {
+			Function(ref builder);
+		} else if (IsArrayCall()) {
+			ArrayCall(ref builder);
+		} else if (la.kind == 1) {
+			Get();
+			builder.Append(t.val); 
+		} else if (la.kind == 5) {
+			Get();
+			builder.Append(t.val); 
+		} else if (la.kind == 4) {
+			Get();
+			builder.Append(t.val); 
+		} else if (la.kind == 3) {
+			Get();
+			builder.Append(t.val); 
+		} else if (la.kind == 8) {
+			Get();
+			builder.Append(t.val); 
+			Expression(ref builder);
+			Expect(9);
+			builder.Append(t.val); 
+		} else SynErr(39);
+	}
+
+	void Function(ref StringBuilder builder) {
+		Expect(1);
+		builder.Append(t.val); 
+		Expect(8);
+		builder.Append(t.val); 
+		CommaList(ref builder);
+		Expect(9);
+		builder.Append(t.val); 
+	}
+
+	void ArrayCall(ref StringBuilder builder) {
+		Expect(1);
+		builder.Append(t.val); 
+		Expect(28);
+		builder.Append(t.val); 
+		Expression(ref builder);
+		Expect(29);
+		builder.Append(t.val); 
+	}
+
+	void ArrayL(ref StringBuilder builder) {
+		Expect(28);
+		builder.Append(t.val); 
+		CommaList(ref builder);
+		Expect(29);
+		builder.Append(t.val); 
+	}
+
+	void AnyExpression(out string value) {
+		value = string.Empty; StringBuilder builder = new StringBuilder(); 
+		Get();
+		builder.Append(t.val); 
+		while (StartOf(4)) {
+			Get();
+			builder.Append(t.val); 
+		}
+		Expect(33);
+		value = builder.ToString(); 
+	}
+
+
+
+	public void Parse() {
+		la = new Token();
+		la.val = "";		
+		Get();
+		SCRIPT();
+		Expect(0);
+
+    Expect(0);
+	}
+	
+	static readonly bool[,] set = {
+		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
+		{x,T,x,T, T,T,x,x, T,x,x,T, x,x,x,T, T,x,T,T, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x},
+		{x,T,x,T, T,T,x,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,T,T, x,x,x,x, x,x,x,x, x,x,x,x},
+		{x,T,x,T, T,T,x,x, T,x,x,T, x,x,x,T, T,x,x,T, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x},
+		{x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,x,T,x}
+
+	};
+} // end Parser
+
+
+public class Errors {
+	public int count = 0;                                    // number of errors detected
+	public System.IO.TextWriter errorStream = Console.Out;   // error messages go to this stream
+  public string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
+  
+	public void SynErr (int line, int col, int n) {
+		string s;
+		switch (n) {
+			case 0: s = "EOF expected"; break;
+			case 1: s = "identifier expected"; break;
+			case 2: s = "sign expected"; break;
+			case 3: s = "binary expected"; break;
+			case 4: s = "hex expected"; break;
+			case 5: s = "number expected"; break;
+			case 6: s = "newline expected"; break;
+			case 7: s = "string expected"; break;
+			case 8: s = "LPAREN expected"; break;
+			case 9: s = "RPAREN expected"; break;
+			case 10: s = "COMPARER expected"; break;
+			case 11: s = "\"if\" expected"; break;
+			case 12: s = "\"{\" expected"; break;
+			case 13: s = "\"}\" expected"; break;
+			case 14: s = "\"else\" expected"; break;
+			case 15: s = "\"while\" expected"; break;
+			case 16: s = "\"for\" expected"; break;
+			case 17: s = "\",\" expected"; break;
+			case 18: s = "\"function\" expected"; break;
+			case 19: s = "\"echo:\" expected"; break;
+			case 20: s = "\"say:\" expected"; break;
+			case 21: s = "\"display:\" expected"; break;
+			case 22: s = "\"+\" expected"; break;
+			case 23: s = "\"-\" expected"; break;
+			case 24: s = "\"%\" expected"; break;
+			case 25: s = "\"*\" expected"; break;
+			case 26: s = "\"/\" expected"; break;
+			case 27: s = "\"^\" expected"; break;
+			case 28: s = "\"[\" expected"; break;
+			case 29: s = "\"]\" expected"; break;
+			case 30: s = "\"::\" expected"; break;
+			case 31: s = "\":=\" expected"; break;
+			case 32: s = "\"->\" expected"; break;
+			case 33: s = "\"\\n\" expected"; break;
+			case 34: s = "??? expected"; break;
+			case 35: s = "invalid Statement"; break;
+			case 36: s = "invalid DisplayStatement"; break;
+			case 37: s = "invalid DisplayStatement"; break;
+			case 38: s = "invalid Assignment"; break;
+			case 39: s = "invalid Value"; break;
+
+			default: s = "error " + n; break;
+		}
+		errorStream.WriteLine(errMsgFormat, line, col, s);
+		count++;
+	}
+
+	public void SemErr (int line, int col, string s) {
+		errorStream.WriteLine(errMsgFormat, line, col, s);
+		count++;
+	}
+	
+	public void SemErr (string s) {
+		errorStream.WriteLine(s);
+		count++;
+	}
+	
+	public void Warning (int line, int col, string s) {
+		errorStream.WriteLine(errMsgFormat, line, col, s);
+	}
+	
+	public void Warning(string s) {
+		errorStream.WriteLine(s);
+	}
+} // Errors
+
+
+public class FatalError: Exception {
+	public FatalError(string m): base(m) {}
+}
+
+}

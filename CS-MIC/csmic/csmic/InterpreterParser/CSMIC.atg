@@ -1,0 +1,369 @@
+﻿using csmic;
+using System.Text;
+using System.Collections.Generic;
+
+COMPILER CSMIC
+
+/*
+*
+*	Class Structures
+*
+*/
+
+private decimal calcValue = 0;
+private string stringValue = string.Empty;
+
+public decimal CalculatedValue
+{
+	get
+	{
+		return this.calcValue;
+	}
+	set
+	{
+		this.calcValue = value;
+	}
+}
+
+private InputInterpreter interpreter = null;
+
+public InputInterpreter Interpreter
+{
+	get
+	{
+		return this.interpreter;
+	}
+	set
+	{
+		this.interpreter = value;
+	}
+}
+
+bool IsFunctionCall()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.kind == _LPAREN && la.kind == _identifier)
+    return true;
+  return false;
+}
+
+bool IsCompare()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.kind == _COMPARER)
+    return true;
+  return false;
+}
+
+bool IsAssignment()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.val == "::" || next.val == ":=" || next.val == "->")
+    return true;
+  return false;
+}
+
+bool IsArrayCall()
+{
+	scanner.ResetPeek();
+	Token next = scanner.Peek();
+	if(next.val == "[")
+		return true;
+	return false;
+}
+	
+CHARACTERS
+
+	UpperLetter = 'A'..'Z'.
+	LowerLetter = 'a'..'z'.
+	letter = UpperLetter + LowerLetter.
+	digit = "0123456789" .
+	cr     = '\r' .
+	lf     = '\n' .
+	tab    = '\t' .
+	PM	   = "+-" .
+	NoQuote = ANY - '\"' .
+	
+TOKENS
+
+  identifier = letter { letter | digit}.
+  sign = PM .
+  binary = ( '0' | '1' ) { '0' | '1' } ('B' | 'b') .
+  hex = "0x" ( digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') ) { digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') } .
+  number = digit { digit }['.' {digit}] [('E'|'e')['+'|'-'] digit {digit}] .
+  string = "\"" { NoQuote } "\"" .
+  LPAREN = '(' .
+  RPAREN = ')' .
+  COMPARER = "==" | "<" | ">" | "<=" | ">=" .
+  
+IGNORE cr + tab
+
+/*
+ *	Parser specification
+ *
+ */
+ 
+PRODUCTIONS
+
+CSMIC							(.	decimal r = 0;
+									string s = string.Empty;
+									decimal[] a = new decimal[0];
+									bool success = true;
+									if(this.interpreter == null)
+									{
+										return;
+									}
+								.) 
+= 
+	IF(IsCompare())
+	Comparison<out success>		(. this.calcValue = (success == true) ? 1 : 0;  this.interpreter.ProduceOutput(success); .)
+	|
+	IF(IsAssignment())
+	Assignment<out r>			(. this.calcValue = r; .)
+	|
+	Expression<out r>			(. this.calcValue = r; this.interpreter.ProduceOutput(r); .)
+	|
+	String<out s>				(. this.stringValue = s; this.interpreter.ProduceOutput(s); .)
+. 
+
+String<out string s>
+=
+	string					(. s = t.val; .)
+
+.
+
+Expression<out decimal r>		
+= 
+							(. decimal r1; .)
+Term<out r>							
+{
+  '+' Term<out r1>			(. r += r1; .)				    			
+| 
+  '-' Term<out r1>			(. r -= r1; .)
+}
+.
+
+Term<out decimal r>			(. decimal r1; .)
+= 
+  Factor<out r>		
+ {
+  '*' 
+  Factor<out r1>			(. r *= r1; .)	      
+| 
+  '/' 
+  Factor<out r1>			(. r /= r1; .)
+|
+  '%' Term<out r1>			(. r %= r1; .)
+}
+. 
+
+Factor<out decimal r>			(. decimal r1; .)
+= 
+  Value<out r>
+  {
+	'^' 
+	Expression<out r1>			(. r = Convert.ToDecimal(Math.Pow(Convert.ToDouble(r), Convert.ToDouble(r1))); .)
+  }
+. 
+
+Value<out decimal r> 		(.	r = 0;
+								decimal r1 = 0;
+								string fn; 
+								int sign = 1;.)
+=   
+  
+ [
+  "+"					
+   |
+  "-"						(. sign = -1; .)
+ ]
+(
+  IF(IsFunctionCall())
+  Function<out r>			(. r = sign * r; .)
+|
+  IF(IsArrayCall())
+  ArrayCall<out r>			(. r = sign * r; .)
+|
+  identifier				(. if(this.interpreter.variables.ContainsKey(t.val))
+								{
+									Variable v = this.interpreter.variables[t.val];
+									if(v.Type == VariableType.Equation)
+									{
+										InputInterpreter i = new InputInterpreter(this.interpreter);
+										i.Interpret(v.Value.ToString());
+										r = i.Decimal;
+									}
+									else if(v.Type == VariableType.Decimal)
+									{
+										r = Convert.ToDecimal(v.Value);
+									}
+									else
+									{
+										r = 0;
+									}
+								}
+							.)
+|
+ number						(. r = sign * Convert.ToDecimal (t.val); .)		
+|
+ hex						(. string expression = t.val.Remove(0,2);
+								try
+								{
+									decimal value = Convert.ToDecimal(Convert.ToInt64(expression, 16));
+									r = sign * value;
+								}
+								catch
+								{
+									r = 0;
+								}
+							.)
+|
+ binary						(. string expression = t.val.Remove(t.val.Length - 1);
+								try
+								{
+									decimal value = Convert.ToDecimal(Convert.ToInt64(expression, 2));
+									r = sign * value;
+								}
+								catch
+								{
+									r = 0;
+								}
+							.)
+|
+  '('  
+  Expression<out r> 
+  ')'						(. r = sign * r; .)			
+)
+.
+
+ArrayL<out decimal[] d>
+=
+'['
+CommaList<out d>
+']'
+.
+
+ArrayCall<out decimal r>		(. string ident = string.Empty; r = 0; decimal pos = 0; .)
+=
+identifier						(. ident = t.val; .)
+'['
+	Expression<out pos>			(. int i = 0;
+									try
+									{
+										i = Convert.ToInt32(pos);
+										if(this.interpreter.variables.ContainsKey(ident))
+										{
+											decimal[] values = this.interpreter.variables[ident].Value as decimal[];
+											if(values != null)
+											{
+												r = values[i];
+											}
+										}
+									}
+									catch
+									{
+									}
+								.)
+']'
+.
+
+CommaList<out decimal[] d>		(. List<decimal> list = new List<decimal>(); decimal r = 0; .)
+=
+Expression<out r>				(. list.Add(r); d = list.ToArray(); .)
+{
+	','
+	Expression<out r>			(. list.Add(r); d = list.ToArray(); .)
+}
+.
+
+Assignment<out decimal r>		(.
+									string identifier = string.Empty;
+									string expression = string.Empty;
+									decimal[] d = new decimal[0];
+									r = 0;
+								.)
+=
+identifier								(. identifier = t.val; .)
+(
+	(
+		"::"
+		Expression<out r>		(. this.interpreter.Assign(identifier, r); .)
+								(. this.interpreter.ProduceOutput(r); .)
+	)
+	|
+	(
+		":="
+		AnyExpression<out expression>	(. this.interpreter.Assign(identifier, expression); .)
+										(. this.interpreter.ProduceOutput(expression); .)
+	)
+	|
+	(
+		"->"
+		ArrayL<out d>			(. this.interpreter.Assign(identifier, d); r = 0; .)
+								(.
+									StringBuilder builder = new StringBuilder();
+									foreach(decimal dec in d)
+									{
+										builder.Append("," + dec.ToString());
+									}
+									builder.Remove(0,1);
+									this.interpreter.ProduceOutput(builder.ToString());
+								.)
+	)
+)
+.
+
+Function<out decimal r>			(.
+									string functionName = string.Empty;
+									decimal[] d = new decimal[0];
+								.)
+=
+identifier						(. functionName = t.val; .)
+'('
+CommaList<out d>
+')'								(. r = this.interpreter.ExecuteFunction(functionName, d); .)
+.
+
+Comparison<out bool result>	(.
+									decimal firstValue = 0;
+									decimal secondValue = 0;
+									string compareType = string.Empty;
+								.)
+=
+Expression<out firstValue>
+COMPARER						(. compareType = t.val; .)
+Expression<out secondValue>		(. 
+									switch(compareType)
+									{
+										case "==":
+											result = (firstValue == secondValue);
+											break;
+										case ">":
+											result = (firstValue > secondValue);
+											break;
+										case "<":
+											result = (firstValue < secondValue);
+											break;
+										case ">=":
+											result = (firstValue >= secondValue);
+											break;
+										case "<=":
+											result = (firstValue <= secondValue);
+											break;
+										default:
+											result = false;
+											break;
+									}
+								.)
+.
+
+AnyExpression<out string value>	(. value = string.Empty; StringBuilder builder = new StringBuilder(); .)
+=
+ANY (. builder.Append(t.val); .) { ANY (. builder.Append(t.val); .) } (. value = builder.ToString(); .)
+.
+
+
+END CSMIC.
