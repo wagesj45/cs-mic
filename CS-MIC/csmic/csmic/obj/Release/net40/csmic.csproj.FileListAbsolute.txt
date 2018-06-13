@@ -1,0 +1,7 @@
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\bin\Release\net40\csmic.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\bin\Release\net40\csmic.pdb
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\obj\Release\net40\csmic.csproj.CoreCompileInputs.cache
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\obj\Release\net40\csmic.AssemblyInfoInputs.cache
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\obj\Release\net40\csmic.AssemblyInfo.cs
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\obj\Release\net40\csmic.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\obj\Release\net40\csmic.pdb

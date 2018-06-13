@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>csmic</id>
+    <version>1.1.4</version>
+    <authors>Jordan Wages</authors>
+    <owners>Jordan Wages</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/wagesj45/cs-mic/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://cs-mic.com/</projectUrl>
+    <description>A .NET component for easy access to parsing simple math and scripting.</description>
+    <copyright>Copyright © 2012</copyright>
+    <tags>math parsing scripting</tags>
+    <repository url="https://github.com/wagesj45/cs-mic" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\bin\Debug\net40\csmic.dll" target="lib\net40\csmic.dll" />
+  </files>
+</package>

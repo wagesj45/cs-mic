@@ -1,0 +1,10 @@
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Release\CSMICTests.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Release\CSMICTests.pdb
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Release\csmic.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Release\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Release\csmic.pdb
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Release\CSMICTests.csprojAssemblyReference.cache
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Release\CSMICTests.csproj.CoreCompileInputs.cache
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Release\CSMICTests.csproj.CopyComplete
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Release\CSMICTests.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Release\CSMICTests.pdb
