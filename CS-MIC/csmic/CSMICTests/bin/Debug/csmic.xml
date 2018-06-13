@@ -1,0 +1,1028 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>csmic</name>
+    </assembly>
+    <members>
+        <member name="T:csmic.CodedFunctionFactory">
+            <summary> Coded function factory. </summary>
+            <remarks> 
+            This class generates new coded functions dynamically.
+            </remarks>
+        </member>
+        <member name="M:csmic.CodedFunctionFactory.Create(System.String,System.Int32,System.Func{System.Decimal[],System.Decimal})">
+            <summary> Creates a new ICodedFunction interface object that implements the dynamic method described. </summary>
+            <param name="functionName">         Name of the function. </param>
+            <param name="numExpectedArguments"> Number of expected arguments. </param>
+            <param name="methodBody">           The method body. </param>
+            <returns> An ICodedFunction interface object. </returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Abs">
+            <summary>
+            A coded implementation of the absolute value function.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Abs.NumExpectedArguments">
+            <summary>
+            Expects 1 argument.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Abs.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Abs.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The absolute value of the argument.</returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Exp">
+            <summary>
+            A coded implementation of the exponential function based on the constant e.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Exp.NumExpectedArguments">
+            <summary>
+            Expects 1 argument.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Exp.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Exp.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The constant e raised to the power of the argument.</returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Log">
+            <summary>
+            A coded implementation of the log function.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Log.NumExpectedArguments">
+            <summary>
+            Expects 2 arguments.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Log.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Log.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The log of the first argument to the base of the second argument.</returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Precision">
+            <summary>
+            A coded implementation of a precision function.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Precision.NumExpectedArguments">
+            <summary>
+            Expects 2 arguments.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Precision.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Precision.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The first argument to the precision of the argument.</returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Sqrt">
+            <summary>
+            A coded implementation of the squre root function.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Sqrt.NumExpectedArguments">
+            <summary>
+            Expects 1 argument.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Sqrt.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Sqrt.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The square root of the argument.</returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Cos">
+            <summary>
+            A coded implementation of the cosine function.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Cos.NumExpectedArguments">
+            <summary>
+            Expects 1 argument.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Cos.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Cos.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The cosine of the argument.</returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Round">
+            <summary>
+            A coded implementation of a rounded function.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Round.NumExpectedArguments">
+            <summary>
+            Expects 1 argument.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Round.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Round.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The rounded argument.</returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Sin">
+            <summary>
+            A coded implementation of the sine function.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Sin.NumExpectedArguments">
+            <summary>
+            Expects 1 argument.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Sin.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Sin.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The sine of the argument.</returns>
+        </member>
+        <member name="T:csmic.CodedFunctions.CF_Tan">
+            <summary>
+            A coded implementation of the tangent function.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Tan.NumExpectedArguments">
+            <summary>
+            Expects 1 argument.
+            </summary>
+        </member>
+        <member name="P:csmic.CodedFunctions.CF_Tan.FunctionName">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="M:csmic.CodedFunctions.CF_Tan.Execute(System.Decimal[])">
+            <summary>
+            Executes a code block.
+            </summary>
+            <param name="args">The arguments used in the code block.</param>
+            <returns>The tangent of the argument.</returns>
+        </member>
+        <member name="T:csmic.ComputableEngine.Computable">
+            <summary> Computable class. </summary>
+        </member>
+        <member name="F:csmic.ComputableEngine.Computable.expression">
+            <summary> The expression to be built.</summary>
+        </member>
+        <member name="F:csmic.ComputableEngine.Computable.interpreter">
+            <summary> The interpreter to act as a base.</summary>
+        </member>
+        <member name="F:csmic.ComputableEngine.Computable.ADD">
+            <summary> The add symbol.</summary>
+        </member>
+        <member name="F:csmic.ComputableEngine.Computable.SUBSTRACT">
+            <summary> The substract symbol.</summary>
+        </member>
+        <member name="F:csmic.ComputableEngine.Computable.DIVIDE">
+            <summary> The divide symbol.</summary>
+        </member>
+        <member name="F:csmic.ComputableEngine.Computable.MULTIPLY">
+            <summary> The multiply symbol.</summary>
+        </member>
+        <member name="F:csmic.ComputableEngine.Computable.MOD">
+            <summary> The modifier symbol.</summary>
+        </member>
+        <member name="F:csmic.ComputableEngine.Computable.POWER">
+            <summary> The power symbol.</summary>
+        </member>
+        <member name="P:csmic.ComputableEngine.Computable.Expression">
+            <summary> Gets the expression. </summary>
+            <value> The expression. </value>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.#ctor(System.String,csmic.InputInterpreter)">
+            <summary> Creates a Computable instance. </summary>
+            <param name="expression">  The expression. </param>
+            <param name="interpreter"> The interpreter. </param>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.Resolve">
+            <summary> Resolves the computable as an input interpreter having calculated the input. </summary>
+            <returns> The computable as an input interpreter. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.ResolveTo``1(System.Func{csmic.InputInterpreter,``0})">
+            <summary> Resolve the computer to a type <typeparamref name="T"/>. </summary>
+            <typeparam name="T"> Generic type parameter. </typeparam>
+            <param name="selector"> The selector function. </param>
+            <returns> . </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.FormOperation(System.String,System.Object)">
+            <summary> Form the operation given the operation constant and an argument. </summary>
+            <param name="operation"> The operation constant. </param>
+            <param name="argument">  The argument. </param>
+            <returns> A string with the given operation appended. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.FormFunction(System.String,System.Object[])">
+            <summary> Form the function <paramref name="name"/> with the current expression as the first argument, followed by <paramref name="arguments"/>. </summary>
+            <param name="name">      The name of the function. </param>
+            <param name="arguments"> The arguments. </param>
+            <returns> . </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.Add(System.Decimal)">
+            <summary> Adds addend. </summary>
+            <param name="addend"> The decimal to add. </param>
+            <returns> A computable class after the addition. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.Subtract(System.Decimal)">
+            <summary> Subtracts the subtrahend. </summary>
+            <param name="subtrahend"> The subtrahend. </param>
+            <returns> A computable class after the subtraction. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.Multiply(System.Decimal)">
+            <summary> Multiplies the multiplicand. </summary>
+            <param name="multiplicand"> The multiplicand. </param>
+            <returns> A computable class after the mulitplication. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.Divide(System.Decimal)">
+            <summary> Divides the divisor. </summary>
+            <param name="divisor"> The divisor. </param>
+            <returns> A computable class after the divison. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.Mod(System.Decimal)">
+            <summary> Mods using a given divisor. </summary>
+            <param name="divisor"> The divisor. </param>
+            <returns> A computable class after the mod. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.RaiseToPower(System.Int32)">
+            <summary> Raises to power of the given integer value. </summary>
+            <param name="power"> The power. </param>
+            <returns> A computable class after the power operation. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.ApplyFunction(System.String,System.Object[])">
+            <summary> Applies the function <paramref name="name"/> with the current expression as the first argument, followed by <paramref name="arguments"/>. </summary>
+            <param name="name">      The name of the function. </param>
+            <param name="arguments"> The arguments. </param>
+            <returns> A computable class after the function is applied. </returns>
+        </member>
+        <member name="M:csmic.ComputableEngine.Computable.ForAll``1(System.Collections.Generic.ICollection{``0},System.Func{csmic.ComputableEngine.Computable,System.Func{``0,csmic.ComputableEngine.Computable}})">
+            <summary> Executes a command for all items in a collection. </summary>
+            <typeparam name="T"> Generic type parameter. </typeparam>
+            <param name="items">  The items of type <typeparamref name="T"/>. </param>
+            <param name="action"> The action belonging to type <see cref="T:csmic.ComputableEngine.Computable"/>. </param>
+            <returns> . </returns>
+        </member>
+        <member name="T:csmic.Extensions.CSMICExtension">
+            <summary> CS-MIC extension methods. </summary>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.Interpret(System.String)">
+            <summary> A string extension method that interprets as input the string that calls it. </summary>
+            <param name="input"> The input to act on. </param>
+            <returns> The output from the interpretation of the string. </returns>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.RunAsMacro(System.String)">
+            <summary> A string extension method that executes as macro operation. </summary>
+            <param name="script"> The script to act on. </param>
+            <returns> The final output of the script. </returns>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.Interpret(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            A string extension method that interprets as input the string that calls it.
+            </summary>
+            <param name="collection"> The collection to act on. </param>
+            <returns> The output from the interpretation of the string. </returns>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.Interpret(System.Collections.Generic.IEnumerable{System.String},System.Action{csmic.InputInterpreter})">
+            <summary>
+            A string extension method that interprets as input the string that calls it.
+            </summary>
+            <param name="collection"> The collection to act on. </param>
+            <param name="action">     The action. </param>
+            <returns> The output from the interpretation of the string. </returns>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.Interpret``1(System.Collections.Generic.IEnumerable{System.String},System.Func{csmic.InputInterpreter,``0})">
+            <summary> Enumerates input in this collection, returning a selection on the interpreter. </summary>
+            <typeparam name="T"> Generic type parameter. </typeparam>
+            <param name="collection"> The collection to act on. </param>
+            <param name="selection">  The selection. </param>
+            <returns>
+            An enumerator that allows foreach to be used to process interpret&lt; t&gt; in this
+            collection.
+            </returns>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.RunAsMacro(System.Collections.Generic.IEnumerable{System.String})">
+            <summary> A string extension method that executes as macro operation. </summary>
+            <param name="collection"> The collection to act on. </param>
+            <returns> The final output of the script. </returns>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.InterpretInParallel(System.Collections.Generic.IEnumerable{System.String})">
+            <summary> Enumerates input in parallel in this collection. </summary>
+            <param name="collection"> The collection to act on. </param>
+            <returns>
+            An enumerator that allows foreach to be used to process interpret in parallel in this
+            collection.
+            </returns>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.InterpretInParallel``1(System.Collections.Generic.IEnumerable{System.String},System.Func{csmic.InputInterpreter,``0})">
+            <summary> Enumerates input in parallel this collection, returning a selection on the interpreter. </summary>
+            <typeparam name="T"> Generic type parameter. </typeparam>
+            <param name="collection"> The collection to act on. </param>
+            <param name="selection">  The selection. </param>
+            <returns>
+            An enumerator that allows foreach to be used to process interpret in parallel&lt; t&gt; in
+            this collection.
+            </returns>
+        </member>
+        <member name="M:csmic.Extensions.CSMICExtension.Interpret(System.Linq.ParallelQuery{System.String})">
+            <summary>
+            A string extension method that interprets as input the strings that calls it in parallel.
+            </summary>
+            <param name="collection"> The collection to act on. </param>
+            <returns> The output from the interpretation of the string. </returns>
+        </member>
+        <member name="T:csmic.GenericCodedFunction">
+            <summary>
+            A generically coded implementation of the ICodedFunction interface.
+            </summary>
+        </member>
+        <member name="F:csmic.GenericCodedFunction.numExpectedArguments">
+            <summary> Number of expected arguments. </summary>
+        </member>
+        <member name="F:csmic.GenericCodedFunction.functionName">
+            <summary> Name of the function. </summary>
+        </member>
+        <member name="F:csmic.GenericCodedFunction.methodBody">
+            <summary> The method body. </summary>
+        </member>
+        <member name="M:csmic.GenericCodedFunction.#ctor(System.String,System.Int32,System.Func{System.Decimal[],System.Decimal})">
+            <summary> Constructor. </summary>
+            <param name="functionName">         Name of the function. </param>
+            <param name="NumExpectedArguments"> Number of expected arguments. </param>
+            <param name="methodBody">           The method body. </param>
+        </member>
+        <member name="P:csmic.GenericCodedFunction.NumExpectedArguments">
+            <summary> Gets the number of expected arguments. </summary>
+            <value> The total number of expected arguments. </value>
+        </member>
+        <member name="P:csmic.GenericCodedFunction.FunctionName">
+            <summary> Gets the name of the function. </summary>
+            <value> The name of the function. </value>
+        </member>
+        <member name="M:csmic.GenericCodedFunction.Execute(System.Decimal[])">
+            <summary> Executes a code block that computes the value of the function. </summary>
+            <param name="args"> A variable-length parameters list containing arguments. </param>
+            <returns> The decimal value computed by the function. </returns>
+        </member>
+        <member name="T:csmic.ICodedFunction">
+            <summary>
+            Implements a function that is coded in the .Net environment.
+            </summary>
+            <remarks>This interface is required to implement a method or function 
+            that can be used by the CS-MIC inputInterpreter. It is worth noting that the 
+            function's name will be the text that is used in the inputInterpreter as the 
+            executable text.</remarks>
+        </member>
+        <member name="P:csmic.ICodedFunction.NumExpectedArguments">
+            <summary>
+            Gets the number of expected arguments.
+            </summary>
+        </member>
+        <member name="P:csmic.ICodedFunction.FunctionName">
+            <summary>
+            Gets the name of the function.
+            </summary>
+            <remarks>The input inputInterpreter will use this function name as 
+            executable text, expecting an opening and closing parenthesis following 
+            it.</remarks>
+        </member>
+        <member name="M:csmic.ICodedFunction.Execute(System.Decimal[])">
+             <summary>
+             Executes a code block that computes the value of the function.
+             </summary>
+             <param name="args">An array of arguments passed to the function.</param>
+             <returns>The decimal value computed by the function.</returns>
+             <remarks>Any code block is valid. Error handling must be done by the 
+             developer, as the inputInterpreter cannot determine if there is an error.</remarks>
+             <example>
+             This example shows how to implement the sine function through the interface's 
+             Execute() function.
+             <code>
+             public decimal Execute(params decimal[] args)
+            {
+                //Set up an output variable.
+                decimal output = 0;
+                
+                //Check to see if the number or arguments recieved 
+                //is equal to the number of arguments expected.
+                if (args.Length == this.NumExpectedArguments)
+                {
+                    //Grab the argument and set a local variable for clarity.
+                    decimal input = args[0];
+                    
+                    //Set the output as a sine of the input.
+                    output = (decimal)Math.Sin((double)input);
+                }
+                
+                //Return the output. The function will return the sine if the arguments 
+                //matched what was expected, and will return 0 otherwise. Returning 0 on 
+                //errors is the standard in CS-MIC.
+                return output;
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:csmic.InputInterpreter">
+            <summary>
+            An interpreter object that reads user input and evaluates the code.
+            </summary>
+            <remarks>The interpreter does not support exceptions by design. Instead, invalid 
+            calculations, parameters, etc. will result in a result of zero.
+            <code>
+            InputInterpreter interpreter = new InputInterpreter();
+            interpreter.Interpret("1/0"); // The result will be 0, not an exception.
+            </code>
+            </remarks>
+        </member>
+        <member name="F:csmic.InputInterpreter.output">
+            <summary>
+            The output generated.
+            </summary>
+        </member>
+        <member name="F:csmic.InputInterpreter.variables">
+            <summary>
+            The variables assigned.
+            </summary>
+        </member>
+        <member name="F:csmic.InputInterpreter.executionTime">
+            <summary>
+            The time for execution.
+            </summary>
+        </member>
+        <member name="F:csmic.InputInterpreter.message">
+            <summary>
+            The verbose message of the calculation.
+            </summary>
+        </member>
+        <member name="F:csmic.InputInterpreter.codedFunctions">
+            <summary>
+            The list of coded functions that can be executed.
+            </summary>
+        </member>
+        <member name="F:csmic.InputInterpreter.interpretedFunctions">
+            <summary>
+            The list of user defined functions that can be executed.
+            </summary>
+        </member>
+        <member name="F:csmic.InputInterpreter.calculatedValue">
+            <summary>
+            The private calculated value.
+            </summary>
+        </member>
+        <member name="M:csmic.InputInterpreter.#ctor">
+            <summary>
+            Creates a new InputInterpreter.
+            </summary>
+        </member>
+        <member name="M:csmic.InputInterpreter.#ctor(csmic.InputInterpreter)">
+            <summary>
+            Creates a new InputInterpreter from an original.
+            </summary>
+            <param name="original">The orginal input interpreter to copy.</param>
+        </member>
+        <member name="P:csmic.InputInterpreter.Output">
+            <summary>
+            Gets the message that represents the InputInterpreters output.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.Message">
+            <summary>
+            Gets the verbose message that is generated with a calculation.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.Decimal">
+            <summary>
+            Gets the value of the output as a decimal.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.Int">
+            <summary>
+            Gets the value of the output cast as an int.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.Float">
+            <summary>
+            Gets the value of the output cast as a float.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.Double">
+            <summary>
+            Gets the value of the output cast as a double.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.Binary">
+            <summary>
+            Gets the value (cast as a long) converted to its binary equivalent.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.LastExecutionTime">
+            <summary>
+            Gets the execution time of the last calculation.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.CodedFunctions">
+            <summary>
+            Gets or sets a list of coded functions that the interpreter supports.
+            </summary>
+        </member>
+        <member name="P:csmic.InputInterpreter.InterpretedFunctions">
+            <summary>
+            Gets or sets a list of user generated interpreted functions that the interpreter supports.
+            </summary>
+            <value> The interpreted functions. </value>
+        </member>
+        <member name="P:csmic.InputInterpreter.Variables">
+            <summary> Gets the variables. </summary>
+            <value> The variables. </value>
+        </member>
+        <member name="M:csmic.InputInterpreter.Interpret(System.String)">
+            <summary>
+            Interprets and executes given input.
+            </summary>
+            <param name="input">The input to interpret and execute.</param>
+        </member>
+        <member name="M:csmic.InputInterpreter.ComputeExpression(System.String)">
+            <summary>
+            Computes an expression and returns the result as a decimal.
+            </summary>
+            <param name="expression">The expression to be calculated.</param>
+            <returns>The value that was computed.</returns>
+        </member>
+        <member name="M:csmic.InputInterpreter.Assign(System.String,System.Decimal)">
+            <summary>
+            Assigns a decimal value to a variable.
+            </summary>
+            <param name="name">The name of the variable.</param>
+            <param name="value">The value of the variable.</param>
+            <returns>True if the variable was set, false otherwise.</returns>
+        </member>
+        <member name="M:csmic.InputInterpreter.Assign(System.String,System.String)">
+            <summary>
+            Assigns a decimal value to a variable.
+            </summary>
+            <param name="name">The name of the variable.</param>
+            <param name="expression">The expression of the variable.</param>
+            <returns>True if the variable was set, false otherwise.</returns>
+        </member>
+        <member name="M:csmic.InputInterpreter.Assign(System.String,System.Decimal[])">
+            <summary>
+            Assigns a decimal value to a variable.
+            </summary>
+            <param name="name">The name of the variable.</param>
+            <param name="values">The values of the variable.</param>
+            <returns>True if the variable was set, false otherwise.</returns>
+        </member>
+        <member name="M:csmic.InputInterpreter.ExecuteFunction(System.String,System.Decimal[])">
+            <summary>
+            Executes a function stored in the interpreter.
+            </summary>
+            <param name="name">The name of the function to execute.</param>
+            <param name="args">The arguments to pass to the function.</param>
+            <returns>The value computed from the function execution.</returns>
+        </member>
+        <member name="M:csmic.InputInterpreter.LoadDefaultCodedFunctions">
+            <summary>
+            Loads the default coded functions supported by the interpreter.
+            </summary>
+        </member>
+        <member name="M:csmic.InputInterpreter.ProduceOutput(System.Object)">
+            <summary>
+            Produces output given a single object.
+            </summary>
+            <param name="output">The object representing the output.</param>
+        </member>
+        <member name="M:csmic.InputInterpreter.ProduceOutput(System.Object,System.String)">
+            <summary>
+            Produces output given an object and a message.
+            </summary>
+            <param name="output">The object representing the output.</param>
+            <param name="message">The message to be displayed with the output.</param>
+        </member>
+        <member name="M:csmic.InputInterpreter.InterpretAsync(System.String,System.Action{csmic.InputInterpreter})">
+            <summary> Interpret an input asynchronously. </summary>
+            <param name="input">    The input to interpret and execute. </param>
+            <param name="callback"> The callback. </param>
+        </member>
+        <member name="M:csmic.InputInterpreter.InterpretAsyncThreadingWork(System.String)">
+            <summary> Interpret asynchronous threading work. </summary>
+            <param name="input">    The input to interpret and execute. </param>
+        </member>
+        <member name="T:csmic.InputInterpreter.InterpretAsyncDelegate">
+            <summary> Interpret asynchronous delegate. </summary>
+            <param name="input"> The input. </param>
+            <returns> . </returns>
+        </member>
+        <member name="M:csmic.InputInterpreter.ToComputable">
+            <summary> Converts this object to a computable. </summary>
+            <returns> This object as a Computable. </returns>
+        </member>
+        <member name="M:csmic.InputInterpreter.AsComputable(System.Func{csmic.ComputableEngine.Computable,csmic.ComputableEngine.Computable})">
+            <summary> Treats the current object as a computable and performs an action in that context. </summary>
+            <param name="action"> The action to execute as a computable object. </param>
+            <returns> This object as a Computable, after the given action. </returns>
+        </member>
+        <member name="T:csmic.InterpretedFunction">
+            <summary>
+            Represents a user defined function that can be executed by the interpreter.
+            </summary>
+        </member>
+        <member name="F:csmic.InterpretedFunction.name">
+            <summary>
+            The name of the function.
+            </summary>
+        </member>
+        <member name="F:csmic.InterpretedFunction.numExpectedArguments">
+            <summary>
+            The number of expected arguments.
+            </summary>
+        </member>
+        <member name="F:csmic.InterpretedFunction.script">
+            <summary>
+            The set of instructions to be passed to the internal inputInterpreter.
+            </summary>
+        </member>
+        <member name="F:csmic.InterpretedFunction.arguments">
+            <summary>
+            A set of arguments used in computation of the function.
+            </summary>
+        </member>
+        <member name="F:csmic.InterpretedFunction.macroFunction">
+            <summary>
+            The internal macro builder used for computation.
+            </summary>
+        </member>
+        <member name="F:csmic.InterpretedFunction.interpreter">
+            <summary>
+            The internal input inputInterpreter that macro builder will use for computation.
+            </summary>
+        </member>
+        <member name="M:csmic.InterpretedFunction.#ctor(System.String,csmic.MacroOperation,System.String[])">
+            <summary>
+            Creates a new interpreted function.
+            </summary>
+            <param name="name">The name of the fuction.</param>
+            <param name="script">The node to be used in computation.</param>
+            <param name="args">A set of argument names to be used in computation.</param>
+        </member>
+        <member name="P:csmic.InterpretedFunction.Name">
+            <summary>
+            Gets the name of the function.
+            </summary>
+        </member>
+        <member name="P:csmic.InterpretedFunction.NumExpectedArguments">
+            <summary>
+            Gets the number of expected arguments for the function.
+            </summary>
+        </member>
+        <member name="M:csmic.InterpretedFunction.Compute(System.Decimal[])">
+            <summary>
+            Computes the value of the function.
+            </summary>
+            <param name="args">The arguments used for computation.</param>
+            <returns>The decimal value computed by the function.</returns>
+        </member>
+        <member name="M:csmic.InterpretedFunction.Equals(System.Object)">
+            <summary>
+            Because a function's internal pattern may be different, we must manually check to see if the function
+            names are the same.
+            </summary>
+            <param name="obj">The object to test.</param>
+            <returns>True if the functions are the same.</returns>
+        </member>
+        <member name="M:csmic.InterpretedFunction.GetHashCode">
+            <summary> Serves as a hash function for a particular type. </summary>
+            <returns> A hash code for the current <see cref="T:System.Object" />. </returns>
+        </member>
+        <member name="T:csmic.InterpretedFunctionArgument">
+            <summary>
+            Represents an argument made in an interpreted function.
+            </summary>
+        </member>
+        <member name="F:csmic.InterpretedFunctionArgument.name">
+            <summary>
+            The name of the argument.
+            </summary>
+        </member>
+        <member name="F:csmic.InterpretedFunctionArgument.value">
+            <summary>
+            The value of the argument.
+            </summary>
+        </member>
+        <member name="M:csmic.InterpretedFunctionArgument.#ctor">
+            <summary>
+            Creates a new interpreted function argument.
+            </summary>
+        </member>
+        <member name="M:csmic.InterpretedFunctionArgument.#ctor(System.String,System.Decimal)">
+            <summary>
+            Creates a new interpreted function argument.
+            </summary>
+            <param name="name">The name of the argument in the interpreted function.</param>
+            <param name="value">The value of the argument to use in the interpreted function.</param>
+        </member>
+        <member name="P:csmic.InterpretedFunctionArgument.Name">
+            <summary>
+            Gets or sets the name of the argument.
+            </summary>
+        </member>
+        <member name="P:csmic.InterpretedFunctionArgument.Value">
+            <summary>
+            Gets or sets the value of the argument.
+            </summary>
+        </member>
+        <member name="T:csmic.MacroBuilder">
+            <summary>
+            A builder object that executes macro scripts.
+            </summary>
+        </member>
+        <member name="F:csmic.MacroBuilder.interpreter">
+            <summary>
+            The input inputInterpreter.
+            </summary>
+        </member>
+        <member name="F:csmic.MacroBuilder.script">
+            <summary> The script to run as a macro. </summary>
+        </member>
+        <member name="F:csmic.MacroBuilder.output">
+            <summary>
+            The output as a list of strings.
+            </summary>
+        </member>
+        <member name="F:csmic.MacroBuilder.executionTime">
+            <summary>
+            The time for execution.
+            </summary>
+        </member>
+        <member name="F:csmic.MacroBuilder.rootOperation">
+            <summary>
+            The root macro operation.
+            </summary>
+        </member>
+        <member name="M:csmic.MacroBuilder.#ctor(System.String,csmic.InputInterpreter)">
+            <summary>
+            Creates a new builder object that executes a given macro script.
+            </summary>
+            <param name="script">A list of strings representing the macro.</param>
+            <param name="inputInterpreter">The InputInterpreter to be used.</param>
+        </member>
+        <member name="M:csmic.MacroBuilder.#ctor(csmic.MacroOperation,csmic.InputInterpreter)">
+            <summary>
+            Creates a new builder object that executes a given macro script.
+            </summary>
+            <param name="script">A list of strings representing the macro.</param>
+            <param name="inputInterpreter">The InputInterpreter to be used.</param>
+        </member>
+        <member name="P:csmic.MacroBuilder.Output">
+            <summary>
+            Gets a list of strings representing the output.
+            </summary>
+        </member>
+        <member name="P:csmic.MacroBuilder.LastExecutionTime">
+            <summary>
+            Gets the execution time of the last script computation.
+            </summary>
+        </member>
+        <member name="P:csmic.MacroBuilder.FinalOutput">
+            <summary>
+            Gets the decimal value last computed by the macrobuilder.
+            </summary>
+        </member>
+        <member name="M:csmic.MacroBuilder.Run">
+            <summary> Runs this macro. </summary>
+        </member>
+        <member name="M:csmic.MacroBuilder.RunAsync(System.String,System.Action{csmic.MacroBuilder})">
+            <summary> Executes the asynchronous operation. </summary>
+            <param name="input">    The input. </param>
+            <param name="callback"> The callback. </param>
+        </member>
+        <member name="M:csmic.MacroBuilder.RunAsyncThreadingWork(System.String)">
+            <summary> Executes the asynchronous threading work operation. </summary>
+            <param name="input"> The input. </param>
+            <returns> . </returns>
+        </member>
+        <member name="T:csmic.MacroBuilder.MacroAsyncDelegate">
+            <summary> Macro asynchronous delegate. </summary>
+            <param name="input"> The input. </param>
+            <returns> . </returns>
+        </member>
+        <member name="T:csmic.OperationType">
+            <summary>
+            Represents the operation types supported by a scripted macro.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.If">
+            <summary>
+            Represents a conditional block.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.Else">
+            <summary>
+            Represents a conditional else block.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.IfElse">
+            <summary>
+            Represents a complete conditional block.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.While">
+            <summary>
+            A while block.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.For">
+            <summary>
+            A for block.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.FunctionDeclaration">
+            <summary>
+            A function declaration.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.Echo">
+            <summary>
+            An echo statement.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.Say">
+            <summary>
+            A say statement.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.Display">
+            <summary>
+            A display statement.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.Statement">
+            <summary>
+            A statement to execute.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.String">
+            <summary>
+            A string to display.
+            </summary>
+        </member>
+        <member name="F:csmic.OperationType.Unknown">
+            <summary>
+            An unknown or malformed block.
+            </summary>
+        </member>
+        <member name="T:csmic.MacroOperation">
+            <summary>
+            An operation object that executes a specified action.
+            </summary>
+        </member>
+        <member name="F:csmic.MacroOperation.operationType">
+            <summary>
+            The type of operation represented by the operation.
+            </summary>
+        </member>
+        <member name="F:csmic.MacroOperation.children">
+            <summary>
+            The collection of children nodes that belong to the operation.
+            </summary>
+        </member>
+        <member name="F:csmic.MacroOperation.input">
+            <summary>
+            A list of the necesary input to execute the operation.
+            </summary>
+        </member>
+        <member name="M:csmic.MacroOperation.#ctor(csmic.OperationType)">
+            <summary>
+            Creates a new macro operation node.
+            </summary>
+            <param name="operationType">The type of operation the node represents.</param>
+        </member>
+        <member name="P:csmic.MacroOperation.Children">
+            <summary>
+            Gets or sets the children nodes of the operation.
+            </summary>
+        </member>
+        <member name="P:csmic.MacroOperation.Input">
+            <summary>
+            Gets or sets the input for the operation.
+            </summary>
+        </member>
+        <member name="P:csmic.MacroOperation.OperationType">
+            <summary>
+            Gets or sets the operation type for this operation.
+            </summary>
+        </member>
+        <member name="T:csmic.VariableType">
+            <summary>
+            Represents the data types supported in a variable.
+            </summary>
+        </member>
+        <member name="F:csmic.VariableType.Decimal">
+            <summary>
+            Decimal
+            </summary>
+        </member>
+        <member name="F:csmic.VariableType.Equation">
+            <summary>
+            Equation
+            </summary>
+        </member>
+        <member name="F:csmic.VariableType.Array">
+            <summary>
+            Array
+            </summary>
+        </member>
+        <member name="F:csmic.VariableType.Unknown">
+            <summary>
+            Unknown
+            </summary>
+        </member>
+        <member name="F:csmic.VariableType.None">
+            <summary>
+            No type associated
+            </summary>
+        </member>
+        <member name="T:csmic.Variable">
+            <summary>
+            An object that contains information about a variable.
+            </summary>
+        </member>
+        <member name="F:csmic.Variable.type">
+            <summary>
+            The type of variable.
+            </summary>
+        </member>
+        <member name="F:csmic.Variable.value">
+            <summary>
+            The value of the variable.
+            </summary>
+        </member>
+        <member name="M:csmic.Variable.#ctor">
+            <summary>
+            Creates an empty variable.
+            </summary>
+        </member>
+        <member name="P:csmic.Variable.Value">
+            <summary>
+            Gets or sets an object representing the variable's value.
+            </summary>
+        </member>
+        <member name="P:csmic.Variable.Type">
+            <summary>
+            Gets or sets the type of the variable.
+            </summary>
+        </member>
+    </members>
+</doc>

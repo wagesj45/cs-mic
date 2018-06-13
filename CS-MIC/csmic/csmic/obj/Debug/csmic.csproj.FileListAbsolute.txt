@@ -1,0 +1,6 @@
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\bin\Debug\csmic.XML
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\bin\Debug\csmic.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\bin\Debug\csmic.pdb
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\obj\Debug\csmic.csproj.CoreCompileInputs.cache
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\obj\Debug\csmic.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\csmic\obj\Debug\csmic.pdb

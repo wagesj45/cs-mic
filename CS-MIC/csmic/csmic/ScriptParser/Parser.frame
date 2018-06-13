@@ -26,15 +26,13 @@ Coco/R itself) does not fall under the GNU General Public License.
 ----------------------------------------------------------------------*/
 -->begin
 using System;
-using System.CodeDom.Compiler;
 
 -->namespace
 
-[GeneratedCodeAttribute("Coco/R", "")]
 public class Parser {
 -->constants
-	const bool T = true;
-	const bool x = false;
+	const bool _T = true;
+	const bool _x = false;
 	const int minErrDist = 2;
 	
 	public Scanner scanner;
@@ -110,7 +108,6 @@ public class Parser {
 		la.val = "";		
 		Get();
 -->parseRoot
-    Expect(0);
 	}
 	
 	static readonly bool[,] set = {
@@ -122,9 +119,9 @@ public class Parser {
 public class Errors {
 	public int count = 0;                                    // number of errors detected
 	public System.IO.TextWriter errorStream = Console.Out;   // error messages go to this stream
-  public string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
-  
-	public void SynErr (int line, int col, int n) {
+	public string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
+
+	public virtual void SynErr (int line, int col, int n) {
 		string s;
 		switch (n) {
 -->errors
@@ -134,21 +131,21 @@ public class Errors {
 		count++;
 	}
 
-	public void SemErr (int line, int col, string s) {
+	public virtual void SemErr (int line, int col, string s) {
 		errorStream.WriteLine(errMsgFormat, line, col, s);
 		count++;
 	}
 	
-	public void SemErr (string s) {
+	public virtual void SemErr (string s) {
 		errorStream.WriteLine(s);
 		count++;
 	}
 	
-	public void Warning (int line, int col, string s) {
+	public virtual void Warning (int line, int col, string s) {
 		errorStream.WriteLine(errMsgFormat, line, col, s);
 	}
 	
-	public void Warning(string s) {
+	public virtual void Warning(string s) {
 		errorStream.WriteLine(s);
 	}
 } // Errors
@@ -157,4 +154,3 @@ public class Errors {
 public class FatalError: Exception {
 	public FatalError(string m): base(m) {}
 }
-

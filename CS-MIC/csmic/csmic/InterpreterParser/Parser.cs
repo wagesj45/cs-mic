@@ -5,13 +5,11 @@ using System.Collections.Generic;
 
 
 using System;
-using System.CodeDom.Compiler;
 
 namespace csmic.Interpreter {
 
 
 
-[GeneratedCodeAttribute("Coco/R", "")]
 public class Parser {
 	public const int _EOF = 0;
 	public const int _identifier = 1;
@@ -25,8 +23,8 @@ public class Parser {
 	public const int _COMPARER = 9;
 	public const int maxT = 22;
 
-	const bool T = true;
-	const bool x = false;
+	const bool _T = true;
+	const bool _x = false;
 	const int minErrDist = 2;
 	
 	public Scanner scanner;
@@ -454,13 +452,12 @@ bool IsArrayCall()
 		CSMIC();
 		Expect(0);
 
-    Expect(0);
 	}
 	
 	static readonly bool[,] set = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
-		{x,T,x,T, T,T,x,T, x,x,T,T, x,x,x,x, x,x,x,x, x,x,x,x},
-		{x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,x}
+		{_T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x},
+		{_x,_T,_x,_T, _T,_T,_x,_T, _x,_x,_T,_T, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x},
+		{_x,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_x}
 
 	};
 } // end Parser
@@ -468,10 +465,10 @@ bool IsArrayCall()
 
 public class Errors {
 	public int count = 0;                                    // number of errors detected
-	public StringBuilder builder = new StringBuilder();   // error messages go to this stream
-    public string errMsgFormat = "-- position {0}: {1}"; // 0=line, 1=column, 2=text
-  
-	public void SynErr (int line, int col, int n) {
+	public System.IO.TextWriter errorStream = Console.Out;   // error messages go to this stream
+	public string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
+
+	public virtual void SynErr (int line, int col, int n) {
 		string s;
 		switch (n) {
 			case 0: s = "EOF expected"; break;
@@ -503,26 +500,26 @@ public class Errors {
 
 			default: s = "error " + n; break;
 		}
-		builder.AppendFormat(errMsgFormat, col, s);
+		errorStream.WriteLine(errMsgFormat, line, col, s);
 		count++;
 	}
 
-	public void SemErr (int line, int col, string s) {
-		builder.AppendFormat(errMsgFormat, col, s);
+	public virtual void SemErr (int line, int col, string s) {
+		errorStream.WriteLine(errMsgFormat, line, col, s);
 		count++;
 	}
 	
-	public void SemErr (string s) {
-		builder.AppendLine(s);
+	public virtual void SemErr (string s) {
+		errorStream.WriteLine(s);
 		count++;
 	}
 	
-	public void Warning (int line, int col, string s) {
-		builder.AppendFormat(errMsgFormat, col, s);
+	public virtual void Warning (int line, int col, string s) {
+		errorStream.WriteLine(errMsgFormat, line, col, s);
 	}
 	
-	public void Warning(string s) {
-		builder.AppendLine(s);
+	public virtual void Warning(string s) {
+		errorStream.WriteLine(s);
 	}
 } // Errors
 
@@ -530,5 +527,4 @@ public class Errors {
 public class FatalError: Exception {
 	public FatalError(string m): base(m) {}
 }
-
 }

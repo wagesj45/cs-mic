@@ -5,13 +5,11 @@ using System.Collections.Generic;
 
 
 using System;
-using System.CodeDom.Compiler;
 
 namespace csmic.Scripting {
 
 
 
-[GeneratedCodeAttribute("Coco/R", "")]
 public class Parser {
 	public const int _EOF = 0;
 	public const int _identifier = 1;
@@ -26,8 +24,8 @@ public class Parser {
 	public const int _COMPARER = 10;
 	public const int maxT = 34;
 
-	const bool T = true;
-	const bool x = false;
+	const bool _T = true;
+	const bool _x = false;
 	const int minErrDist = 2;
 	
 	public Scanner scanner;
@@ -702,15 +700,14 @@ bool IsArrayCall()
 		SCRIPT();
 		Expect(0);
 
-    Expect(0);
 	}
 	
 	static readonly bool[,] set = {
-		{T,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x, x,x,x,x},
-		{x,T,x,T, T,T,x,x, T,x,x,T, x,x,x,T, T,x,T,T, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x},
-		{x,T,x,T, T,T,x,x, T,x,x,x, x,x,x,x, x,x,x,x, x,x,T,T, x,x,x,x, x,x,x,x, x,x,x,x},
-		{x,T,x,T, T,T,x,x, T,x,x,T, x,x,x,T, T,x,x,T, T,T,T,T, x,x,x,x, x,x,x,x, x,x,x,x},
-		{x,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T, T,x,T,x}
+		{_T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x},
+		{_x,_T,_x,_T, _T,_T,_x,_x, _T,_x,_x,_T, _x,_x,_x,_T, _T,_x,_T,_T, _T,_T,_T,_T, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x},
+		{_x,_T,_x,_T, _T,_T,_x,_x, _T,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_T,_T, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x},
+		{_x,_T,_x,_T, _T,_T,_x,_x, _T,_x,_x,_T, _x,_x,_x,_T, _T,_x,_x,_T, _T,_T,_T,_T, _x,_x,_x,_x, _x,_x,_x,_x, _x,_x,_x,_x},
+		{_x,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_T,_T,_T, _T,_x,_T,_x}
 
 	};
 } // end Parser
@@ -719,9 +716,9 @@ bool IsArrayCall()
 public class Errors {
 	public int count = 0;                                    // number of errors detected
 	public System.IO.TextWriter errorStream = Console.Out;   // error messages go to this stream
-  public string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
-  
-	public void SynErr (int line, int col, int n) {
+	public string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
+
+	public virtual void SynErr (int line, int col, int n) {
 		string s;
 		switch (n) {
 			case 0: s = "EOF expected"; break;
@@ -771,21 +768,21 @@ public class Errors {
 		count++;
 	}
 
-	public void SemErr (int line, int col, string s) {
+	public virtual void SemErr (int line, int col, string s) {
 		errorStream.WriteLine(errMsgFormat, line, col, s);
 		count++;
 	}
 	
-	public void SemErr (string s) {
+	public virtual void SemErr (string s) {
 		errorStream.WriteLine(s);
 		count++;
 	}
 	
-	public void Warning (int line, int col, string s) {
+	public virtual void Warning (int line, int col, string s) {
 		errorStream.WriteLine(errMsgFormat, line, col, s);
 	}
 	
-	public void Warning(string s) {
+	public virtual void Warning(string s) {
 		errorStream.WriteLine(s);
 	}
 } // Errors
@@ -794,5 +791,4 @@ public class Errors {
 public class FatalError: Exception {
 	public FatalError(string m): base(m) {}
 }
-
 }

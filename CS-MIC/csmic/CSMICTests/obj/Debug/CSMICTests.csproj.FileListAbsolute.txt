@@ -1,0 +1,11 @@
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Debug\CSMICTests.csprojAssemblyReference.cache
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Debug\CSMICTests.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Debug\CSMICTests.pdb
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Debug\csmic.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Debug\csmic.pdb
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\bin\Debug\csmic.xml
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Debug\CSMICTests.csproj.CoreCompileInputs.cache
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Debug\CSMICTests.csproj.CopyComplete
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Debug\CSMICTests.dll
+C:\Users\wages\Documents\GitHub\cs-mic\CS-MIC\csmic\CSMICTests\obj\Debug\CSMICTests.pdb

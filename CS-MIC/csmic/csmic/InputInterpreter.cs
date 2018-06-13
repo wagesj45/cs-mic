@@ -252,7 +252,7 @@ namespace csmic
                 this.calculatedValue = p.CalculatedValue;
                 if (p.errors.count > 0)
                 {
-                    ProduceOutput(this.calculatedValue, p.errors.builder.ToString());
+                    ProduceOutput(this.calculatedValue, p.errors.errMsgFormat);
                 }
             }
             catch (Exception e)
