@@ -3,6 +3,10 @@ CS-MIC is a .NET library written in C# designed to give developers easy access t
 
 ***
 
+## Installation
+
+For your convience, CS-MIC is packaged and distributed via nuget. See [our instructions on how to get started](http://cs-mic.com/adding-cs-mic-to-your-project/).
+
 ## Usage
 
 CS-MIC follows a few basic rules when interpreting user input, but should prove to be fairly straightforward for most developers. While CS-MIC tries to ensure that the order of operations as far as it knows them (parentheses – powers, multiplication, division – addition, subtraction), there may be instances where formatting fails. If this should be noticed, please [report it](https://github.com/wagesj45/cs-mic/issues).
