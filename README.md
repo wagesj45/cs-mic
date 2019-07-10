@@ -3,6 +3,10 @@ CS-MIC is a .NET library written in C# designed to give developers easy access t
 
 ***
 
+## Installation
+
+For your convience, CS-MIC is packaged and distributed via nuget. See [our instructions on how to get started](http://cs-mic.com/adding-cs-mic-to-your-project/).
+
 ## Usage
 
 CS-MIC follows a few basic rules when interpreting user input, but should prove to be fairly straightforward for most developers. While CS-MIC tries to ensure that the order of operations as far as it knows them (parentheses – powers, multiplication, division – addition, subtraction), there may be instances where formatting fails. If this should be noticed, please [report it](https://github.com/wagesj45/cs-mic/issues).
@@ -85,7 +89,7 @@ CS-MIC follows a few basic rules when interpreting user input, but should prove 
 ```
 while(bool expression)
 {
-CODE BLOCK
+    CODE BLOCK
 }
 ```
 
@@ -94,7 +98,7 @@ CODE BLOCK
 ```
 for(* expression, bool condition, * expression)
 {
-CODE BLOCK
+    CODE BLOCK
 }
 ```
 
@@ -105,11 +109,11 @@ CODE BLOCK
 ```
 if(bool expression)
 {
-CODE BLOCK
+    CODE BLOCK
 }
 else
 {
-CODE BLOCK
+    CODE BLOCK
 }
 ```
 
@@ -138,7 +142,7 @@ display: “string”, 12 * 2, “string”, sin(12)
 ```
 function(newFunction, anyArgumentName)
 {
-  sin(anyArgumentName) + cos(anyArgumentName)
+    sin(anyArgumentName) + cos(anyArgumentName)
 }
 ```
 
@@ -162,23 +166,23 @@ y :: 1
 echo: y
 for(x :: 1, x < 11, x :: temp + y)
 {
-echo: x
-temp :: y
-y :: x
+    echo: x
+    temp :: y
+    y :: x
 }
 x :: 1
 say: “While Loop”
 while(x < 10)
 {
-if(x == 5)
-{
-display: “The condition ‘x == 5’ has been met. x = “, x, “.”
-}
-else
-{
-echo: sin(x)
-}
-x :: x + 1
+    if(x == 5)
+    {
+        display: “The condition ‘x == 5’ has been met. x = “, x, “.”
+    }
+    else
+    {
+        echo: sin(x)
+    }
+    x :: x + 1
 }
 ```
 
@@ -214,27 +218,27 @@ The following is a list of the internally recognized functions in CS-MIC:
 
 `sin(double expression)`
 
-Returns the sine value of a given expression.
+Returns the sine value of a given `expression`.
     
 `cos(double expression)`
 
-Returns the cosine value of a given expression.
+Returns the cosine value of a given `expression`.
 
 `tan(double expression)`
 
-Returns the tangent value of a given expression.
+Returns the tangent value of a given `expression`.
 
 `round(double expression)`
 
-Rounds an expression to the nearest whole number.
+Rounds an `expression` to the nearest whole number.
 
 `sqrt(double expression)`
 
-Returns the square root of an expression.
+Returns the square root of an `expression`.
 
 `abs(double expression)`
 
-Returns the absolute value of a given expression.
+Returns the absolute value of a given `expression`.
 
 `exp(double expression)`
 
@@ -242,9 +246,9 @@ Returns the constant e raised to a given power.
 
 `log(double expression1, double expression2)`
 
-Returns the log of expression1 to the base of expression2
+Returns the log of `expression1` to the base of `expression2`
 
 `precision(double expression1, int expression2)`
 
-Returns the value of expression1 to a given precision. For example, precision(12.3456789, 4) will return 12.3456.
+Returns the value of `expression1` to a given precision. For example, `precision(12.3456789, 4)` will return `12.3456`.
 
