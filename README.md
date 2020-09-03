@@ -252,3 +252,9 @@ Returns the log of `expression1` to the base of `expression2`
 
 Returns the value of `expression1` to a given precision. For example, `precision(12.3456789, 4)` will return `12.3456`.
 
+
+## Donations
+
+[![Donate with Trans Pay](https://support.jordanwages.com/static/donate-with-transpay-en.png)](https://support.jordanwages.com?project=2)
+
+If you would like to donate to the development of **cs-mic**, please direct you donation to my [patron page](https://support.jordanwages.com) (powered by Stripe) or directly via my [PayPal.Me](https://www.paypal.me/wagesj45) page. You can also donate Ethereum [to my wallet](https://etherscan.io/address/0x917f3d67e2a7ec8884d241118ee829af57cc4afd).
