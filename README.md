@@ -5,7 +5,7 @@ CS-MIC is a .NET library written in C# designed to give developers easy access t
 
 ## Installation
 
-For your convience, CS-MIC is packaged and distributed via nuget. See [our instructions on how to get started](http://cs-mic.com/adding-cs-mic-to-your-project/).
+CS-MIC is available as a package on [nuget.org](/https://nuget.org/packages/csmic) for ease and convenience. You can follow the instructions listed on the package site, or use the nuget package manager to search the nuget repository for cs-mic and install it from there.
 
 ## Usage
 
