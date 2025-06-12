@@ -11,6 +11,7 @@ namespace csmic
         #region Properties
 
         IEnumerable<FunctionArgument> ExpectedArguments { get; }
+        FunctionValue ReturnValue { get; }
 
         #endregion
 

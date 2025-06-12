@@ -10,30 +10,17 @@ COMPILER INTERPRETER
 *
 */
 
-private decimal calcValue = 0;
-private string stringValue = string.Empty;
+private FunctionValue value = new FunctionValue();
 
 public decimal CalculatedValue
 {
 	get
 	{
-		return this.calcValue;
+		return this.value;
 	}
 	set
 	{
-		this.calcValue = value;
-	}
-}
-
-public string StringValue
-{
-	get
-	{
-		return this.stringValue
-	}
-	set
-	{
-		this.stringValue = value
+		this.value = value;
 	}
 }
 
@@ -126,8 +113,7 @@ IGNORE cr + tab
  PRODUCTIONS
 
  INTERPRETER								(.
-												decimal decimalValue = 0;
-												string stringValue = string.Empty;
+												FunctionValue functionValue = new FunctionValue();
 												bool success = true;
 												if(this.interpreter == null)
 												{
@@ -137,7 +123,7 @@ IGNORE cr + tab
 =
 
 	IF(IsCompare())
-	Comparison<out success>					(. this.calcValue = (success == true) ? 1 : 0; .)
+	Comparison<out success>					(. this.functionValue = (success == true) ? FunctionValue.TRUE : FunctionValue.FALSE; .)
 	|
 	IF(IsAssignment())
 	Assignment<out r>
