@@ -1,0 +1,143 @@
+﻿using csmic;
+using System.Text;
+using System.Collections.Generic;
+
+COMPILER INTERPRETER
+
+/*
+*
+*	Class Structures
+*
+*/
+
+private decimal calcValue = 0;
+private string stringValue = string.Empty;
+
+public decimal CalculatedValue
+{
+	get
+	{
+		return this.calcValue;
+	}
+	set
+	{
+		this.calcValue = value;
+	}
+}
+
+public string StringValue
+{
+	get
+	{
+		return this.stringValue
+	}
+	set
+	{
+		this.stringValue = value
+	}
+}
+
+private InputInterpreter interpreter = null;
+
+public InputInterpreter Interpreter
+{
+	get
+	{
+		return this.interpreter;
+	}
+	set
+	{
+		this.interpreter = value;
+	}
+}
+
+bool IsFunctionCall()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.kind == _LPAREN && la.kind == _identifier)
+    return true;
+  return false;
+}
+
+bool IsCompare()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.kind == _COMPARER)
+    return true;
+  return false;
+}
+
+bool IsAssignment()  
+{
+  scanner.ResetPeek();
+  Token next = scanner.Peek();
+  if (next.val == "::" || next.val == ":=" || next.val == "->")
+    return true;
+  return false;
+}
+
+bool IsArrayCall()
+{
+	scanner.ResetPeek();
+	Token next = scanner.Peek();
+	if(next.val == "[")
+		return true;
+	return false;
+}
+
+/*
+ *	Parser definitions
+ *
+ */
+
+CHARACTERS
+
+	UpperLetter = 'A'..'Z'.
+	LowerLetter = 'a'..'z'.
+	letter = UpperLetter + LowerLetter.
+	digit = "0123456789" .
+	cr     = '\r' .
+	lf     = '\n' .
+	tab    = '\t' .
+	PM	   = "+-" .
+	NoQuote = ANY - '\"' .
+	
+TOKENS
+
+	identifier = letter { letter | digit}.
+	sign = PM .
+	binary = ( '0' | '1' ) { '0' | '1' } ('B' | 'b') .
+	hex = "0x" ( digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') ) { digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') } .
+	number = digit { digit }['.' {digit}] [('E'|'e')['+'|'-'] digit {digit}] .
+	string = "\"" { NoQuote } "\"" .
+	LPAREN = '(' .
+	RPAREN = ')' .
+	COMPARER = "==" | "<" | ">" | "<=" | ">=" .
+  
+IGNORE cr + tab
+
+/*
+ *	Parser specification
+ *
+ */
+
+ PRODUCTIONS
+
+ INTERPRETER								(.
+												decimal decimalValue = 0;
+												string stringValue = string.Empty;
+												bool success = true;
+												if(this.interpreter == null)
+												{
+													return;
+												}
+											.)
+=
+
+	IF(IsCompare())
+	Comparison<out success>					(. this.calcValue = (success == true) ? 1 : 0; .)
+	|
+	IF(IsAssignment())
+	Assignment<out r>

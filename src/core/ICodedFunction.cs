@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace csmic
+{
+    public interface ICodedFunction
+    {
+        #region Properties
+
+        IEnumerable<FunctionArgument> ExpectedArguments { get; }
+
+        #endregion
+
+        #region Methods
+
+        FunctionValue Execute(params FunctionArgument[] args);
+
+        #endregion
+    }
+}
