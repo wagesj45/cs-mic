@@ -17,7 +17,7 @@ Core Principles
 - Type clarity: Values carry explicit types; operators enforce type rules rather than auto‑converting.
 - Safe composition: Functions are pure from the interpreter’s perspective; side effects are the host’s responsibility.
 
-Strings: Arguments‑Only, Numeric‑First
+### Strings: Arguments‑Only, Numeric‑First
 
 CS‑MIC’s v2 scope treats strings as helpers for functions, not as first‑class expression values. This preserves the “numeric guarantee” while enabling rich, domain‑specific function usage.
 
