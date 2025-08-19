@@ -1,4 +1,4 @@
-Design Philosophy
+## Design Philosophy
 
 CS‑MIC is a small, embeddable expression interpreter designed primarily for UI scenarios where a user types flexible input (e.g., 2+2+someVar) but the host application needs a validated, deterministic numeric value. The library focuses on predictable evaluation, strong validation and extensibility through developer‑supplied variables and coded functions.
 
