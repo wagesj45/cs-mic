@@ -1,129 +1,351 @@
-﻿using csmic;
+﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using csmic;
 
 COMPILER INTERPRETER
 
 /*
-*
-*	Class Structures
-*
-*/
+ * Class structures and helpers
+ */
 
-private FunctionValue value = new FunctionValue();
+private FunctionValue functionValue = new FunctionValue();
 
-public decimal CalculatedValue
+public FunctionValue Result
 {
-	get
-	{
-		return this.value;
-	}
-	set
-	{
-		this.value = value;
-	}
+    get { return this.functionValue; }
+    set { this.functionValue = value; }
 }
 
 private InputInterpreter interpreter = null;
 
 public InputInterpreter Interpreter
 {
-	get
-	{
-		return this.interpreter;
-	}
-	set
-	{
-		this.interpreter = value;
-	}
+    get { return this.interpreter; }
+    set { this.interpreter = value; }
 }
 
-bool IsFunctionCall()  
+bool IsFunctionCall()
 {
-  scanner.ResetPeek();
-  Token next = scanner.Peek();
-  if (next.kind == _LPAREN && la.kind == _identifier)
-    return true;
-  return false;
+    scanner.ResetPeek();
+    Token next = scanner.Peek();
+    if (next.kind == _LPAREN && la.kind == _identifier) return true;
+    return false;
 }
 
-bool IsCompare()  
+bool IsCompare()
 {
-  scanner.ResetPeek();
-  Token next = scanner.Peek();
-  if (next.kind == _COMPARER)
-    return true;
-  return false;
+    scanner.ResetPeek();
+    Token next = scanner.Peek();
+    if (next.kind == _COMPARER) return true;
+    return false;
 }
 
-bool IsAssignment()  
+bool IsAssignment()
 {
-  scanner.ResetPeek();
-  Token next = scanner.Peek();
-  if (next.val == "::" || next.val == ":=" || next.val == "->")
-    return true;
-  return false;
+    scanner.ResetPeek();
+    Token next = scanner.Peek();
+    if (next.val == "::" || next.val == ":=" || next.val == "->") return true;
+    return false;
 }
 
 bool IsArrayCall()
 {
-	scanner.ResetPeek();
-	Token next = scanner.Peek();
-	if(next.val == "[")
-		return true;
-	return false;
+    scanner.ResetPeek();
+    Token next = scanner.Peek();
+    if (next.val == "[") return true;
+    return false;
 }
 
 /*
- *	Parser definitions
- *
+ * Character sets and tokens
  */
 
 CHARACTERS
 
-	UpperLetter = 'A'..'Z'.
-	LowerLetter = 'a'..'z'.
-	letter = UpperLetter + LowerLetter.
-	digit = "0123456789" .
-	cr     = '\r' .
-	lf     = '\n' .
-	tab    = '\t' .
-	PM	   = "+-" .
-	NoQuote = ANY - '\"' .
-	
+    UpperLetter = 'A'..'Z'.
+    LowerLetter = 'a'..'z'.
+    letter = UpperLetter + LowerLetter.
+    digit = "0123456789" .
+    cr     = '\r' .
+    lf     = '\n' .
+    tab    = '\t' .
+    PM     = "+-" .
+    NoQuote = ANY - '\"' .
+    
 TOKENS
 
-	identifier = letter { letter | digit}.
-	sign = PM .
-	binary = ( '0' | '1' ) { '0' | '1' } ('B' | 'b') .
-	hex = "0x" ( digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') ) { digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') } .
-	number = digit { digit }['.' {digit}] [('E'|'e')['+'|'-'] digit {digit}] .
-	string = "\"" { NoQuote } "\"" .
-	LPAREN = '(' .
-	RPAREN = ')' .
-	COMPARER = "==" | "<" | ">" | "<=" | ">=" .
-  
+    identifier = letter { letter | digit}.
+    sign = PM .
+    binary = ( '0' | '1' ) { '0' | '1' } ('B' | 'b') .
+    hex = "0x" ( digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') ) { digit | ('A' | 'B' | 'C' | 'D' | 'E' |'F') | ('a' | 'b' | 'c' | 'd' | 'e' |'f') } .
+    number = digit { digit }['.' {digit}] [('E'|'e')['+'|'-'] digit {digit}] .
+    string = "\"" { NoQuote } "\"" .
+    LPAREN = '(' .
+    RPAREN = ')' .
+    COMPARER = "==" | "<" | ">" | "<=" | ">=" .
+
 IGNORE cr + tab
 
 /*
- *	Parser specification
- *
+ * Grammar
  */
 
- PRODUCTIONS
+PRODUCTIONS
 
- INTERPRETER								(.
-												FunctionValue functionValue = new FunctionValue();
-												bool success = true;
-												if(this.interpreter == null)
-												{
-													return;
-												}
-											.)
+INTERPRETER					(.
+                                FunctionValue fv = new FunctionValue();
+                                bool success = true;
+                                if (this.interpreter == null) { return; }
+                              .)
 =
+    IF(IsCompare())
+    Comparison<out success>
+        (. this.functionValue = (success == true) ? FunctionValue.TRUE : FunctionValue.FALSE;
+           this.interpreter.ProduceOutput(this.functionValue);
+         .)
+  |
+    IF(IsAssignment())
+    Assignment<out r>
+        (. this.functionValue = new FunctionValue(ValueType.Numeric, r);
+           this.interpreter.ProduceOutput(this.functionValue);
+         .)
+  |
+    Expression<out r>
+        (. this.functionValue = new FunctionValue(ValueType.Numeric, r);
+           this.interpreter.ProduceOutput(this.functionValue);
+         .)
+.
 
-	IF(IsCompare())
-	Comparison<out success>					(. this.functionValue = (success == true) ? FunctionValue.TRUE : FunctionValue.FALSE; .)
-	|
-	IF(IsAssignment())
-	Assignment<out r>
+Expression<out decimal r>
+=
+    (. decimal r1 = 0; r = 0; .)
+    Term<out r>
+    { '+' Term<out r1> (. r += r1; .)
+    | '-' Term<out r1> (. r -= r1; .)
+    }
+.
+
+Term<out decimal r>
+=
+    (. decimal r1 = 0; r = 0; .)
+    Factor<out r>
+    { '*' Factor<out r1> (. r *= r1; .)
+    | '/' Factor<out r1> (. r /= r1; .)
+    | '%' Term<out r1>   (. r %= r1; .)
+    }
+.
+
+Factor<out decimal r>
+=
+    (. decimal r1 = 0; .)
+    Value<out r>
+    { '^' Expression<out r1>
+        (. r = Convert.ToDecimal(Math.Pow(Convert.ToDouble(r), Convert.ToDouble(r1))); .)
+    }
+.
+
+Value<out decimal r> (.
+                        r = 0; decimal r1 = 0; int signum = 1;
+                        FunctionValue fvr = new FunctionValue();
+                        string ident = string.Empty;
+                     .)
+=
+  [ '+' | '-' (. signum = -1; .) ]
+  (
+    IF(IsFunctionCall())
+    Function<out fvr>
+        (.
+            if (fvr.Type == ValueType.Numeric && fvr.Value != null)
+            {
+                try { r = signum * Convert.ToDecimal(fvr.Value); }
+                catch { SemErr("function returned non-numeric"); r = 0; }
+            }
+            else
+            {
+                SemErr("function returned a string; number required");
+                r = 0;
+            }
+         .)
+  |
+    IF(IsArrayCall())
+    ArrayCall<out r> (. r = signum * r; .)
+  |
+    identifier
+        (.
+            ident = t.val;
+            decimal temp = 0;
+            string expr = string.Empty;
+            bool ok = false;
+            // Prefer numeric binding
+            try
+            {
+                // runtime method expected
+                ok = this.interpreter.TryGetNumeric(ident, out temp);
+            }
+            catch { ok = false; }
+            if (ok)
+            {
+                r = signum * temp;
+            }
+            else
+            {
+                // Check expression binding
+                try
+                {
+                    if (this.interpreter.TryGetExpression(ident, out expr))
+                    {
+                        FunctionValue eval = this.interpreter.EvaluateExpression(expr);
+                        if (eval.Type == ValueType.Numeric && eval.Value != null)
+                        {
+                            r = signum * Convert.ToDecimal(eval.Value);
+                        }
+                        else
+                        {
+                            SemErr("expression variable did not evaluate to a number");
+                            r = 0;
+                        }
+                    }
+                    else
+                    {
+                        SemErr("variable '" + ident + "' is not numeric");
+                        r = 0;
+                    }
+                }
+                catch { SemErr("error evaluating expression variable"); r = 0; }
+            }
+         .)
+  |
+    number           (. r = signum * Convert.ToDecimal(t.val); .)
+  |
+    hex              (. string hx = t.val.Remove(0,2);
+                        try { r = signum * Convert.ToDecimal(Convert.ToInt64(hx, 16)); }
+                        catch { r = 0; }
+                     .)
+  |
+    binary           (. string bx = t.val.Remove(t.val.Length - 1);
+                        try { r = signum * Convert.ToDecimal(Convert.ToInt64(bx, 2)); }
+                        catch { r = 0; }
+                     .)
+  |
+    '(' Expression<out r> ')'
+        (. r = signum * r; .)
+  )
+.
+
+ArrayL<out decimal[] d>
+=
+    (. List<decimal> list = new List<decimal>(); decimal r = 0; d = new decimal[0]; .)
+    '['
+    Expression<out r> (. list.Add(r); d = list.ToArray(); .)
+    { ',' Expression<out r> (. list.Add(r); d = list.ToArray(); .) }
+    ']'
+.
+
+ArrayCall<out decimal r> (. string ident = string.Empty; r = 0; decimal pos = 0; .)
+=
+    identifier (. ident = t.val; .)
+    '['
+        Expression<out pos>
+        (.
+            try
+            {
+                int i = Convert.ToInt32(pos);
+                decimal[] values;
+                if (this.interpreter.TryGetNumericArray(ident, out values))
+                {
+                    if (i >= 0 && i < values.Length) { r = values[i]; }
+                    else { SemErr("array index out of range"); r = 0; }
+                }
+                else
+                {
+                    SemErr("variable '" + ident + "' is not a numeric array");
+                    r = 0;
+                }
+            }
+            catch { SemErr("invalid array index"); r = 0; }
+        .)
+    ']'
+.
+
+Assignment<out decimal r>
+    (. string identifier = string.Empty; string expression = string.Empty; decimal[] d = new decimal[0]; r = 0; .)
+=
+    identifier (. identifier = t.val; .)
+    (
+        (
+            "::"
+            Expression<out r>
+                (. this.interpreter.AssignNumeric(identifier, r); .)
+        )
+      |
+        (
+            ":="
+            AnyExpression<out expression>
+                (. this.interpreter.AssignExpression(identifier, expression); r = 0; .)
+        )
+      |
+        (
+            "->"
+            ArrayL<out d>
+                (. this.interpreter.AssignNumericArray(identifier, d); r = 0; .)
+        )
+    )
+.
+
+// Function call with mixed arguments (numeric expressions and strings)
+Function<out FunctionValue r>
+    (. string functionName = string.Empty; FunctionArgument[] args = new FunctionArgument[0]; r = new FunctionValue(); .)
+=
+    identifier (. functionName = t.val; .)
+    '('
+        ArgList<out args>
+    ')'
+        (. r = this.interpreter.ExecuteFunction(functionName, args); .)
+.
+
+ArgList<out FunctionArgument[] args>
+    (. List<FunctionArgument> list = new List<FunctionArgument>(); FunctionArgument a = new FunctionArgument { Name = string.Empty, Value = new FunctionValue() }; args = new FunctionArgument[0]; .)
+=
+    [
+        Arg<out a> (. list.Add(a); args = list.ToArray(); .)
+        { ',' Arg<out a> (. list.Add(a); args = list.ToArray(); .) }
+    ]
+.
+
+Arg<out FunctionArgument arg>
+    (. arg = new FunctionArgument { Name = string.Empty, Value = new FunctionValue() }; decimal r = 0; string s = string.Empty; .)
+=
+    (
+        string (. s = t.val.Substring(1, t.val.Length - 2); arg = new FunctionArgument { Name = string.Empty, Value = new FunctionValue(ValueType.String, s) }; .)
+      |
+        Expression<out r> (. arg = new FunctionArgument { Name = string.Empty, Value = new FunctionValue(ValueType.Numeric, r) }; .)
+    )
+.
+
+Comparison<out bool result>
+    (. decimal firstValue = 0; decimal secondValue = 0; string compareType = string.Empty; result = false; .)
+=
+    Expression<out firstValue>
+    COMPARER (. compareType = t.val; .)
+    Expression<out secondValue>
+        (.
+            switch(compareType)
+            {
+                case "==": result = (firstValue == secondValue); break;
+                case ">":  result = (firstValue >  secondValue); break;
+                case "<":  result = (firstValue <  secondValue); break;
+                case ">=": result = (firstValue >= secondValue); break;
+                case "<=": result = (firstValue <= secondValue); break;
+                default: result = false; break;
+            }
+        .)
+.
+
+AnyExpression<out string value>
+    (. value = string.Empty; StringBuilder builder = new StringBuilder(); .)
+=
+    ANY (. builder.Append(t.val); .) { ANY (. builder.Append(t.val); .) } (. value = builder.ToString(); .)
+.
+
+END INTERPRETER.

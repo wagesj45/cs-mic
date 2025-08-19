@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet tool run coco -namespace csmic.Interpreter - frames . $(ProjectDir)\cocor\interpreter.atg" />
+    <Exec Command="dotnet tool run coco -namespace csmic.Interpreter -frames $(ProjectDir)cocor $(ProjectDir)cocor/Interpreter.atg" />
   </Target>
 
 </Project>
