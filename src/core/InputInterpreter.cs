@@ -1,4 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Text;
+using System.IO;
 
 namespace csmic
 {
@@ -9,29 +11,45 @@ namespace csmic
         private decimal numericValue = 0;
         private string stringValue = string.Empty;
 
+        // Variable stores
+        private readonly Dictionary<string, decimal> numericVariables;
+        private readonly Dictionary<string, decimal[]> numericArrayVariables;
+        private readonly Dictionary<string, string> expressionVariables;
+
+        // Function registry
+        private readonly Dictionary<string, ICodedFunction> functions;
+
+        #endregion
+
+        #region Constructors
+
+        public InputInterpreter()
+        {
+            numericVariables = new(StringComparer.Ordinal);
+            numericArrayVariables = new(StringComparer.Ordinal);
+            expressionVariables = new(StringComparer.Ordinal);
+            functions = new(StringComparer.Ordinal);
+        }
+
+        // Internal constructor to create a child interpreter that shares stores
+        internal InputInterpreter(InputInterpreter parent)
+        {
+            this.numericVariables = parent.numericVariables;
+            this.numericArrayVariables = parent.numericArrayVariables;
+            this.expressionVariables = parent.expressionVariables;
+            this.functions = parent.functions;
+        }
+
         #endregion
 
         #region Properties
 
-        public decimal NumericValue
-        {
-            get
-            {
-                return numericValue;
-            }
-        }
-
-        public string StringValue
-        {
-            get
-            {
-                return stringValue;
-            }
-        }
+        public decimal NumericValue => numericValue;
+        public string StringValue => stringValue;
 
         #endregion
 
-        #region Methods
+        #region Output Plumbing
 
         internal void ProduceOutput(decimal numericValue, string stringValue)
         {
@@ -48,20 +66,91 @@ namespace csmic
                     ProduceOutput(numericValue, string.Empty);
                     break;
                 case ValueType.String:
-                    if (functionValue.Value != null && functionValue.Value is string)
-                    {
-                        ProduceOutput(0, functionValue.Value!.ToString());
-                    }
+                    if (functionValue.Value is string s)
+                        ProduceOutput(0, s);
                     else
-                    {
                         ProduceOutput(0, string.Empty);
-                    }
                     break;
                 case ValueType.None:
                 default:
                     ProduceOutput(0, string.Empty);
                     break;
             }
+        }
+
+        #endregion
+
+        #region Variable APIs
+
+        internal bool TryGetNumeric(string name, out decimal value)
+            => numericVariables.TryGetValue(name, out value);
+
+        internal bool TryGetNumericArray(string name, out decimal[] values)
+            => numericArrayVariables.TryGetValue(name, out values!);
+
+        internal bool TryGetExpression(string name, out string expr)
+            => expressionVariables.TryGetValue(name, out expr!);
+
+        internal void AssignNumeric(string name, decimal value)
+        {
+            numericVariables[name] = value;
+            // Remove conflicting bindings
+            expressionVariables.Remove(name);
+        }
+
+        internal void AssignNumericArray(string name, decimal[] values)
+        {
+            numericArrayVariables[name] = values;
+        }
+
+        internal void AssignExpression(string name, string expressionText)
+        {
+            expressionVariables[name] = expressionText;
+            // Remove conflicting numeric value
+            numericVariables.Remove(name);
+        }
+
+        #endregion
+
+        #region Expression Evaluation
+
+        internal FunctionValue EvaluateExpression(string expressionText)
+        {
+            // Create a child interpreter sharing stores, so ProduceOutput doesn't affect parent state
+            var child = new InputInterpreter(this);
+            using var ms = new MemoryStream(Encoding.UTF8.GetBytes(expressionText));
+            var scanner = new csmic.Interpreter.Scanner(ms);
+            var parser = new csmic.Interpreter.Parser(scanner)
+            {
+                Interpreter = child
+            };
+            parser.Parse();
+            return parser.Result;
+        }
+
+        #endregion
+
+        #region Functions
+
+        internal void RegisterFunction(string name, ICodedFunction function)
+        {
+            functions[name] = function;
+        }
+
+        internal FunctionValue ExecuteFunction(string name, params FunctionArgument[] args)
+        {
+            if (functions.TryGetValue(name, out var fn))
+            {
+                try
+                {
+                    return fn.Execute(args);
+                }
+                catch
+                {
+                    return new FunctionValue(ValueType.None, null);
+                }
+            }
+            return new FunctionValue(ValueType.None, null);
         }
 
         #endregion
