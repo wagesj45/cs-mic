@@ -96,6 +96,7 @@ PRODUCTIONS
 INTERPRETER					(.
                                 FunctionValue fv = new FunctionValue();
                                 bool success = true;
+                                decimal r = 0;
                                 if (this.interpreter == null) { return; }
                               .)
 =

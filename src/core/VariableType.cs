@@ -11,8 +11,6 @@ namespace cs_mic.core
         None,
         Numeric,
         NumericArray,
-        String,
-        StringArray,
         Expression,
     }
 }
