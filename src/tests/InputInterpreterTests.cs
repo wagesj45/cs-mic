@@ -36,8 +36,10 @@ public class InputInterpreterTests
     [TestCase("7%4", 3)]
     [TestCase("2^3", 8)]
     [TestCase("1e2", 100)]
+    [TestCase("2.0e2", 200)]
     [TestCase("0xFF", 255)]
     [TestCase("1010b", 10)]
+    [TestCase("0xFF*1010b", 2550)]
     public void Arithmetic_Works(string expr, decimal expected)
     {
         var result = _interp.Interpret(expr);
@@ -85,7 +87,7 @@ public class InputInterpreterTests
     [Test]
     public void ExpressionBinding_InvalidExpression_ProducesSoftError()
     {
-        _interp.Interpret("exp := bad + 1");
+        _interp.Interpret("exp :== bad + 1");
         var result = _interp.Interpret("exp");
         AssertSoftError(result, _interp);
     }

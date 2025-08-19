@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
 using csmic;
@@ -328,7 +329,7 @@ bool IsArrayCall()
 			
 		} else if (la.kind == 5) {
 			Get();
-			r = signum * Convert.ToDecimal(t.val); 
+			r = signum * decimal.Parse(t.val, NumberStyles.Float); 
 		} else if (la.kind == 4) {
 			Get();
 			string hx = t.val.Remove(0,2);

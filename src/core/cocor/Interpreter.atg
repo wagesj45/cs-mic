@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
 using csmic;
@@ -217,7 +218,7 @@ Value<out decimal r> (.
             }
          .)
   |
-    number           (. r = signum * Convert.ToDecimal(t.val); .)
+    number           (. r = signum * decimal.Parse(t.val, NumberStyles.Float); .)
   |
     hex              (. string hx = t.val.Remove(0,2);
                         try { r = signum * Convert.ToDecimal(Convert.ToInt64(hx, 16)); }
