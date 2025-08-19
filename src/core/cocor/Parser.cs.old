@@ -149,7 +149,7 @@ bool IsArrayCall()
 	void INTERPRETER() {
 		FunctionValue fv = new FunctionValue();
 		bool success = true;
-		decimal r = 0.0;
+		decimal r = 0;
 		if (this.interpreter == null) { return; }
 		
 		if (IsCompare()) {
