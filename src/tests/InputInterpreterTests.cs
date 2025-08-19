@@ -1,6 +1,6 @@
 ﻿namespace tests
 {
-    public class Tests
+    public class InputInterpreterTests
     {
         [SetUp]
         public void Setup()
