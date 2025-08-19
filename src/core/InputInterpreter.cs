@@ -10,6 +10,7 @@ namespace csmic
 
         private decimal numericValue = 0;
         private string stringValue = string.Empty;
+        private TimeSpan lastExecutionTime = TimeSpan.Zero;
 
         // Variable stores
         private readonly Dictionary<string, decimal> numericVariables;
@@ -46,6 +47,8 @@ namespace csmic
 
         public decimal NumericValue => numericValue;
         public string StringValue => stringValue;
+
+        public TimeSpan LastExecutionTime => lastExecutionTime;
 
         #endregion
 
@@ -126,6 +129,44 @@ namespace csmic
             };
             parser.Parse();
             return parser.Result;
+        }
+
+        // Primary developer-facing API: interpret input and return numeric result
+        public decimal Interpret(string input)
+        {
+            DateTime start = DateTime.Now;
+            try
+            {
+                using var ms = new MemoryStream(Encoding.UTF8.GetBytes(input ?? string.Empty));
+                var scanner = new csmic.Interpreter.Scanner(ms);
+                var parser = new csmic.Interpreter.Parser(scanner)
+                {
+                    Interpreter = this
+                };
+                parser.Parse();
+
+                if (parser.errors.count > 0)
+                {
+                    // Soft error: set numeric to 0 and report a parse error message
+                    ProduceOutput(0m, parser.errors.errMsgFormat);
+                }
+                else
+                {
+                    ProduceOutput(parser.Result);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Soft error: never throw, capture message
+                ProduceOutput(0m, ex.Message);
+            }
+            finally
+            {
+                DateTime end = DateTime.Now;
+                lastExecutionTime = end - start;
+            }
+
+            return this.numericValue;
         }
 
         #endregion
