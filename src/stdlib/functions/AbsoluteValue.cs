@@ -3,7 +3,7 @@ using ValueType = csmic.ValueType;
 
 namespace stdlib.functions
 {
-    public class AbsoluteValue : ICodedFunction
+    public class AbsoluteValue : FunctionBase, ICodedFunction
     {
         public IEnumerable<FunctionArgument> ExpectedArguments
         {
@@ -13,14 +13,15 @@ namespace stdlib.functions
             }
         }
 
-        public FunctionValue ReturnValue => new FunctionValue(ValueType.Numeric, 0m);
+        public FunctionValue ReturnValue
+        {
+            new FunctionValue(ValueType.Numeric, 0m);
+    }
+        => 
 
         public FunctionValue Execute(params FunctionArgument[] args)
         {
-            if (args == null || args.Length < 1 || args[0] == null || args[0].Value == null)
-            {
-                return new FunctionValue(ValueType.None, null);
-            }
+            base.ArgumentCheck(args);
 
             try
             {
