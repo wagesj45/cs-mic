@@ -10,5 +10,11 @@ namespace csmic
     {
         public required string Name { get; set; }
         public required FunctionValue Value { get; set; }
+
+        public FunctionArgument(string name, FunctionValue fv) 
+        {
+            this.Name = name;
+            this.Value = fv;
+        }
     }
 }

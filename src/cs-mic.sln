@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{F356A0E2-1338-43FE-B4C0-1AE7C9F0685F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stdlib", "stdlib\stdlib.csproj", "{F7AD600D-4247-49CE-9A26-B20C6F2FF6AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F356A0E2-1338-43FE-B4C0-1AE7C9F0685F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F356A0E2-1338-43FE-B4C0-1AE7C9F0685F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F356A0E2-1338-43FE-B4C0-1AE7C9F0685F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7AD600D-4247-49CE-9A26-B20C6F2FF6AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7AD600D-4247-49CE-9A26-B20C6F2FF6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7AD600D-4247-49CE-9A26-B20C6F2FF6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7AD600D-4247-49CE-9A26-B20C6F2FF6AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
