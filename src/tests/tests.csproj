@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\core\core.csproj" />
+    <ProjectReference Include="..\stdlib\stdlib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
