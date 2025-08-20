@@ -26,10 +26,10 @@ namespace csmic
 
         public InputInterpreter()
         {
-            numericVariables = new(StringComparer.Ordinal);
-            numericArrayVariables = new(StringComparer.Ordinal);
-            expressionVariables = new(StringComparer.Ordinal);
-            functions = new(StringComparer.Ordinal);
+            numericVariables = new Dictionary<string, decimal>(StringComparer.Ordinal);
+            numericArrayVariables = new Dictionary<string, decimal[]>(StringComparer.Ordinal);
+            expressionVariables = new Dictionary<string, string>(StringComparer.Ordinal);
+            functions = new Dictionary<string, ICodedFunction>(StringComparer.Ordinal);
         }
 
         // Internal constructor to create a child interpreter that shares stores

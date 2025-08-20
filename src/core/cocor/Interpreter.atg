@@ -307,7 +307,7 @@ Function<out FunctionValue r>
 .
 
 ArgList<out FunctionArgument[] args>
-    (. List<FunctionArgument> list = new List<FunctionArgument>(); FunctionArgument a = new FunctionArgument { Name = string.Empty, Value = new FunctionValue() }; args = new FunctionArgument[0]; .)
+    (. List<FunctionArgument> list = new List<FunctionArgument>(); FunctionArgument a = new FunctionArgument(string.Empty, new FunctionValue()); args = new FunctionArgument[0]; .)
 =
     [
         Arg<out a> (. list.Add(a); args = list.ToArray(); .)
@@ -316,12 +316,12 @@ ArgList<out FunctionArgument[] args>
 .
 
 Arg<out FunctionArgument arg>
-    (. arg = new FunctionArgument { Name = string.Empty, Value = new FunctionValue() }; decimal r = 0; string s = string.Empty; .)
+    (. arg = new FunctionArgument(string.Empty, new FunctionValue()); decimal r = 0; string s = string.Empty; .)
 =
     (
-        string (. s = t.val.Substring(1, t.val.Length - 2); arg = new FunctionArgument { Name = string.Empty, Value = new FunctionValue(ValueType.String, s) }; .)
+        string (. s = t.val.Substring(1, t.val.Length - 2); arg = new FunctionArgument(string.Empty, new FunctionValue(ValueType.String, s)); .)
       |
-        Expression<out r> (. arg = new FunctionArgument { Name = string.Empty, Value = new FunctionValue(ValueType.Numeric, r) }; .)
+        Expression<out r> (. arg = new FunctionArgument(string.Empty, new FunctionValue(ValueType.Numeric, r)); .)
     )
 .
 
