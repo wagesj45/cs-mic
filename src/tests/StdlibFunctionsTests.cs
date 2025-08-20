@@ -31,7 +31,7 @@ public class StdlibFunctionsTests
     [TestCase("abs(-1)", 1)]
     [TestCase("abs(0)", 0)]
     [TestCase("abs(2)", 2)]
-    [TestCase("abs(-3.5)", 3.5m)]
+    [TestCase("abs(-3.5)", 3.5)]
     [TestCase("2 + abs(-1)", 3)]
     public void AbsoluteValue_Works(string expr, decimal expected)
     {
@@ -53,7 +53,7 @@ public class StdlibFunctionsTests
     [TestCase("min(2,1)", 1)]
     [TestCase("min(-3,4)", -3)]
     [TestCase("1 + min(3,4)", 4)]
-    [TestCase("min(2.5, 2.6)", 2.5m)]
+    [TestCase("min(2.5, 2.6)", 2.5)]
     public void Min_Works(string expr, decimal expected)
     {
         var result = _interp.Interpret(expr);
@@ -64,20 +64,20 @@ public class StdlibFunctionsTests
     [TestCase("max(2,1)", 2)]
     [TestCase("max(-3,4)", 4)]
     [TestCase("1 + max(3,4)", 5)]
-    [TestCase("max(2.5, 2.6)", 2.6m)]
+    [TestCase("max(2.5, 2.6)", 2.6)]
     public void Max_Works(string expr, decimal expected)
     {
         var result = _interp.Interpret(expr);
         AssertSuccess(result, expected, _interp);
     }
 
-    [TestCase("pi", 3.1415926535897931m)]
-    [TestCase("e", 2.7182818284590451m)]
-    [TestCase("tau", 6.2831853071795862m)]
-    [TestCase("phi", 1.6180339887498948m)]
-    [TestCase("goldenratio", 1.6180339887498948m)]
-    [TestCase("eurler", 0.5772156649015329m)]
-    [TestCase("omega", 0.5671432904097839m)]
+    [TestCase("pi", 3.1415926535897931)]
+    [TestCase("e", 2.7182818284590451)]
+    [TestCase("tau", 6.2831853071795862)]
+    [TestCase("phi", 1.6180339887498948)]
+    [TestCase("goldenratio", 1.6180339887498948)]
+    [TestCase("eurler", 0.5772156649015329)]
+    [TestCase("omega", 0.5671432904097839)]
     public void Constants_AreAvailable(string expr, decimal expected)
     {
         var result = _interp.Interpret(expr);
