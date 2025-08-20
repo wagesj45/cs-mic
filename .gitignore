@@ -407,3 +407,5 @@ FodyWeavers.xsd
 *.msp
 /src/core/cocor/Parser.cs.old
 /src/core/cocor/Scanner.cs.old
+/src/core/cocor/Parser.cs
+/src/core/cocor/Scanner.cs
