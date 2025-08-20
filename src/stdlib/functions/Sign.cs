@@ -3,8 +3,11 @@ using ValueType = csmic.ValueType;
 
 namespace stdlib.functions
 {
-    public class AbsoluteValue : FunctionBase, ICodedFunction
+    public class Sign : FunctionBase, ICodedFunction
     {
+        public const decimal POSITIVE = 1;
+        public const decimal NEGATIVE = -1;
+
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -20,7 +23,7 @@ namespace stdlib.functions
                 var input = _args[0].Value;
                 decimal number = Convert.ToDecimal(input.Value);
 
-                return new FunctionValue(ValueType.Numeric, Math.Abs(number));
+                return new FunctionValue(ValueType.Numeric, number >= 0 ? POSITIVE : NEGATIVE);
             });
         }
     }
