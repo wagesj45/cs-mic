@@ -36,7 +36,7 @@ namespace stdlib.functions
                 decimal second = Convert.ToDecimal(inputSecond.Value);
 
 
-                return new FunctionValue(FunctionValueType.Numeric, Math.Min(first, second));
+                return new FunctionValue(FunctionValueType.Numeric, Math.Max(first, second));
             });
         }
     }
