@@ -173,9 +173,9 @@ namespace csmic
 
         #region Functions
 
-        internal void RegisterFunction(string name, ICodedFunction function)
+        public void RegisterFunction(ICodedFunction function)
         {
-            functions[name] = function;
+            functions[function.Name] = function;
         }
 
         internal FunctionValue ExecuteFunction(string name, params FunctionArgument[] args)

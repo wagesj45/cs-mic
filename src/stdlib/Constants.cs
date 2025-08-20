@@ -1,8 +1,8 @@
 ﻿namespace csmic.stdlib
 {
-    public class Constants
+    public static class Constants
     {
-        public void Initialize(InputInterpreter inputInterpreter)
+        public static void Initialize(InputInterpreter inputInterpreter)
         {
             if(inputInterpreter == null)
             {

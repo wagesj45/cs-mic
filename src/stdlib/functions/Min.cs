@@ -9,6 +9,14 @@ namespace stdlib.functions
 {
     public class Min : FunctionBase, ICodedFunction
     {
+        public string Name
+        {
+            get
+            {
+                return "min";
+            }
+        }
+
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get

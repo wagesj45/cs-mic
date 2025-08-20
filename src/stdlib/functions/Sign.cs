@@ -8,6 +8,14 @@ namespace stdlib.functions
         public const decimal POSITIVE = 1;
         public const decimal NEGATIVE = -1;
 
+        public string Name
+        {
+            get
+            {
+                return "sign";
+            }
+        }
+
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get

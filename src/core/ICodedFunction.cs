@@ -10,6 +10,7 @@ namespace csmic
     {
         #region Properties
 
+        string Name { get; }
         IEnumerable<FunctionArgument> ExpectedArguments { get; }
         FunctionValue ReturnValue { get; }
 

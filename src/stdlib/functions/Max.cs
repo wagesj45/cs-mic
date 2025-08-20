@@ -9,6 +9,14 @@ namespace stdlib.functions
 {
     public class Max : FunctionBase, ICodedFunction
     {
+        public string Name
+        {
+            get
+            {
+                return "max";
+            }
+        }
+
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get

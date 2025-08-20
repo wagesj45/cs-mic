@@ -5,6 +5,14 @@ namespace stdlib.functions
 {
     public class AbsoluteValue : FunctionBase, ICodedFunction
     {
+        public string Name
+        {
+            get
+            {
+                return "abs";
+            }
+        }
+
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
