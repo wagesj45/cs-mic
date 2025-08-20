@@ -64,17 +64,17 @@ namespace csmic
         {
             switch (functionValue.Type)
             {
-                case ValueType.Numeric:
+                case FunctionValueType.Numeric:
                     decimal numericValue = Convert.ToDecimal(functionValue.Value);
                     ProduceOutput(numericValue, string.Empty);
                     break;
-                case ValueType.String:
+                case FunctionValueType.String:
                     if (functionValue.Value is string s)
                         ProduceOutput(0, s);
                     else
                         ProduceOutput(0, string.Empty);
                     break;
-                case ValueType.None:
+                case FunctionValueType.None:
                 default:
                     ProduceOutput(0, string.Empty);
                     break;
@@ -188,10 +188,10 @@ namespace csmic
                 }
                 catch
                 {
-                    return new FunctionValue(ValueType.None, null);
+                    return new FunctionValue(FunctionValueType.None, null);
                 }
             }
-            return new FunctionValue(ValueType.None, null);
+            return new FunctionValue(FunctionValueType.None, null);
         }
 
         #endregion

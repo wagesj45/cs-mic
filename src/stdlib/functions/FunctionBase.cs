@@ -1,5 +1,5 @@
 ﻿using csmic;
-using ValueType = csmic.ValueType;
+using FunctionValueType = csmic.FunctionValueType;
 
 namespace stdlib.functions
 {
@@ -35,12 +35,12 @@ namespace stdlib.functions
                     return false;
                 }
 
-                if (argument.Value.Type == ValueType.Numeric && argument.Value.Value is not decimal)
+                if (argument.Value.Type == FunctionValueType.Numeric && argument.Value.Value is not decimal)
                 {
                     return false;
                 }
 
-                if (argument.Value.Type == ValueType.String && argument.Value.Value is not string)
+                if (argument.Value.Type == FunctionValueType.String && argument.Value.Value is not string)
                 {
                     return false;
                 }

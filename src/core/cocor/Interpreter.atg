@@ -109,12 +109,12 @@ INTERPRETER					(.
   |
     IF(IsAssignment())
     Assignment<out r>
-        (. this.functionValue = new FunctionValue(ValueType.Numeric, r);
+        (. this.functionValue = new FunctionValue(FunctionValueType.Numeric, r);
            this.interpreter.ProduceOutput(this.functionValue);
          .)
   |
     Expression<out r>
-        (. this.functionValue = new FunctionValue(ValueType.Numeric, r);
+        (. this.functionValue = new FunctionValue(FunctionValueType.Numeric, r);
            this.interpreter.ProduceOutput(this.functionValue);
          .)
 .
@@ -158,7 +158,7 @@ Value<out decimal r> (.
     IF(IsFunctionCall())
     Function<out fvr>
         (.
-            if (fvr.Type == ValueType.Numeric && fvr.Value != null)
+            if (fvr.Type == FunctionValueType.Numeric && fvr.Value != null)
             {
                 try { r = signum * Convert.ToDecimal(fvr.Value); }
                 catch { SemErr("function returned non-numeric"); r = 0; }
@@ -198,7 +198,7 @@ Value<out decimal r> (.
                     if (this.interpreter.TryGetExpression(ident, out expr))
                     {
                         FunctionValue eval = this.interpreter.EvaluateExpression(expr);
-                        if (eval.Type == ValueType.Numeric && eval.Value != null)
+                        if (eval.Type == FunctionValueType.Numeric && eval.Value != null)
                         {
                             r = signum * Convert.ToDecimal(eval.Value);
                         }
@@ -319,9 +319,9 @@ Arg<out FunctionArgument arg>
     (. arg = new FunctionArgument(string.Empty, new FunctionValue()); decimal r = 0; string s = string.Empty; .)
 =
     (
-        string (. s = t.val.Substring(1, t.val.Length - 2); arg = new FunctionArgument(string.Empty, new FunctionValue(ValueType.String, s)); .)
+        string (. s = t.val.Substring(1, t.val.Length - 2); arg = new FunctionArgument(string.Empty, new FunctionValue(FunctionValueType.String, s)); .)
       |
-        Expression<out r> (. arg = new FunctionArgument(string.Empty, new FunctionValue(ValueType.Numeric, r)); .)
+        Expression<out r> (. arg = new FunctionArgument(string.Empty, new FunctionValue(FunctionValueType.Numeric, r)); .)
     )
 .
 

@@ -1,5 +1,5 @@
 ﻿using csmic;
-using ValueType = csmic.ValueType;
+using FunctionValueType = csmic.FunctionValueType;
 
 namespace stdlib.functions
 {
@@ -23,7 +23,7 @@ namespace stdlib.functions
                 var input = _args[0].Value;
                 decimal number = Convert.ToDecimal(input.Value);
 
-                return new FunctionValue(ValueType.Numeric, number >= 0 ? POSITIVE : NEGATIVE);
+                return new FunctionValue(FunctionValueType.Numeric, number >= 0 ? POSITIVE : NEGATIVE);
             });
         }
     }

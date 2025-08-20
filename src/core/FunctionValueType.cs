@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace csmic
 {
-    public enum ValueType
+    public enum FunctionValueType
     {
         None,
         Numeric,
