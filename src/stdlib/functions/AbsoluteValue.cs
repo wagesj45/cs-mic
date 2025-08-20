@@ -1,9 +1,5 @@
 ﻿using csmic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ValueType = csmic.ValueType;
 
 namespace stdlib.functions
 {
@@ -13,10 +9,7 @@ namespace stdlib.functions
         {
             get
             {
-                yield return new FunctionArgument(
-                    name: "value",
-                    fv: new FunctionValue(ValueType.Numeric, 0m)
-                );
+                yield return new FunctionArgument("value", new FunctionValue(ValueType.Numeric, 0m));
             }
         }
 

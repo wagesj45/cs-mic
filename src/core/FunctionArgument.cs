@@ -8,8 +8,8 @@ namespace csmic
 {
     public class FunctionArgument
     {
-        public required string Name { get; set; }
-        public required FunctionValue Value { get; set; }
+        public string Name { get; set; }
+        public FunctionValue Value { get; set; }
 
         public FunctionArgument(string name, FunctionValue fv) 
         {
