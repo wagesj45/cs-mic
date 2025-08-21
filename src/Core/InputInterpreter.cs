@@ -186,8 +186,10 @@ namespace CSMic
                 {
                     return fn.Execute(args);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    // Surface function errors to the interpreter's message channel
+                    ProduceOutput(0m, ex.Message);
                     return new FunctionValue(FunctionValueType.None, null);
                 }
             }
