@@ -15,8 +15,8 @@
         {
             get
             {
-                yield return new FunctionArgument("value", FunctionValue.NUMBER);
-                yield return new FunctionArgument("value", FunctionValue.NUMBER);
+                yield return new FunctionArgument("y", FunctionValue.NUMBER);
+                yield return new FunctionArgument("x", FunctionValue.NUMBER);
             }
         }
 

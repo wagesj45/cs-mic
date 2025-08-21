@@ -36,7 +36,7 @@ namespace CSMic.StandardLibrary.Functions.Random
                     return FunctionValue.ZERO;
                 }
 
-                return new FunctionValue(FunctionValueType.Numeric, NextDecimal() * (upper - lower));
+                return new FunctionValue(FunctionValueType.Numeric, lower + NextDecimal() * (upper - lower));
             });
         }
     }

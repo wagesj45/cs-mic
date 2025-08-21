@@ -66,7 +66,7 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new Factorial());
             inputInterpreter.RegisterFunction(new BinomialCoefficient());
             inputInterpreter.RegisterFunction(new Permutations());
-            inputInterpreter.RegisterFunction(new GreatestCommonDevisor());
+            inputInterpreter.RegisterFunction(new GreatestCommonDivisor());
             inputInterpreter.RegisterFunction(new LeastCommonMultiple());
         }
 
@@ -80,7 +80,7 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new Floor());
             inputInterpreter.RegisterFunction(new Ceiling());
             inputInterpreter.RegisterFunction(new Fractional());
-            inputInterpreter.RegisterFunction(new Trancate());
+            inputInterpreter.RegisterFunction(new Truncate());
             inputInterpreter.RegisterFunction(new Round());
             inputInterpreter.RegisterFunction(new Clamp());
         }

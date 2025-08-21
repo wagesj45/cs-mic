@@ -26,7 +26,8 @@
                 var input = _args[0].Value;
                 decimal value = Convert.ToDecimal(input.Value);
 
-                return new FunctionValue(FunctionValueType.Numeric, double.RadiansToDegrees((double)value));
+                // Convert degrees to radians
+                return new FunctionValue(FunctionValueType.Numeric, double.DegreesToRadians((double)value));
             });
         }
     }

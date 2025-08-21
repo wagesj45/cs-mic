@@ -1,6 +1,6 @@
 ﻿namespace CSMic.StandardLibrary.Functions.Rounding
 {
-    public class Trancate : FunctionBase, ICodedFunction
+    public class Truncate : FunctionBase, ICodedFunction
     {
 
         public string Name

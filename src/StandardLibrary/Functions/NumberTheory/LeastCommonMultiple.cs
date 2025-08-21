@@ -13,7 +13,7 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
         {
             get
             {
-                return "gcd";
+                return "lcm";
             }
         }
 
@@ -45,7 +45,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
                     return FunctionValue.ZERO;
                 }
 
-                return new FunctionValue(FunctionValueType.Numeric, EuclideanAlgorithm(first, second));
+                decimal gcd = EuclideanAlgorithm(first, second);
+                decimal lcm = (first * second) / gcd;
+
+                return new FunctionValue(FunctionValueType.Numeric, lcm);
             });
         }
 

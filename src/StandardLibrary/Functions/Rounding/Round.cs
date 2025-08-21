@@ -16,6 +16,7 @@
             get
             {
                 yield return new FunctionArgument("value", FunctionValue.NUMBER);
+                yield return new FunctionArgument("precision", FunctionValue.NUMBER);
             }
         }
 
@@ -26,7 +27,7 @@
                 var inputValue = _args[0].Value;
                 decimal value = Convert.ToDecimal(inputValue.Value);
                 var inputPrecision = _args[1].Value;
-                decimal precision = Convert.ToDecimal(inputValue.Value);
+                decimal precision = Convert.ToDecimal(inputPrecision.Value);
                 precision = Math.Round(precision);
                 int precisionInt = Convert.ToInt32(precision);
 

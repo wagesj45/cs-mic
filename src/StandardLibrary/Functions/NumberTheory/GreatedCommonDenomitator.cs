@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CSMic.StandardLibrary.Functions.NumberTheory
 {
-    public class GreatestCommonDevisor : FunctionBase, ICodedFunction
+    public class GreatestCommonDivisor : FunctionBase, ICodedFunction
     {
         public string Name
         {
@@ -46,9 +46,8 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
                 }
 
                 decimal gcd = EuclideanAlgorithm(first, second);
-                decimal lcd = (first * second) / gcd;
 
-                return new FunctionValue(FunctionValueType.Numeric, lcd);
+                return new FunctionValue(FunctionValueType.Numeric, gcd);
             });
         }
 

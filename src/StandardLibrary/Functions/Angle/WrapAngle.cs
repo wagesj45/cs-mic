@@ -31,12 +31,12 @@
                 var inputPeriodEnd = _args[2].Value;
                 decimal periodEnd = Convert.ToDecimal(inputPeriodEnd.Value);
 
-                // Perform modulo.
+                // Perform modulo and shift into [periodStart, periodEnd)
                 decimal width = periodEnd - periodStart;
                 decimal modulus = value % width;
                 modulus = modulus < 0 ? modulus + width : modulus;
 
-                return new FunctionValue(FunctionValueType.Numeric, modulus);
+                return new FunctionValue(FunctionValueType.Numeric, periodStart + modulus);
             });
         }
     }
