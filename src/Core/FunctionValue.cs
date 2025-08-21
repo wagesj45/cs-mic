@@ -17,6 +17,7 @@ namespace CSMic
         public static readonly FunctionValue NONE = new FunctionValue(FunctionValueType.None, null);
         public static readonly FunctionValue NUMBER = new FunctionValue(FunctionValueType.Numeric, 0m);
         public static readonly FunctionValue STRING = new FunctionValue(FunctionValueType.String, string.Empty);
+        public static readonly FunctionValue ZERO = new FunctionValue(FunctionValueType.Numeric, 0m);
 
         public FunctionValue()
         {

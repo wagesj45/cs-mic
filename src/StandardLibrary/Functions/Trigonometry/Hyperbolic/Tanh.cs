@@ -1,18 +1,13 @@
-﻿using CSMic;
-
-
-namespace CSMic.StandardLibrary.Functions
+﻿namespace CSMic.StandardLibrary.Functions.Trigonometry.Hyperbolic
 {
-    public class Sign : FunctionBase, ICodedFunction
+    public class Tanh : FunctionBase, ICodedFunction
     {
-        private const decimal POSITIVE = 1;
-        private const decimal NEGATIVE = -1;
 
         public string Name
         {
             get
             {
-                return "sign";
+                return "tanh";
             }
         }
 
@@ -26,12 +21,12 @@ namespace CSMic.StandardLibrary.Functions
 
         public FunctionValue Execute(params FunctionArgument[] args)
         {
-            return base.Execute(args, (_args) =>
+            return Execute(args, (_args) =>
             {
                 var input = _args[0].Value;
-                decimal number = Convert.ToDecimal(input.Value);
+                decimal value = Convert.ToDecimal(input.Value);
 
-                return new FunctionValue(FunctionValueType.Numeric, number >= 0 ? POSITIVE : NEGATIVE);
+                return new FunctionValue(FunctionValueType.Numeric, Math.Tanh((double)value));
             });
         }
     }
