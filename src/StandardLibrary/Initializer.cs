@@ -1,5 +1,10 @@
 ﻿using CSMic.StandardLibrary.Functions;
 using CSMic.StandardLibrary.Functions.Angle;
+using CSMic.StandardLibrary.Functions.Rounding;
+using CSMic.StandardLibrary.Functions.Trigonometry;
+using CSMic.StandardLibrary.Functions.Trigonometry.Hyperbolic;
+using CSMic.StandardLibrary.Functions.NumberTheory;
+using CSMic.StandardLibrary.Functions.Random;
 
 namespace CSMic.StandardLibrary
 {
@@ -19,6 +24,11 @@ namespace CSMic.StandardLibrary
             }
 
             InitializeBaseFunctions(inputInterpreter);
+            InitializeAngleFunctions(inputInterpreter);
+            InitializeRoundingFunctions(inputInterpreter);
+            InitializeTrigonometryFunctions(inputInterpreter);
+            InitializeNumberTheoryFunctions(inputInterpreter);
+            InitializeRandomFunctions(inputInterpreter);
         }
 
         public static void InitializeBaseFunctions(InputInterpreter inputInterpreter)
@@ -53,7 +63,65 @@ namespace CSMic.StandardLibrary
                 throw new ArgumentNullException("inputInterpreter", "Cannot initialize a null InputInterpreter.");
             }
 
-            // Register functions...
+            inputInterpreter.RegisterFunction(new Factorial());
+            inputInterpreter.RegisterFunction(new BinomialCoefficient());
+            inputInterpreter.RegisterFunction(new Permutations());
+            inputInterpreter.RegisterFunction(new GreatestCommonDevisor());
+            inputInterpreter.RegisterFunction(new LeastCommonMultiple());
+        }
+
+        public static void InitializeRoundingFunctions(InputInterpreter inputInterpreter)
+        {
+            if (inputInterpreter == null)
+            {
+                throw new ArgumentNullException("inputInterpreter", "Cannot initialize a null InputInterpreter.");
+            }
+
+            inputInterpreter.RegisterFunction(new Floor());
+            inputInterpreter.RegisterFunction(new Ceiling());
+            inputInterpreter.RegisterFunction(new Fractional());
+            inputInterpreter.RegisterFunction(new Trancate());
+            inputInterpreter.RegisterFunction(new Round());
+            inputInterpreter.RegisterFunction(new Clamp());
+        }
+
+        public static void InitializeTrigonometryFunctions(InputInterpreter inputInterpreter)
+        {
+            if (inputInterpreter == null)
+            {
+                throw new ArgumentNullException("inputInterpreter", "Cannot initialize a null InputInterpreter.");
+            }
+
+            // Basic trig
+            inputInterpreter.RegisterFunction(new Sin());
+            inputInterpreter.RegisterFunction(new Cos());
+            inputInterpreter.RegisterFunction(new Tan());
+            inputInterpreter.RegisterFunction(new Asin());
+            inputInterpreter.RegisterFunction(new Acos());
+            inputInterpreter.RegisterFunction(new Atan());
+            inputInterpreter.RegisterFunction(new Atan2());
+
+            // Hyperbolic trig
+            inputInterpreter.RegisterFunction(new Sinh());
+            inputInterpreter.RegisterFunction(new Cosh());
+            inputInterpreter.RegisterFunction(new Tanh());
+            inputInterpreter.RegisterFunction(new Asinh());
+            inputInterpreter.RegisterFunction(new Acosh());
+            inputInterpreter.RegisterFunction(new Atanh());
+        }
+
+        public static void InitializeRandomFunctions(InputInterpreter inputInterpreter)
+        {
+            if (inputInterpreter == null)
+            {
+                throw new ArgumentNullException("inputInterpreter", "Cannot initialize a null InputInterpreter.");
+            }
+
+            inputInterpreter.RegisterFunction(new FairFlip());
+            inputInterpreter.RegisterFunction(new RandomUniform());
+            inputInterpreter.RegisterFunction(new RandomUniformSpread());
+            inputInterpreter.RegisterFunction(new RandomNormal());
+            inputInterpreter.RegisterFunction(new RandomNormalSpread());
         }
 
         public static void InitializeConstants(InputInterpreter inputInterpreter)
@@ -73,4 +141,3 @@ namespace CSMic.StandardLibrary
         }
     }
 }
-
