@@ -118,6 +118,7 @@ namespace CSMic.StandardLibrary
             }
 
             inputInterpreter.RegisterFunction(new FairFlip());
+            inputInterpreter.RegisterFunction(new Bernoulli());
             inputInterpreter.RegisterFunction(new RandomUniform());
             inputInterpreter.RegisterFunction(new RandomUniformSpread());
             inputInterpreter.RegisterFunction(new RandomNormal());

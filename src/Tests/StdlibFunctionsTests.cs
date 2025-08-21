@@ -3,7 +3,6 @@ using CSMic.StandardLibrary;
 using NUnit.Framework;
 using CSMic.StandardLibrary.Functions;
 using System.Globalization;
-using System.Reflection.Metadata;
 
 namespace CSMic.Tests;
 
@@ -16,8 +15,8 @@ public class StdlibFunctionsTests
     {
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         _interp = new InputInterpreter();
-        Constants.Initialize(_interp);
-        Functions.Initialize(_interp); ;
+        // Initialize full standard library (functions + constants)
+        Initializer.InitializeAll(_interp);
     }
 
     private static void AssertSuccess(decimal result, decimal expected, InputInterpreter interp)
