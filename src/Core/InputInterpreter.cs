@@ -2,7 +2,7 @@
 using System.Text;
 using System.IO;
 
-namespace csmic
+namespace CsMic
 {
     public class InputInterpreter
     {
@@ -122,8 +122,8 @@ namespace csmic
             // Create a child interpreter sharing stores, so ProduceOutput doesn't affect parent state
             var child = new InputInterpreter(this);
             using var ms = new MemoryStream(Encoding.UTF8.GetBytes(expressionText));
-            var scanner = new csmic.Interpreter.Scanner(ms);
-            var parser = new csmic.Interpreter.Parser(scanner)
+            var scanner = new CsMic.Interpreter.Scanner(ms);
+            var parser = new CsMic.Interpreter.Parser(scanner)
             {
                 Interpreter = child
             };
@@ -138,8 +138,8 @@ namespace csmic
             try
             {
                 using var ms = new MemoryStream(Encoding.UTF8.GetBytes(input ?? string.Empty));
-                var scanner = new csmic.Interpreter.Scanner(ms);
-                var parser = new csmic.Interpreter.Parser(scanner)
+                var scanner = new CsMic.Interpreter.Scanner(ms);
+                var parser = new CsMic.Interpreter.Parser(scanner)
                 {
                     Interpreter = this
                 };

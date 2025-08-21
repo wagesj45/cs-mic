@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>CsMic.StandardLibrary</RootNamespace>
+    <AssemblyName>CsMic.StandardLibrary</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\core\core.csproj" />
+    <ProjectReference Include="..\Core\CsMic.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,12 +1,12 @@
-﻿using csmic;
-using stdlib.functions;
+﻿using CsMic;
+using CsMic.StandardLibrary.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace stdlib
+namespace CsMic.StandardLibrary
 {
     public static class Functions
     {

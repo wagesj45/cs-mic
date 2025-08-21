@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
-using csmic;
+using CsMic;
 
-namespace tests;
+namespace CsMic.Tests;
 
 public class InputInterpreterTests
 {

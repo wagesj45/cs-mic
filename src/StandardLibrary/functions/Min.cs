@@ -1,19 +1,19 @@
-﻿using csmic;
+﻿using CsMic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace stdlib.functions
+namespace CsMic.StandardLibrary.Functions
 {
-    public class Max : FunctionBase, ICodedFunction
+    public class Min : FunctionBase, ICodedFunction
     {
         public string Name
         {
             get
             {
-                return "max";
+                return "min";
             }
         }
 
@@ -36,7 +36,7 @@ namespace stdlib.functions
                 decimal second = Convert.ToDecimal(inputSecond.Value);
 
 
-                return new FunctionValue(FunctionValueType.Numeric, Math.Max(first, second));
+                return new FunctionValue(FunctionValueType.Numeric, Math.Min(first, second));
             });
         }
     }

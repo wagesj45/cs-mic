@@ -1,12 +1,11 @@
-using csmic;
-using csmic.stdlib;
+using CsMic;
+using CsMic.StandardLibrary;
 using NUnit.Framework;
-using stdlib;
-using stdlib.functions;
+using CsMic.StandardLibrary.Functions;
 using System.Globalization;
 using System.Reflection.Metadata;
 
-namespace tests;
+namespace CsMic.Tests;
 
 public class StdlibFunctionsTests
 {

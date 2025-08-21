@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <RootNamespace>CsMic.Tests</RootNamespace>
+    <AssemblyName>CsMic.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\core\core.csproj" />
-    <ProjectReference Include="..\stdlib\stdlib.csproj" />
+    <ProjectReference Include="..\Core\CsMic.Core.csproj" />
+    <ProjectReference Include="..\StandardLibrary\CsMic.StandardLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

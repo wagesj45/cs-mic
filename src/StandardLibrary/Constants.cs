@@ -1,4 +1,6 @@
-﻿namespace csmic.stdlib
+﻿using CsMic;
+
+namespace CsMic.StandardLibrary
 {
     public static class Constants
     {
