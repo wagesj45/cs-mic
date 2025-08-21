@@ -1,6 +1,6 @@
-﻿using CsMic;
+﻿using CSMic;
 
-namespace CsMic.StandardLibrary
+namespace CSMic.StandardLibrary
 {
     public static class Constants
     {

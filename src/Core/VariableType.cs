@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CsMic
+namespace CSMic
 {
     public enum VariableType
     {

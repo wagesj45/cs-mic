@@ -2,17 +2,17 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<RootNamespace>CsMic</RootNamespace>
+		<RootNamespace>CSMic</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-		<AssemblyName>CsMic.Core</AssemblyName>
+		<AssemblyName>CSMic.Core</AssemblyName>
 		<Version>2.0.0-beta-01</Version>
-		<PackageId>CsMic</PackageId>
+		<PackageId>CSMic</PackageId>
 	</PropertyGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="dotnet tool run coco -namespace CsMic.Interpreter -frames $(ProjectDir)cocor $(ProjectDir)cocor/Interpreter.atg" />
+		<Exec Command="dotnet tool run coco -namespace CSMic.Interpreter -frames $(ProjectDir)CocoR $(ProjectDir)CocoR/Interpreter.atg" />
 	</Target>
 
 	<Import Project="NuGetPublish.targets" Condition="Exists('NuGetPublish.targets')" />

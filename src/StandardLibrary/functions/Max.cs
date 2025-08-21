@@ -1,11 +1,11 @@
-﻿using CsMic;
+﻿using CSMic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CsMic.StandardLibrary.Functions
+namespace CSMic.StandardLibrary.Functions
 {
     public class Max : FunctionBase, ICodedFunction
     {

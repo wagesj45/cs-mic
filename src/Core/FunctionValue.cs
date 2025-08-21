@@ -1,11 +1,11 @@
-﻿using CsMic;
+﻿using CSMic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CsMic
+namespace CSMic
 {
     public class FunctionValue
     {

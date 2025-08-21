@@ -1,7 +1,6 @@
-﻿using CsMic;
-using FunctionValueType = CsMic.FunctionValueType;
+﻿using CSMic;
 
-namespace CsMic.StandardLibrary.Functions
+namespace CSMic.StandardLibrary.Functions
 {
     public abstract class FunctionBase
     {

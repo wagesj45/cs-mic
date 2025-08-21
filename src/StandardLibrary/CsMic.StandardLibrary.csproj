@@ -2,18 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>CsMic.StandardLibrary</RootNamespace>
-    <AssemblyName>CsMic.StandardLibrary</AssemblyName>
+    <RootNamespace>CSMic.StandardLibrary</RootNamespace>
+    <AssemblyName>CSMic.StandardLibrary</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\CsMic.Core.csproj" />
+    <Compile Remove="Functions\hyperbolic\**" />
+    <EmbeddedResource Remove="Functions\hyperbolic\**" />
+    <None Remove="Functions\hyperbolic\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="functions\hyperbolic\" />
+    <ProjectReference Include="..\Core\CSMic.Core.csproj" />
   </ItemGroup>
 
 </Project>
