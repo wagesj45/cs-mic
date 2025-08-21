@@ -9,12 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Functions\hyperbolic\**" />
-    <EmbeddedResource Remove="Functions\hyperbolic\**" />
-    <None Remove="Functions\hyperbolic\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Core\CSMic.Core.csproj" />
   </ItemGroup>
 

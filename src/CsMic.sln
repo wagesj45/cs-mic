@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMic.Core", "Core\CSMic.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMic.StandardLibrary", "StandardLibrary\CSMic.StandardLibrary.csproj", "{1533FED0-C765-4929-8797-CE6C2E594DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCMic.Tests", "Tests\CCMic.Tests.csproj", "{CB09F818-33F7-427E-B6B9-DB8503EAAE4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMic.Tests", "Tests\CSMic.Tests.csproj", "{CB09F818-33F7-427E-B6B9-DB8503EAAE4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
