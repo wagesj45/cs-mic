@@ -1,0 +1,6 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Placeholder target file for NuGet publishing -->
+  <Target Name="PublishNuGet" AfterTargets="Pack">
+	  <Exec Command="dotnet nuget push --source wagenet-git bin\Release\CSMic.StandardLibrary.$(Version).nupkg" />
+  </Target>
+</Project>
