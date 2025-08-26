@@ -7,8 +7,9 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<AssemblyName>CSMic.Core</AssemblyName>
-		<Version>2.0.0-beta-02</Version>
+		<Version>2.0.0-beta-03</Version>
 		<PackageId>CSMic</PackageId>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

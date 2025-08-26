@@ -6,8 +6,9 @@
 		<AssemblyName>CSMic.StandardLibrary</AssemblyName>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>2.0.0-beta-02</Version>
+		<Version>2.0.0-beta-03</Version>
 		<PackageId>CSMic.StandardLibrary</PackageId>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
