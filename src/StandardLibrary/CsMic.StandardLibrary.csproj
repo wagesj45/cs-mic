@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>CSMic.StandardLibrary</RootNamespace>
     <AssemblyName>CSMic.StandardLibrary</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\CSMic.Core.csproj" />
+    <ProjectReference Include="..\Core\CsMic.Core.csproj" />
   </ItemGroup>
 
 </Project>
