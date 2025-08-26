@@ -8,13 +8,11 @@ namespace CSMic.StandardLibrary.Functions.Random
 {
     public abstract class RandomBase : FunctionBase
     {
-        protected static System.Random RandomNumberGenerator
-        {
-            get
-            {
-                return System.Random.Shared;
-            }
-        }
+        // Provide a thread-local random to approximate Random.Shared in .NET Standard
+        private static readonly System.Threading.ThreadLocal<System.Random> s_threadLocalRandom =
+            new System.Threading.ThreadLocal<System.Random>(() => new System.Random());
+
+        protected static System.Random RandomNumberGenerator => s_threadLocalRandom.Value!;
 
         protected static decimal NextDecimal()
         {
