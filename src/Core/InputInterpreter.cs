@@ -45,11 +45,37 @@ namespace CSMic
 
         #region Properties
 
-        public decimal NumericValue => numericValue;
-        public string StringValue => stringValue;
+        public decimal NumericValue
+        {
+            get
+            {
+                return this.numericValue;
+            }
+        }
 
-        public TimeSpan LastExecutionTime => lastExecutionTime;
+        public string StringValue
+        {
+            get
+            {
+                return this.stringValue;
+            }
+        }
 
+        public TimeSpan LastExecutionTime
+        {
+            get
+            {
+                return this.lastExecutionTime;
+            }
+        }
+
+        public IEnumerable<Variable> Variables
+        {
+            get
+            {
+                return null;
+            }
+        }
         #endregion
 
         #region Output Plumbing
