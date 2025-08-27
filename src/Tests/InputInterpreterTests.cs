@@ -117,6 +117,26 @@ public class InputInterpreterTests
     }
 
     [Test]
+    public void Expression_SelfRecursion_EvaluatesToZero()
+    {
+        // Define an expression that references itself
+        AssertSuccess(_interp.Interpret("a := a + 1"), 0, _interp);
+        // Using it should not crash and should yield zero
+        AssertSuccess(_interp.Interpret("a"), 0, _interp);
+        // And in larger expressions it should still be zero
+        AssertSuccess(_interp.Interpret("a + 5"), 5, _interp);
+    }
+
+    [Test]
+    public void Expression_MutualRecursion_EvaluatesToZero()
+    {
+        AssertSuccess(_interp.Interpret("a := b + 1"), 0, _interp);
+        AssertSuccess(_interp.Interpret("b := a + 1"), 0, _interp);
+        AssertSuccess(_interp.Interpret("a"), 0, _interp);
+        AssertSuccess(_interp.Interpret("b"), 0, _interp);
+    }
+
+    [Test]
     public void StringLiteral_Alone_IsError()
     {
         var result = _interp.Interpret("\"hi\"");
