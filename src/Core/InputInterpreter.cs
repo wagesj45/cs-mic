@@ -73,7 +73,10 @@ namespace CSMic
         {
             get
             {
-                return null;
+                return this.numericVariables.Select(nv => new Variable(VariableType.Numeric, nv.Key, nv.Value))
+                    .Concat(this.expressionVariables.Select(nv => new Variable(VariableType.Expression, nv.Key, nv.Value)))
+                    .Concat(this.numericArrayVariables.Select(nv => new Variable(VariableType.NumericArray, nv.Key, nv.Value)))
+                    .AsEnumerable();
             }
         }
         #endregion
