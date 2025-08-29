@@ -63,6 +63,14 @@ public class TrigonometryFunctionsTests
         AssertApprox(_interp.Interpret("atan(1)"), 0.7853981633974483m, 0.0000000000001m, _interp);
         AssertApprox(_interp.Interpret("atan2(1, 0)"), 1.5707963267948966m, 0.0000000000001m, _interp);
     }
+
+    [Test]
+    public void ImplicitMultiplication_WithFunctions()
+    {
+        AssertSuccess(_interp.Interpret("2sin(0)"), 0m, _interp);
+        AssertSuccess(_interp.Interpret("2 sin(0)"), 0m, _interp);
+        AssertApprox(_interp.Interpret("2sin(pi/2)"), 2m, 0.0000000000001m, _interp);
+    }
 }
 
 public class HyperbolicTrigFunctionsTests
@@ -95,4 +103,3 @@ public class HyperbolicTrigFunctionsTests
         AssertSuccess(_interp.Interpret("atanh(0)"), 0m, _interp);
     }
 }
-

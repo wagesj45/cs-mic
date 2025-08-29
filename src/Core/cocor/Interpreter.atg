@@ -58,6 +58,19 @@ bool IsArrayCall()
     return false;
 }
 
+// Implicit multiplication detection: the next token starts a Factor
+bool IsImplicitMul()
+{
+    // Allow whitespace between tokens; scanner already skips it
+    // A Factor/Value can start with: '(', identifier (incl. function/array), number, hex, or binary
+    if (la.kind == _LPAREN) return true;
+    if (la.kind == _identifier) return true;
+    if (la.kind == _number) return true;
+    if (la.kind == _hex) return true;
+    if (la.kind == _binary) return true;
+    return false;
+}
+
 /*
  * Character sets and tokens
  */
@@ -132,7 +145,8 @@ Term<out decimal r>
 =
     (. decimal r1 = 0; r = 0; .)
     Factor<out r>
-    { '*' Factor<out r1> (. r *= r1; .)
+    { IF(IsImplicitMul()) Factor<out r1> (. r *= r1; .)
+    | '*' Factor<out r1> (. r *= r1; .)
     | '/' Factor<out r1> (. r /= r1; .)
     | '%' Term<out r1>   (. r %= r1; .)
     }

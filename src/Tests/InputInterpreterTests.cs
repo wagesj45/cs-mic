@@ -158,4 +158,25 @@ public class InputInterpreterTests
         _interp.Interpret("3+3");
         Assert.That(_interp.LastExecutionTime, Is.GreaterThanOrEqualTo(TimeSpan.Zero));
     }
+
+    [Test]
+    public void ImplicitMultiplication_Basic()
+    {
+        AssertSuccess(_interp.Interpret("2(3+1)"), 8, _interp);
+    }
+
+    [Test]
+    public void ImplicitMultiplication_WithVariableAndParens()
+    {
+        AssertSuccess(_interp.Interpret("x :: 3"), 3, _interp);
+        AssertSuccess(_interp.Interpret("2x"), 6, _interp);
+        AssertSuccess(_interp.Interpret("(x+1)(x-1)"), 8, _interp);
+    }
+
+    [Test]
+    public void ImplicitMultiplication_ChainedParens()
+    {
+        AssertSuccess(_interp.Interpret("x :: 4"), 4, _interp);
+        AssertSuccess(_interp.Interpret("3(x)(2)"), 24, _interp);
+    }
 }
