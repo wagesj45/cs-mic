@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Core\CsMic.Core.csproj" />
+		<ProjectReference Include="..\Core\CSMic.Core.csproj" />
 	</ItemGroup>
 
 	<Import Project="NuGetPublish.targets" Condition="Exists('NuGetPublish.targets')" />

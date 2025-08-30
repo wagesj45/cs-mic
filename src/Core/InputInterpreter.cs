@@ -22,8 +22,9 @@ namespace CSMic
 
         // Tracks expression variables currently being evaluated to prevent recursion
         private readonly List<string> evaluationStack;
-        // Tracks whether recursion was encountered during evaluation
-        private int recursionHitCounter = 0;
+        // Shared recursion tracker across nested evaluations
+        private sealed class RecursionTracker { public int Hits; }
+        private readonly RecursionTracker recursion;
 
         #endregion
 
@@ -36,6 +37,7 @@ namespace CSMic
             expressionVariables = new Dictionary<string, string>(StringComparer.Ordinal);
             functions = new Dictionary<string, ICodedFunction>(StringComparer.Ordinal);
             evaluationStack = new List<string>();
+            recursion = new RecursionTracker();
         }
 
         // Internal constructor to create a child interpreter that shares stores
@@ -47,6 +49,8 @@ namespace CSMic
             this.functions = parent.functions;
             // Share the evaluation stack so recursion is tracked across nested parses
             this.evaluationStack = parent.evaluationStack;
+            // Share recursion hit counter across nested evaluations
+            this.recursion = parent.recursion;
         }
 
         #endregion
@@ -130,25 +134,47 @@ namespace CSMic
 
         internal bool TryGetExpression(string name, out string expr)
         {
-            // Short-circuit self or cyclic references by evaluating to zero
-            // If name is already in the stack, report a zero expression to caller
-            if (evaluationStack.Contains(name))
-            {
-                expr = "0";
-                // Mark that a recursion was detected so caller can zero the whole evaluation
-                recursionHitCounter++;
-                return true;
-            }
-
             if (expressionVariables.TryGetValue(name, out expr!))
             {
-                // Mark as currently evaluating; EvaluateExpression will unwind
-                evaluationStack.Add(name);
                 return true;
             }
-
             expr = string.Empty;
             return false;
+        }
+
+        // Recursion tracking helpers managed by the parser when evaluating expression variables
+        internal bool IsEvaluating(string name) => evaluationStack.Contains(name);
+
+        internal int BeginEvaluating(string name)
+        {
+            int depth = evaluationStack.Count;
+            evaluationStack.Add(name);
+            return depth;
+        }
+
+        internal void EndEvaluating(int depth)
+        {
+            while (evaluationStack.Count > depth)
+            {
+                evaluationStack.RemoveAt(evaluationStack.Count - 1);
+            }
+        }
+
+        // Recursion hit scoping across a single top-level expression evaluation
+        internal int BeginRecursionScope()
+        {
+            return recursion.Hits;
+        }
+
+        // Returns true if recursion occurred within this scope
+        internal bool EndRecursionScope(int startHits)
+        {
+            return recursion.Hits > startHits;
+        }
+
+        internal void MarkRecursionHit()
+        {
+            recursion.Hits++;
         }
 
         internal void AssignNumeric(string name, decimal value)
@@ -178,8 +204,6 @@ namespace CSMic
         {
             // Create a child interpreter sharing stores, so ProduceOutput doesn't affect parent state
             var child = new InputInterpreter(this);
-            int depth = evaluationStack.Count;
-            int hitStart = recursionHitCounter;
             using var ms = new MemoryStream(Encoding.UTF8.GetBytes(expressionText));
             var scanner = new CSMic.Interpreter.Scanner(ms);
             var parser = new CSMic.Interpreter.Parser(scanner)
@@ -189,20 +213,11 @@ namespace CSMic
             try
             {
                 parser.Parse();
-                // If recursion was detected during this evaluation, collapse to zero
-                if (recursionHitCounter > hitStart)
-                {
-                    return new FunctionValue(FunctionValueType.Numeric, 0m);
-                }
                 return parser.Result;
             }
             finally
             {
-                // Unwind any names pushed during this evaluation to avoid leaking state
-                while (evaluationStack.Count > depth)
-                {
-                    evaluationStack.RemoveAt(evaluationStack.Count - 1);
-                }
+                // no-op: evaluation stack is managed by the parser around calls
             }
         }
 

@@ -145,11 +145,31 @@ Term<out decimal r>
 =
     (. decimal r1 = 0; r = 0; .)
     Factor<out r>
-    { IF(IsImplicitMul()) Factor<out r1> (. r *= r1; .)
-    | '*' Factor<out r1> (. r *= r1; .)
-    | '/' Factor<out r1> (. r /= r1; .)
-    | '%' Term<out r1>   (. r %= r1; .)
-    }
+    (. 
+        // Manual loop to avoid LL(1) conflict introduced by implicit multiplication
+        // which caused '+'/'-' to be treated as successors of a deletable alternative
+        // and misparsed as '%'.
+        while (IsImplicitMul() || la.val == "*" || la.val == "/" || la.val == "%")
+        {
+            if (IsImplicitMul())
+            {
+                decimal tmp = 0;
+                Factor(out tmp); r *= tmp;
+            }
+            else if (la.val == "*")
+            {
+                Get(); Factor(out r1); r *= r1;
+            }
+            else if (la.val == "/")
+            {
+                Get(); Factor(out r1); r /= r1;
+            }
+            else // "%"
+            {
+                Get(); Term(out r1); r %= r1;
+            }
+        }
+     .)
 .
 
 Factor<out decimal r>
@@ -211,15 +231,37 @@ Value<out decimal r> (.
                 {
                     if (this.interpreter.TryGetExpression(ident, out expr))
                     {
-                        FunctionValue eval = this.interpreter.EvaluateExpression(expr);
-                        if (eval.Type == FunctionValueType.Numeric && eval.Value != null)
+                        // Prevent self or cyclic recursion
+                        if (this.interpreter.IsEvaluating(ident))
                         {
-                            r = signum * Convert.ToDecimal(eval.Value);
+                            this.interpreter.MarkRecursionHit();
+                            r = 0;
                         }
                         else
                         {
-                            SemErr("expression variable did not evaluate to a number");
-                            r = 0;
+                            int depth = this.interpreter.BeginEvaluating(ident);
+                            int recScope = this.interpreter.BeginRecursionScope();
+                            decimal computed = 0;
+                            bool hasValue = false;
+                            try
+                            {
+                                FunctionValue eval = this.interpreter.EvaluateExpression(expr);
+                                if (eval.Type == FunctionValueType.Numeric && eval.Value != null)
+                                {
+                                    computed = Convert.ToDecimal(eval.Value);
+                                    hasValue = true;
+                                }
+                                else
+                                {
+                                    SemErr("expression variable did not evaluate to a number");
+                                }
+                            }
+                            finally
+                            {
+                                bool recurse = this.interpreter.EndRecursionScope(recScope);
+                                this.interpreter.EndEvaluating(depth);
+                                r = recurse ? 0 : (hasValue ? signum * computed : 0);
+                            }
                         }
                     }
                     else
