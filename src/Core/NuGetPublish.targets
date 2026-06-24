@@ -1,6 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Placeholder target file for NuGet publishing -->
   <Target Name="PublishNuGet" AfterTargets="Pack">
-	  <Exec Command="dotnet nuget push --source wagenet-git bin\Release\CSMic.$(Version).nupkg" />
+	  <Exec Command="dotnet nuget push --source wagenet-git --skip-duplicate bin\Release\CSMic.$(Version).nupkg" />
+	  <Exec Command="dotnet nuget push --source nuget.org --api-key %NUGET_API_KEY% --skip-duplicate bin\Release\CSMic.$(Version).nupkg" />
   </Target>
 </Project>
