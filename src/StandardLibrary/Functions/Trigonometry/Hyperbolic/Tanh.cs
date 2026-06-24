@@ -1,8 +1,18 @@
 ﻿namespace CSMic.StandardLibrary.Functions.Trigonometry.Hyperbolic
 {
+    /// <summary>
+    /// Represents the standard-library <c>tanh</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>tanh</c> function evaluates a numeric expression and returns its hyperbolic tangent.
+    /// </remarks>
     public class Tanh : FunctionBase, ICodedFunction
     {
 
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>tanh</c>.</value>
         public string Name
         {
             get
@@ -11,6 +21,10 @@
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>tanh</c> function.
+        /// </summary>
+        /// <value>A single numeric argument named <c>value</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -19,6 +33,15 @@
             }
         }
 
+        /// <summary>
+        /// Executes the <c>tanh</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly one numeric argument is expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the hyperbolic tangent of the input value.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return Execute(args, (_args) =>

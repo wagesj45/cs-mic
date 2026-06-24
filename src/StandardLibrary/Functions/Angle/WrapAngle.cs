@@ -1,7 +1,17 @@
 ﻿namespace CSMic.StandardLibrary.Functions.Angle
 {
+    /// <summary>
+    /// Represents the standard-library <c>wrapangle</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>wrapangle</c> function evaluates a numeric value and wraps it into the requested period.
+    /// </remarks>
     public class WrapAngle : FunctionBase, ICodedFunction
     {
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>wrapangle</c>.</value>
         public string Name
         {
             get
@@ -10,6 +20,12 @@
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>wrapangle</c> function.
+        /// </summary>
+        /// <value>
+        /// Three numeric arguments named <c>value</c>, <c>periodStart</c>, and <c>periodEnd</c>.
+        /// </value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -20,6 +36,15 @@
             }
         }
 
+        /// <summary>
+        /// Executes the <c>wrapangle</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly three numeric arguments are expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the wrapped value within the supplied period.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return Execute(args, (_args) =>

@@ -1,8 +1,18 @@
 ﻿namespace CSMic.StandardLibrary.Functions.Trigonometry
 {
+    /// <summary>
+    /// Represents the standard-library <c>atan2</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>atan2</c> function evaluates two numeric expressions and returns the arctangent of their quotient.
+    /// </remarks>
     public class Atan2 : FunctionBase, ICodedFunction
     {
 
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>atan2</c>.</value>
         public string Name
         {
             get
@@ -11,6 +21,10 @@
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>atan2</c> function.
+        /// </summary>
+        /// <value>Two numeric arguments named <c>y</c> and <c>x</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -20,6 +34,15 @@
             }
         }
 
+        /// <summary>
+        /// Executes the <c>atan2</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly two numeric arguments are expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the arctangent of the supplied coordinates.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return Execute(args, (_args) =>

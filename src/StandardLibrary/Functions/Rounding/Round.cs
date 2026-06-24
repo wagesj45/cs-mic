@@ -1,8 +1,18 @@
 ﻿namespace CSMic.StandardLibrary.Functions.Rounding
 {
+    /// <summary>
+    /// Represents the standard-library <c>round</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>round</c> function evaluates a numeric value and rounds it to the requested precision.
+    /// </remarks>
     public class Round : FunctionBase, ICodedFunction
     {
 
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>round</c>.</value>
         public string Name
         {
             get
@@ -11,6 +21,10 @@
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>round</c> function.
+        /// </summary>
+        /// <value>Two numeric arguments named <c>value</c> and <c>precision</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -20,6 +34,15 @@
             }
         }
 
+        /// <summary>
+        /// Executes the <c>round</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly two numeric arguments are expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the input value rounded to the requested precision.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return Execute(args, (_args) =>

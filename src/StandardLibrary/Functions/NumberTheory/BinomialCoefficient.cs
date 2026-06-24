@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace CSMic.StandardLibrary.Functions.NumberTheory
 {
+    /// <summary>
+    /// Represents the standard-library <c>ncr</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>ncr</c> function evaluates two non-negative integers and returns the number of combinations.
+    /// </remarks>
     public class BinomialCoefficient : FunctionBase, ICodedFunction
     {
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>ncr</c>.</value>
         public string Name
         {
             get
@@ -17,6 +27,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>ncr</c> function.
+        /// </summary>
+        /// <value>Two numeric arguments named <c>first</c> and <c>second</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -26,6 +40,15 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Executes the <c>ncr</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly two numeric arguments are expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the number of combinations for the supplied values.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>

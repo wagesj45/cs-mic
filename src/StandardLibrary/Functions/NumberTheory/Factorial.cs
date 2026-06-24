@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace CSMic.StandardLibrary.Functions.NumberTheory
 {
+    /// <summary>
+    /// Represents the standard-library <c>fac</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>fac</c> function evaluates a numeric expression and returns its factorial when the value is an integer,
+    /// or its gamma-based extension when the value is non-integer.
+    /// </remarks>
     public class Factorial : FunctionBase, ICodedFunction
     {
         private static readonly double[] LANCZOS_APPROXIMATION = 
@@ -22,6 +29,9 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
                 1.5056327351493116e-7
             };
 
+        /// <summary>
+        /// Gets the lookup table used for exact factorial values from <c>0</c> through <c>20</c>.
+        /// </summary>
         public static readonly decimal[] INTEGER_FACTORIAL_LOOKUP = 
             {
                 /* 0 */ 1,
@@ -47,6 +57,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
                 /* 20 */ 2432902008176640000
             };
 
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>fac</c>.</value>
         public string Name
         {
             get
@@ -55,6 +69,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>fac</c> function.
+        /// </summary>
+        /// <value>A single numeric argument named <c>value</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -63,6 +81,15 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Executes the <c>fac</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly one numeric argument is expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the factorial result or a gamma-based approximation.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>
@@ -92,6 +119,11 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             });
         }
 
+        /// <summary>
+        /// Evaluates the gamma function used to extend factorial values to non-integer inputs.
+        /// </summary>
+        /// <param name="shiftedGama">The shifted input value.</param>
+        /// <returns>The gamma of the supplied value.</returns>
         private static double Gamma(double shiftedGama)
         {
             if (shiftedGama < 0.5)
