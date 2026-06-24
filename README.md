@@ -2,6 +2,9 @@
 
 CS-MIC is a small, embeddable expression interpreter for .NET applications. It is designed for places where users need to enter flexible numeric input, while the host application needs a deterministic decimal result and a controlled extension surface.
 
+![Build](https://git.jordanwages.com/wagesj45/cs-mic/actions/workflows/build.yml/badge.svg?branch=main)
+![Tests](https://git.jordanwages.com/wagesj45/cs-mic/actions/workflows/tests.yml/badge.svg?branch=main)
+
 The 2.0 release separates the project into two NuGet packages:
 
 - `CSMic`: the core parser, interpreter, variable store, and custom function API.
