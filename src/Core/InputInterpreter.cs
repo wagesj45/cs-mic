@@ -276,8 +276,8 @@ namespace CSMic
             // Create a child interpreter sharing stores, so ProduceOutput doesn't affect parent state
             var child = new InputInterpreter(this);
             using var ms = new MemoryStream(Encoding.UTF8.GetBytes(expressionText));
-            var scanner = new CSMic.Interpreter.Scanner(ms);
-            var parser = new CSMic.Interpreter.Parser(scanner)
+            var scanner = new global::CSMic.Interpreter.Scanner(ms);
+            var parser = new global::CSMic.Interpreter.Parser(scanner)
             {
                 Interpreter = child
             };
@@ -302,8 +302,8 @@ namespace CSMic
             try
             {
                 using var ms = new MemoryStream(Encoding.UTF8.GetBytes(input ?? string.Empty));
-                var scanner = new CSMic.Interpreter.Scanner(ms);
-                var parser = new CSMic.Interpreter.Parser(scanner)
+                var scanner = new global::CSMic.Interpreter.Scanner(ms);
+                var parser = new global::CSMic.Interpreter.Parser(scanner)
                 {
                     Interpreter = this
                 };
