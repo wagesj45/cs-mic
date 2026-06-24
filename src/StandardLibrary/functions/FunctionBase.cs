@@ -2,10 +2,15 @@
 
 namespace CSMic.StandardLibrary.Functions
 {
+    /// <summary> A base class that handles base function handling. </summary>
     public abstract class FunctionBase
     {
+        /// <summary> Gets the expected arguments. </summary>
+        /// <value> The expected arguments. </value>
         public virtual IEnumerable<FunctionArgument> ExpectedArguments { get; }
 
+        /// <summary> Gets the return value. </summary>
+        /// <value> The return value. </value>
         public virtual FunctionValue ReturnValue
         {
             get
@@ -15,6 +20,9 @@ namespace CSMic.StandardLibrary.Functions
             }
         }
 
+        /// <summary> Checks the provided arguments to ensure the function contract is honored. </summary>
+        /// <param name="args"> A variable-length parameters list containing arguments. </param>
+        /// <returns> True if it succeeds, false if it fails. </returns>
         public bool ArgumentCheck(params FunctionArgument[] args)
         {
             // Top level sanity checks.
@@ -49,6 +57,10 @@ namespace CSMic.StandardLibrary.Functions
             return true;
         }
 
+        /// <summary> Executes a standard library function. </summary>
+        /// <param name="args"> A variable-length parameters list containing arguments. </param>
+        /// <param name="action"> The functions action body. </param>
+        /// <returns> A <see cref="FunctionValue"/>. </returns>
         public FunctionValue Execute(FunctionArgument[] args, Func<FunctionArgument[], FunctionValue> action)
         {
             if (!ArgumentCheck(args))
