@@ -15,9 +15,11 @@
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
+		<Compile Remove="cocor/Parser.cs;cocor/Scanner.cs" />
+		<Compile Include="cocor/Parser.cs;cocor/Scanner.cs" />
 	</ItemGroup>
 
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	<Target Name="GenerateInterpreter" BeforeTargets="CoreCompile">
 		<Exec Command="dotnet tool run coco -namespace CSMic.Interpreter -frames $(ProjectDir)cocor $(ProjectDir)cocor/Interpreter.atg" />
 	</Target>
 
