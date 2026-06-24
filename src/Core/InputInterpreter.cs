@@ -1,11 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
 using System.IO;
+using GeneratedInterpreter = global::CSMic.Interpreter;
 
 namespace CSMic
 {
-    using GeneratedInterpreter = global::CSMic.Interpreter;
-
     /// <summary> The interpreter that parses user input at runtime into strongly typed .Net values. </summary>
     public class InputInterpreter
     {
