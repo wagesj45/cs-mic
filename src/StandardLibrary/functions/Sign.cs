@@ -3,7 +3,16 @@
 
 namespace CSMic.StandardLibrary.Functions
 {
-    /// <summary> A function that returns <c>1</c> if the expression is positive and <c>-1</c> if it is negative. </summary>
+    /// <summary>
+    /// Represents the standard-library <c>sign</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>sign</c> function evaluates a numeric expression and returns:
+    /// <list type="bullet">
+    ///   <item><description><c>1</c> when the value is greater than or equal to zero.</description></item>
+    ///   <item><description><c>-1</c> when the value is less than zero.</description></item>
+    /// </list>
+    /// </remarks>
     public class Sign : FunctionBase, ICodedFunction
     {
         /// <summary> (Immutable) The return value representing "positive". </summary>
@@ -11,8 +20,10 @@ namespace CSMic.StandardLibrary.Functions
         /// <summary> (Immutable) The return value representing "negative". </summary>
         private const decimal NEGATIVE = -1;
 
-        /// <summary> Gets the name of the function. </summary>
-        /// <value> sign. </value>
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>[
+        /// <value><c>sign</c>.</value>
         public string Name
         {
             get
@@ -21,8 +32,12 @@ namespace CSMic.StandardLibrary.Functions
             }
         }
 
-        /// <summary> Gets the expected arguments. </summary>
-        /// <value> The expected arguments. </value>
+        /// <summary>
+        /// Gets the argument signature expected by the <c>sign</c> function.
+        /// </summary>
+        /// <value>
+        /// A single numeric argument named <c>value</c>.
+        /// </value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -31,9 +46,16 @@ namespace CSMic.StandardLibrary.Functions
             }
         }
 
-        /// <summary> Executes the function with the given arguments. </summary>
-        /// <param name="args"> A variable-length parameters list containing arguments. </param>
-        /// <returns> A <see cref="FunctionValue"/> representing the result of the function execution. </returns>
+        /// <summary>
+        /// Executes the <c>sign</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly one numeric argument is expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing <c>1</c> when the input value is greater than
+        /// or equal to zero; otherwise <c>-1</c>.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>

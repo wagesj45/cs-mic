@@ -2,27 +2,39 @@
 
 namespace CSMic.StandardLibrary.Functions
 {
-    /// <summary> A base class that handles base function handling. </summary>
+    /// <summary>
+    ///  Provides shared argument validation and execution handling for standard-library functions.
+    /// </summary>
+    /// <remarks>
+    ///  Derive from this class when implementing an <see cref="ICodedFunction"/> that follows the
+    ///  standard-library function contract.
+    /// </remarks>
     public abstract class FunctionBase
     {
-        /// <summary> Gets the expected arguments. </summary>
-        /// <value> The expected arguments. </value>
+        /// <summary> Gets the argument signature expected by the function. </summary>
+        /// <value> The ordered collection of arguments required by the function. </value>
         public virtual IEnumerable<FunctionArgument> ExpectedArguments { get; }
 
-        /// <summary> Gets the return value. </summary>
-        /// <value> The return value. </value>
+        /// <summary> Gets the return type produced by the function. </summary>
+        /// <value>
+        ///  The expected return value type. The default is <see cref="FunctionValue.NUMBER"/>.
+        /// </value>
         public virtual FunctionValue ReturnValue
         {
             get
-
             {
                 return FunctionValue.NUMBER;
             }
         }
 
-        /// <summary> Checks the provided arguments to ensure the function contract is honored. </summary>
-        /// <param name="args"> A variable-length parameters list containing arguments. </param>
-        /// <returns> True if it succeeds, false if it fails. </returns>
+        /// <summary>
+        ///  Determines whether the supplied arguments satisfy the function's expected signature.
+        /// </summary>
+        /// <param name="args"> The evaluated arguments supplied to the function. </param>
+        /// <returns>
+        ///  <see langword="true"/> if the supplied arguments match the expected count and value types;
+        ///  otherwise, <see langword="false"/>.
+        /// </returns>
         public bool ArgumentCheck(params FunctionArgument[] args)
         {
             // Top level sanity checks.
@@ -57,10 +69,14 @@ namespace CSMic.StandardLibrary.Functions
             return true;
         }
 
-        /// <summary> Executes a standard library function. </summary>
-        /// <param name="args"> A variable-length parameters list containing arguments. </param>
-        /// <param name="action"> The functions action body. </param>
-        /// <returns> A <see cref="FunctionValue"/>. </returns>
+        /// <summary> Validates and executes a standard-library function body. </summary>
+        /// <param name="args"> The evaluated arguments supplied to the function. </param>
+        /// <param name="action"> The function implementation to execute after argument validation
+        ///  succeeds. </param>
+        /// <returns>
+        ///  The result returned by <paramref name="action"/>, or <see cref="FunctionValue.NONE"/> if
+        ///  validation fails or execution throws an exception.
+        /// </returns>
         public FunctionValue Execute(FunctionArgument[] args, Func<FunctionArgument[], FunctionValue> action)
         {
             if (!ArgumentCheck(args))
