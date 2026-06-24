@@ -4,6 +4,8 @@ using System.IO;
 
 namespace CSMic
 {
+    using GeneratedInterpreter = global::CSMic.Interpreter;
+
     /// <summary> The interpreter that parses user input at runtime into strongly typed .Net values. </summary>
     public class InputInterpreter
     {
@@ -276,8 +278,8 @@ namespace CSMic
             // Create a child interpreter sharing stores, so ProduceOutput doesn't affect parent state
             var child = new InputInterpreter(this);
             using var ms = new MemoryStream(Encoding.UTF8.GetBytes(expressionText));
-            var scanner = new global::CSMic.Interpreter.Scanner(ms);
-            var parser = new global::CSMic.Interpreter.Parser(scanner)
+            var scanner = new GeneratedInterpreter.Scanner(ms);
+            var parser = new GeneratedInterpreter.Parser(scanner)
             {
                 Interpreter = child
             };
@@ -302,8 +304,8 @@ namespace CSMic
             try
             {
                 using var ms = new MemoryStream(Encoding.UTF8.GetBytes(input ?? string.Empty));
-                var scanner = new global::CSMic.Interpreter.Scanner(ms);
-                var parser = new global::CSMic.Interpreter.Parser(scanner)
+                var scanner = new GeneratedInterpreter.Scanner(ms);
+                var parser = new GeneratedInterpreter.Parser(scanner)
                 {
                     Interpreter = this
                 };
