@@ -1,54 +1,186 @@
-## Design Philosophy
+# CS-MIC
 
-CS‑MIC is a small, embeddable expression interpreter designed primarily for UI scenarios where a user types flexible input (e.g., 2+2+someVar) but the host application needs a validated, deterministic numeric value. The library focuses on predictable evaluation, strong validation and extensibility through developer‑supplied variables and coded functions.
+CS-MIC is a small, embeddable expression interpreter for .NET applications. It is designed for places where users need to enter flexible numeric input, while the host application needs a deterministic decimal result and a controlled extension surface.
 
-Goals
+The 2.0 release separates the project into two NuGet packages:
 
-- Numeric‑first: Expressions evaluate to a numeric result the host can trust.
-- Predictable semantics: No implicit coercions or surprising operator behavior.
-- Embeddable: Tiny surface area, easy to host inside C# applications.
-- Extensible: Developers inject variables and ICodedFunction implementations.
-- Clear errors: Friendly, actionable diagnostics for invalid input.
+- `CSMic`: the core parser, interpreter, variable store, and custom function API.
+- `CSMic.StandardLibrary`: optional constants and common math functions built on top of the core package.
 
-Core Principles
+CS-MIC targets `netstandard2.1`.
 
-- Determinism: The same input with the same variables/functions yields the same numeric output.
-- Minimalism: Keep the grammar and runtime small; add features only when they reinforce the numeric‑first mission.
-- Type clarity: Values carry explicit types; operators enforce type rules rather than auto‑converting.
-- Safe composition: Functions are pure from the interpreter’s perspective; side effects are the host’s responsibility.
+## Installation
 
-### Strings: Arguments‑Only, Numeric‑First
+Install the core interpreter when you want to parse expressions and provide your own functions:
 
-CS‑MIC’s v2 scope treats strings as helpers for functions, not as first‑class expression values. This preserves the “numeric guarantee” while enabling rich, domain‑specific function usage.
+```sh
+dotnet add package CSMic
+```
 
-- Where strings are allowed: As literals in function argument lists (e.g., myFunc("key", 42)).
-- Where strings are not allowed: As standalone primaries, in arithmetic (e.g., "a" + 1), or in comparisons; string variables are out of scope for v2.
-- Function contract: ICodedFunction implementations may accept string arguments and should return a numeric result when the function’s value is used in an expression.
-- Grammar posture: The grammar recognizes quoted string tokens; the parser accepts them only in function argument positions.
-- Operator semantics: No string operators or concatenation; no implicit conversions from string to number.
-- Errors: If a string is used outside an argument position or produced where a number is required, the interpreter emits a clear type error (e.g., "strings are only valid as function arguments").
+Install the standard library when you also want built-in constants and math helpers:
 
-Rationale
+```sh
+dotnet add package CSMic.StandardLibrary
+```
 
-- Preserves the primary mission: turn flexible user input into a validated numeric value.
-- Keeps complexity low by avoiding general string semantics (concatenation, ordering, variables, etc.).
-- Maximizes developer power: functions can receive text payloads (formats, keys, expressions) and return numbers, leveraging CS‑MIC for parsing, validation and invocation.
+`CSMic.StandardLibrary` references `CSMic`, so applications that use the standard library do not need to install both packages explicitly.
 
-Developer Guidance
+## Basic Usage
 
-- Implementing ICodedFunction: Inspect FunctionArgument.Value.Type to branch on expected input. If a string is required, validate and produce a numeric FunctionValue.
-- Argument metadata: Optionally use ExpectedArguments to document names and intended types for better diagnostics.
-- Error messaging: Prefer precise, actionable messages (e.g., "arg 'pattern' must be a string").
+```csharp
+using CSMic;
 
-Example
+var interpreter = new InputInterpreter();
 
-// Pseudocode / sketch
-// myFunc("HEX", 0xFF) → 255
-// myFunc("BIN", 1010b) → 10
-// sumWithLabel("groupA", 1, 2, 3) → 6 (label used for logging/selection)
+decimal result = interpreter.Interpret("2 + 3 * 4");
+// result == 14
+// interpreter.NumericValue == 14
+```
 
-Future Directions (Non‑Goals for v2)
+`Interpret` returns the numeric result and also stores the last output on the interpreter. Parse and runtime errors are soft errors: the interpreter returns `0` and writes the error message to `StringValue`.
 
-- First‑class strings: Allow strings as values, variables, or return types in general expressions (would require defining operators and comparisons).
-- Verbatim/opaque arguments: Special argument modes for embedding mini‑DSLs (higher parser complexity).
-- Value tagging: Optional metadata (e.g., OriginalLiteral) attached to FunctionValue for advanced scenarios.
+```csharp
+decimal result = interpreter.Interpret("1 / 0");
+
+if (!string.IsNullOrEmpty(interpreter.StringValue))
+{
+    Console.WriteLine(interpreter.StringValue);
+}
+```
+
+Create a new interpreter for an isolated evaluation context. Reuse an interpreter when variables, arrays, expression bindings, and registered functions should persist across calls.
+
+## Expressions
+
+CS-MIC evaluates numeric expressions with the usual precedence rules for parentheses, powers, multiplication, division, modulus, addition, and subtraction.
+
+| Input | Result |
+| --- | ---: |
+| `5 + 5` | `10` |
+| `1 + 2 * 3` | `7` |
+| `(1 + 2) * 3` | `9` |
+| `2 ^ 8` | `256` |
+| `7 % 4` | `3` |
+| `2(3 + 1)` | `8` |
+
+Comparison operators return numeric booleans: `1` for true and `0` for false.
+
+| Input | Result |
+| --- | ---: |
+| `2 == 2` | `1` |
+| `2 < 3` | `1` |
+| `3 < 2` | `0` |
+| `2 >= 2` | `1` |
+| `2 <= 1` | `0` |
+
+## Literals
+
+Numbers are decimal by default. Hexadecimal values use a `0x` prefix, and binary values use a `b` suffix.
+
+| Input | Result |
+| --- | ---: |
+| `100` | `100` |
+| `0xFF` | `255` |
+| `1010b` | `10` |
+| `0xFF * 1010b` | `2550` |
+
+String literals are accepted only as function arguments. They are not standalone expression values, variables, or arithmetic operands.
+
+## Variables And Arrays
+
+Use `::` to assign a numeric value. Numeric variables are evaluated immediately and persist on the interpreter.
+
+```csharp
+interpreter.Interpret("x :: 4");  // 4
+interpreter.Interpret("x + 6");   // 10
+```
+
+Use `:=` to assign an expression binding. Expression bindings are evaluated when referenced, so they can reflect later changes to other variables.
+
+```csharp
+interpreter.Interpret("x :: 2");
+interpreter.Interpret("doubleX := 2 * x");
+
+interpreter.Interpret("doubleX"); // 4
+
+interpreter.Interpret("x :: 5");
+interpreter.Interpret("doubleX"); // 10
+```
+
+Use `->` to assign a numeric array, then index it with zero-based indexes.
+
+```csharp
+interpreter.Interpret("values -> [10, 20, 30]");
+interpreter.Interpret("values[1]"); // 20
+```
+
+## Standard Library
+
+Add `CSMic.StandardLibrary` and initialize the interpreter to register the standard functions and constants:
+
+```csharp
+using CSMic;
+using CSMic.StandardLibrary;
+
+var interpreter = new InputInterpreter();
+Initializer.InitializeAll(interpreter);
+
+decimal area = interpreter.Interpret("pi * 10^2");
+decimal angle = interpreter.Interpret("degrees(pi / 2)");
+```
+
+`InitializeAll` registers all functions and constants. You can also opt into smaller groups with `InitializeAllFunctions`, `InitializeConstants`, `InitializeBaseFunctions`, `InitializeAngleFunctions`, `InitializeRoundingFunctions`, `InitializeTrigonometryFunctions`, `InitializeNumberTheoryFunctions`, and `InitializeRandomFunctions`.
+
+The standard library includes:
+
+- Base functions: `abs`, `sign`, `min`, `max`
+- Angle helpers: `degrees`, `radians`, `wrapangle`
+- Rounding helpers: `floor`, `ceiling`, `truncate`, `frac`, `round`, `clamp`
+- Trigonometry: `sin`, `cos`, `tan`, `asin`, `acos`, `atan`, `atan2`
+- Hyperbolic trigonometry: `sinh`, `cosh`, `tanh`, `asinh`, `acosh`, `atanh`
+- Number theory: `fac`, `ncr`, `npr`, `gcd`, `lcm`
+- Random helpers: `flip`, `bern`, `rand`, `rands`, `randn`, `randns`
+- Constants: `pi`, `e`, `tau`, `phi`, `goldenratio`, `eurler`, `omega`
+
+## Custom Functions
+
+Register custom functions by implementing `ICodedFunction`.
+
+```csharp
+using CSMic;
+
+public sealed class Square : ICodedFunction
+{
+    public string Name => "square";
+
+    public IEnumerable<FunctionArgument> ExpectedArguments =>
+        new[] { new FunctionArgument("value", FunctionValue.NUMBER) };
+
+    public FunctionValue ReturnValue => FunctionValue.NUMBER;
+
+    public FunctionValue Execute(params FunctionArgument[] args)
+    {
+        var value = (decimal)args[0].Value.Value!;
+        return new FunctionValue(FunctionValueType.Numeric, value * value);
+    }
+}
+
+var interpreter = new InputInterpreter();
+interpreter.RegisterFunction(new Square());
+
+decimal result = interpreter.Interpret("square(12)");
+// result == 144
+```
+
+Functions can accept numeric or string arguments. String arguments are useful for host-defined keys, modes, or labels while preserving CS-MIC's numeric-first expression model.
+
+## Building From Source
+
+```sh
+dotnet restore src/CsMic.sln
+dotnet test src/CsMic.sln
+dotnet pack src/Core/CSMic.Core.csproj -c Release
+dotnet pack src/StandardLibrary/CSMic.StandardLibrary.csproj -c Release
+```
+
+The core project uses Coco/R during build to generate parser and scanner code from `src/Core/cocor/Interpreter.atg`.
