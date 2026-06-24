@@ -8,14 +8,33 @@ using CSMic.StandardLibrary.Functions.Random;
 
 namespace CSMic.StandardLibrary
 {
+    /// <summary>
+    ///  Offers helper methods to initialize a <see cref="InputInterpreter"/> with collections of
+    ///  standard mathematical expressions and constants.
+    /// </summary>
     public static class Initializer
     {
-        public static void InitializeAll(InputInterpreter interpreter)
+        /// <summary> Initializes all standard library functions and constants. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
+        /// <seealso cref="InitializeAllFunctions(InputInterpreter)"/>
+        /// <seealso cref="InitializeConstants(InputInterpreter)"/>
+        ///
+        /// ### <param name="interpreter"> The interpreter to hydrate. </param>
+        public static void InitializeAll(InputInterpreter inputInterpreter)
         {
-            InitializeAllFunctions(interpreter);
-            InitializeConstants(interpreter);
+            if (inputInterpreter == null)
+            {
+                throw new ArgumentNullException("inputInterpreter", "Cannot initialize a null InputInterpreter.");
+            }
+
+            InitializeAllFunctions(inputInterpreter);
+            InitializeConstants(inputInterpreter);
         }
 
+        /// <summary> Initializes all standard library functions. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
         public static void InitializeAllFunctions(InputInterpreter inputInterpreter)
         {
             if (inputInterpreter == null)
@@ -31,6 +50,9 @@ namespace CSMic.StandardLibrary
             InitializeRandomFunctions(inputInterpreter);
         }
 
+        /// <summary> Initializes the base standard library functions. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
         public static void InitializeBaseFunctions(InputInterpreter inputInterpreter)
         {
             if (inputInterpreter == null)
@@ -44,6 +66,9 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new Max());
         }
 
+        /// <summary> Initializes the angle-related functions. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
         public static void InitializeAngleFunctions(InputInterpreter inputInterpreter)
         {
             if (inputInterpreter == null)
@@ -56,6 +81,9 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new WrapAngle());
         }
 
+        /// <summary> Initializes the number theory functions. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
         public static void InitializeNumberTheoryFunctions(InputInterpreter inputInterpreter)
         {
             if (inputInterpreter == null)
@@ -70,6 +98,9 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new LeastCommonMultiple());
         }
 
+        /// <summary> Initializes the rounding functions. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
         public static void InitializeRoundingFunctions(InputInterpreter inputInterpreter)
         {
             if (inputInterpreter == null)
@@ -85,6 +116,9 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new Clamp());
         }
 
+        /// <summary> Initializes the trigonometry functions. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
         public static void InitializeTrigonometryFunctions(InputInterpreter inputInterpreter)
         {
             if (inputInterpreter == null)
@@ -110,6 +144,9 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new Atanh());
         }
 
+        /// <summary> Initializes the psuedorandom generation and statistics functions. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
         public static void InitializeRandomFunctions(InputInterpreter inputInterpreter)
         {
             if (inputInterpreter == null)
@@ -125,6 +162,9 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new RandomNormalSpread());
         }
 
+        /// <summary> Initializes the standard library constants. </summary>
+        /// <exception cref="ArgumentNullException"> Thrown when one or more required arguments are null. </exception>
+        /// <param name="inputInterpreter"> The input interpreter. </param>
         public static void InitializeConstants(InputInterpreter inputInterpreter)
         {
             if (inputInterpreter == null)
