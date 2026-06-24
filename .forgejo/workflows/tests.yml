@@ -10,7 +10,7 @@ on:
 
 jobs:
   tests:
-    runs-on: [self-hosted, docker]
+    runs-on: docker
 
     defaults:
       run:
