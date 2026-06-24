@@ -66,6 +66,7 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+scratch/
 
 # Coco/R generated parser/scanner output
 src/Core/cocor/Parser.cs
