@@ -4,8 +4,19 @@ using System.Text;
 
 namespace CSMic.StandardLibrary.Functions
 {
+    /// <summary>
+    /// Represents the standard-library <c>normalize</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>normalize</c> function evaluates a numeric value and returns its position in the supplied range as a
+    /// zero-based ratio.
+    /// </remarks>
     public class Normalize : FunctionBase, ICodedFunction
     {
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>normalize</c>.</value>
         public string Name
         {
             get
@@ -14,6 +25,10 @@ namespace CSMic.StandardLibrary.Functions
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>normalize</c> function.
+        /// </summary>
+        /// <value>Three numeric arguments named <c>value</c>, <c>minimum</c>, and <c>maximum</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -24,6 +39,16 @@ namespace CSMic.StandardLibrary.Functions
             }
         }
 
+        /// <summary>
+        /// Executes the <c>normalize</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly three numeric arguments are expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the normalized ratio, or <c>0</c> when the minimum and
+        /// maximum bounds are equal.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>

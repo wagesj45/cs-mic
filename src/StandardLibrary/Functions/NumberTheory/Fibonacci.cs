@@ -4,7 +4,13 @@ using System.Text;
 
 namespace CSMic.StandardLibrary.Functions.NumberTheory
 {
-    /// <summary> </summary>
+    /// <summary>
+    /// Represents the standard-library <c>fib</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>fib</c> function evaluates a numeric index and returns the precomputed Fibonacci number at that index.
+    /// Indexes outside the supported range return <c>0</c>.
+    /// </remarks>
     public class Fibonacci : FunctionBase, ICodedFunction
     {
 
@@ -40,6 +46,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             11825896447871834976429068427m, 19134702400093278081449423917m, 30960598847965113057878492344m, 
             50095301248058391139327916261m];
 
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>fib</c>.</value>
         public string Name
         {
             get
@@ -48,6 +58,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>fib</c> function.
+        /// </summary>
+        /// <value>A single numeric argument named <c>index</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -56,6 +70,16 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Executes the <c>fib</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly one numeric argument is expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the Fibonacci number at the supplied index, or <c>0</c>
+        /// when the index is outside the supported range.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>

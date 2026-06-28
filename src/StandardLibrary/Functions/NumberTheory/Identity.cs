@@ -5,8 +5,19 @@ using System.Text;
 
 namespace CSMic.StandardLibrary.Functions.NumberTheory
 {
+    /// <summary>
+    /// Represents the standard-library <c>iseven</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>iseven</c> function evaluates a numeric expression and returns <c>1</c> when the value is even;
+    /// otherwise, it returns <c>0</c>.
+    /// </remarks>
     public class IsEven : FunctionBase, ICodedFunction
     {
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>iseven</c>.</value>
         public string Name
         {
             get
@@ -15,6 +26,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>iseven</c> function.
+        /// </summary>
+        /// <value>A single numeric argument named <c>value</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -23,6 +38,15 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Executes the <c>iseven</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly one numeric argument is expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing <c>1</c> when the input value is even; otherwise <c>0</c>.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>
@@ -41,8 +65,19 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
         }
     }
 
+    /// <summary>
+    /// Represents the standard-library <c>isodd</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>isodd</c> function evaluates a numeric expression and returns <c>1</c> when the value is odd;
+    /// otherwise, it returns <c>0</c>.
+    /// </remarks>
     public class IsOdd : FunctionBase, ICodedFunction
     {
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>isodd</c>.</value>
         public string Name
         {
             get
@@ -51,6 +86,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>isodd</c> function.
+        /// </summary>
+        /// <value>A single numeric argument named <c>value</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -59,6 +98,15 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Executes the <c>isodd</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly one numeric argument is expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing <c>1</c> when the input value is odd; otherwise <c>0</c>.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>
@@ -72,8 +120,19 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
         }
     }
 
+    /// <summary>
+    /// Represents the standard-library <c>isint</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>isint</c> function evaluates a numeric expression and returns <c>1</c> when the value has no fractional
+    /// component; otherwise, it returns <c>0</c>.
+    /// </remarks>
     public class IsInt : FunctionBase, ICodedFunction
     {
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>isint</c>.</value>
         public string Name
         {
             get
@@ -82,6 +141,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>isint</c> function.
+        /// </summary>
+        /// <value>A single numeric argument named <c>value</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -90,6 +153,16 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Executes the <c>isint</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly one numeric argument is expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing <c>1</c> when the input value is an integer; otherwise
+        /// <c>0</c>.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>
@@ -108,6 +181,13 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
         }
     }
 
+    /// <summary>
+    /// Represents the standard-library <c>isprime</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>isprime</c> function evaluates a numeric expression and returns <c>1</c> when the value is a prime
+    /// integer; otherwise, it returns <c>0</c>.
+    /// </remarks>
     public class IsPrime : FunctionBase, ICodedFunction
     {
         private const int MaxPrimeCacheSize = 4096;
@@ -135,6 +215,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
     false, false, false, true, false, false, false, false, false, true,
     false, false, false, false, false, false, false, true, false, false];
 
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>isprime</c>.</value>
         public string Name
         {
             get
@@ -143,6 +227,10 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>isprime</c> function.
+        /// </summary>
+        /// <value>A single numeric argument named <c>value</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -151,6 +239,16 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             }
         }
 
+        /// <summary>
+        /// Executes the <c>isprime</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly one numeric argument is expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing <c>1</c> when the input value is prime; otherwise
+        /// <c>0</c>.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>

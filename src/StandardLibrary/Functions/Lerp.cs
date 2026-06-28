@@ -4,8 +4,19 @@ using System.Text;
 
 namespace CSMic.StandardLibrary.Functions
 {
+    /// <summary>
+    /// Represents the standard-library <c>lerp</c> function.
+    /// </summary>
+    /// <remarks>
+    /// The <c>lerp</c> function evaluates two numeric endpoints and an interpolation amount, then returns the value
+    /// at that position between the endpoints.
+    /// </remarks>
     public class Lerp: FunctionBase, ICodedFunction
     {
+        /// <summary>
+        /// Gets the expression-language name used to invoke this function.
+        /// </summary>
+        /// <value><c>lerp</c>.</value>
         public string Name
         {
             get
@@ -14,6 +25,10 @@ namespace CSMic.StandardLibrary.Functions
             }
         }
 
+        /// <summary>
+        /// Gets the argument signature expected by the <c>lerp</c> function.
+        /// </summary>
+        /// <value>Three numeric arguments named <c>start</c>, <c>end</c>, and <c>ammount</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
         {
             get
@@ -24,6 +39,15 @@ namespace CSMic.StandardLibrary.Functions
             }
         }
 
+        /// <summary>
+        /// Executes the <c>lerp</c> function.
+        /// </summary>
+        /// <param name="args">
+        /// The evaluated arguments supplied to the function. Exactly three numeric arguments are expected.
+        /// </param>
+        /// <returns>
+        /// A numeric <see cref="FunctionValue"/> containing the linearly interpolated value.
+        /// </returns>
         public FunctionValue Execute(params FunctionArgument[] args)
         {
             return base.Execute(args, (_args) =>
