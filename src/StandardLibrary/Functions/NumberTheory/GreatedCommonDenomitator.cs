@@ -58,7 +58,7 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
                 decimal first = Convert.ToDecimal(inputFirst.Value);
                 decimal second = Convert.ToDecimal(inputSecond.Value);
 
-                if (first <= 0 || second <= 0)
+                if (first <= 0 && second <= 0)
                 {
                     return FunctionValue.ZERO;
                 }

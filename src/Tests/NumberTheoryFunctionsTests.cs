@@ -34,7 +34,7 @@ public class NumberTheoryFunctionsTests
     {
         AssertSuccess(_interp.Interpret("gcd(54, 24)"), 6m, _interp);
         AssertSuccess(_interp.Interpret("gcd(7, 3)"), 1m, _interp);
-        AssertSuccess(_interp.Interpret("gcd(0, 5)"), 0m, _interp);
+        AssertSuccess(_interp.Interpret("gcd(0, 5)"), 5m, _interp);
         AssertSuccess(_interp.Interpret("gcd(5.5, 2)"), 0m, _interp);
     }
 

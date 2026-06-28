@@ -90,6 +90,14 @@ public class StdlibFunctionsTests
         AssertSuccess(result, expected, _interp);
     }
 
+    [TestCase("sqrt(25)", 5)]
+    [TestCase("sqrt(1)", 1)]
+    public void Sqrt_Works(string expr, decimal expected)
+    {
+        var result = _interp.Interpret(expr);
+        AssertSuccess(result, expected, _interp);
+    }
+
     [TestCase("pi", "3.1415926535897931")]
     [TestCase("e", "2.7182818284590451")]
     [TestCase("tau", "6.2831853071795862")]

@@ -64,6 +64,7 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new Sign());
             inputInterpreter.RegisterFunction(new Min());
             inputInterpreter.RegisterFunction(new Max());
+            inputInterpreter.RegisterFunction(new SquareRoot());
         }
 
         /// <summary> Initializes the angle-related functions. </summary>
@@ -177,7 +178,7 @@ namespace CSMic.StandardLibrary
             inputInterpreter.Interpret("tau :: 6.2831853071795862");
             inputInterpreter.Interpret("phi :: 1.6180339887498948");
             inputInterpreter.Interpret("goldenratio :: 1.6180339887498948");
-            inputInterpreter.Interpret("eurler :: 0.5772156649015329");
+            inputInterpreter.Interpret("euler :: 0.5772156649015329");
             inputInterpreter.Interpret("omega :: 0.5671432904097839");
         }
     }
