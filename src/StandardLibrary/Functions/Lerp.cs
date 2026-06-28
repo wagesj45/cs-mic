@@ -56,9 +56,9 @@ namespace CSMic.StandardLibrary.Functions
                 var input2 = _args[1].Value;
                 var input3 = _args[2].Value;
 
-                decimal start = Convert.ToDecimal(input);
-                decimal end = Convert.ToDecimal(input2);
-                decimal ammount = Convert.ToDecimal(input3);
+                decimal start = Convert.ToDecimal(input.Value);
+                decimal end = Convert.ToDecimal(input2.Value);
+                decimal ammount = Convert.ToDecimal(input3.Value);
 
                 if (start == end)
                 {

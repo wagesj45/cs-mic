@@ -64,11 +64,11 @@ namespace CSMic.StandardLibrary.Functions
                 var input4 = _args[3].Value;
                 var input5 = _args[4].Value;
 
-                decimal number = Convert.ToDecimal(input);
-                decimal oldMinimum = Convert.ToDecimal(input2);
-                decimal oldMaximum = Convert.ToDecimal(input3);
-                decimal newMinimum = Convert.ToDecimal(input4);
-                decimal newMaximum = Convert.ToDecimal(input5);
+                decimal number = Convert.ToDecimal(input.Value);
+                decimal oldMinimum = Convert.ToDecimal(input2.Value);
+                decimal oldMaximum = Convert.ToDecimal(input3.Value);
+                decimal newMinimum = Convert.ToDecimal(input4.Value);
+                decimal newMaximum = Convert.ToDecimal(input5.Value);
 
                 if (oldMinimum == oldMaximum)
                 {

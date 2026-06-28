@@ -53,7 +53,7 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             {
                 var input = _args[0].Value;
 
-                decimal value = Convert.ToDecimal(input);
+                decimal value = Convert.ToDecimal(input.Value);
 
                 return new FunctionValue(FunctionValueType.Numeric, IsEven.CalculateIsEven(value) ? 1m : 0m);
             });
@@ -61,7 +61,7 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
 
         internal static bool CalculateIsEven(decimal value)
         {
-            return true;
+            return IsInt.CalculateIsInt(value) && value % 2m == 0m;
         }
     }
 
@@ -113,10 +113,15 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             {
                 var input = _args[0].Value;
 
-                decimal value = Convert.ToDecimal(input);
+                decimal value = Convert.ToDecimal(input.Value);
 
-                return new FunctionValue(FunctionValueType.Numeric, IsEven.CalculateIsEven(value) ? 0m : 1m);
+                return new FunctionValue(FunctionValueType.Numeric, CalculateIsOdd(value) ? 1m : 0m);
             });
+        }
+
+        internal static bool CalculateIsOdd(decimal value)
+        {
+            return IsInt.CalculateIsInt(value) && value % 2m != 0m;
         }
     }
 
@@ -169,7 +174,7 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             {
                 var input = _args[0].Value;
 
-                decimal value = Convert.ToDecimal(input);
+                decimal value = Convert.ToDecimal(input.Value);
 
                 return new FunctionValue(FunctionValueType.Numeric, CalculateIsInt(value) ? 1m : 0m);
             });
@@ -255,7 +260,7 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             {
                 var input = _args[0].Value;
 
-                decimal value = Convert.ToDecimal(input);
+                decimal value = Convert.ToDecimal(input.Value);
 
                 return new FunctionValue(FunctionValueType.Numeric, CalculateIsPrime(value) ? 1m : 0m);
             });

@@ -136,14 +136,14 @@ decimal angle = interpreter.Interpret("degrees(pi / 2)");
 
 The standard library includes:
 
-- Base functions: `abs`, `sign`, `min`, `max`
+- Base functions: `abs`, `sign`, `min`, `max`, `sqrt`, `pow`, `log`, `ln`, `lerp`, `smoothstep`, `map`, `normalize`
 - Angle helpers: `degrees`, `radians`, `wrapangle`
 - Rounding helpers: `floor`, `ceiling`, `truncate`, `frac`, `round`, `clamp`
 - Trigonometry: `sin`, `cos`, `tan`, `asin`, `acos`, `atan`, `atan2`
 - Hyperbolic trigonometry: `sinh`, `cosh`, `tanh`, `asinh`, `acosh`, `atanh`
-- Number theory: `fac`, `ncr`, `npr`, `gcd`, `lcm`
+- Number theory: `fac`, `ncr`, `npr`, `gcd`, `lcm`, `fib`, `iseven`, `isodd`, `isint`, `isprime`
 - Random helpers: `flip`, `bern`, `rand`, `rands`, `randn`, `randns`
-- Constants: `pi`, `e`, `tau`, `phi`, `goldenratio`, `eurler`, `omega`
+- Constants: `pi`, `e`, `tau`, `phi`, `goldenratio`, `eurler`, `euler`, `omega`
 
 ## Custom Functions
 

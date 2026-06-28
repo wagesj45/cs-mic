@@ -65,6 +65,13 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new Min());
             inputInterpreter.RegisterFunction(new Max());
             inputInterpreter.RegisterFunction(new SquareRoot());
+            inputInterpreter.RegisterFunction(new Power());
+            inputInterpreter.RegisterFunction(new Log());
+            inputInterpreter.RegisterFunction(new Natural_Log());
+            inputInterpreter.RegisterFunction(new Lerp());
+            inputInterpreter.RegisterFunction(new SmoothStep());
+            inputInterpreter.RegisterFunction(new Map());
+            inputInterpreter.RegisterFunction(new Normalize());
         }
 
         /// <summary> Initializes the angle-related functions. </summary>
@@ -97,6 +104,11 @@ namespace CSMic.StandardLibrary
             inputInterpreter.RegisterFunction(new Permutations());
             inputInterpreter.RegisterFunction(new GreatestCommonDivisor());
             inputInterpreter.RegisterFunction(new LeastCommonMultiple());
+            inputInterpreter.RegisterFunction(new Fibonacci());
+            inputInterpreter.RegisterFunction(new IsEven());
+            inputInterpreter.RegisterFunction(new IsOdd());
+            inputInterpreter.RegisterFunction(new IsInt());
+            inputInterpreter.RegisterFunction(new IsPrime());
         }
 
         /// <summary> Initializes the rounding functions. </summary>
@@ -178,6 +190,7 @@ namespace CSMic.StandardLibrary
             inputInterpreter.Interpret("tau :: 6.2831853071795862");
             inputInterpreter.Interpret("phi :: 1.6180339887498948");
             inputInterpreter.Interpret("goldenratio :: 1.6180339887498948");
+            inputInterpreter.Interpret("eurler :: 0.5772156649015329");
             inputInterpreter.Interpret("euler :: 0.5772156649015329");
             inputInterpreter.Interpret("omega :: 0.5671432904097839");
         }

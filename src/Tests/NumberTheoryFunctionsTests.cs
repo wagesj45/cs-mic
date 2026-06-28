@@ -80,5 +80,35 @@ public class NumberTheoryFunctionsTests
         // Gamma(1.5) ~= sqrt(pi)/2 ~= 0.8862269254527579
         AssertApprox(res, 0.8862269254527579m, 0.0000000000001m, _interp);
     }
-}
 
+    [Test]
+    public void Fibonacci_Works_And_Validates()
+    {
+        AssertSuccess(_interp.Interpret("fib(1)"), 1m, _interp);
+        AssertSuccess(_interp.Interpret("fib(2)"), 1m, _interp);
+        AssertSuccess(_interp.Interpret("fib(10)"), 55m, _interp);
+        AssertSuccess(_interp.Interpret("fib(0)"), 0m, _interp);
+        AssertSuccess(_interp.Interpret("fib(-1)"), 0m, _interp);
+    }
+
+    [Test]
+    public void IdentityFunctions_Work()
+    {
+        AssertSuccess(_interp.Interpret("iseven(2)"), 1m, _interp);
+        AssertSuccess(_interp.Interpret("iseven(3)"), 0m, _interp);
+        AssertSuccess(_interp.Interpret("iseven(2.5)"), 0m, _interp);
+
+        AssertSuccess(_interp.Interpret("isodd(3)"), 1m, _interp);
+        AssertSuccess(_interp.Interpret("isodd(2)"), 0m, _interp);
+        AssertSuccess(_interp.Interpret("isodd(2.5)"), 0m, _interp);
+
+        AssertSuccess(_interp.Interpret("isint(2)"), 1m, _interp);
+        AssertSuccess(_interp.Interpret("isint(2.5)"), 0m, _interp);
+
+        AssertSuccess(_interp.Interpret("isprime(2)"), 1m, _interp);
+        AssertSuccess(_interp.Interpret("isprime(97)"), 1m, _interp);
+        AssertSuccess(_interp.Interpret("isprime(1)"), 0m, _interp);
+        AssertSuccess(_interp.Interpret("isprime(9)"), 0m, _interp);
+        AssertSuccess(_interp.Interpret("isprime(2.5)"), 0m, _interp);
+    }
+}

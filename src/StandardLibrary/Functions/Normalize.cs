@@ -57,9 +57,9 @@ namespace CSMic.StandardLibrary.Functions
                 var input2 = _args[1].Value;
                 var input3 = _args[2].Value;
 
-                decimal number = Convert.ToDecimal(input);
-                decimal minimum = Convert.ToDecimal(input2);
-                decimal maximum = Convert.ToDecimal(input3);
+                decimal number = Convert.ToDecimal(input.Value);
+                decimal minimum = Convert.ToDecimal(input2.Value);
+                decimal maximum = Convert.ToDecimal(input3.Value);
 
                 if (minimum == maximum)
                 {

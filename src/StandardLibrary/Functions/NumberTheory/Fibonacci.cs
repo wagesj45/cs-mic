@@ -86,7 +86,7 @@ namespace CSMic.StandardLibrary.Functions.NumberTheory
             {
                 var input = _args[0].Value;
 
-                int index = Convert.ToInt32(input);
+                int index = Convert.ToInt32(input.Value);
 
                 if(index <= 0 || index > 140)
                 {

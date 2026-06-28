@@ -26,6 +26,12 @@ public class StdlibFunctionsTests
         Assert.That(interp.StringValue, Is.EqualTo(string.Empty));
     }
 
+    private static void AssertApprox(decimal result, decimal expected, decimal tol, InputInterpreter interp)
+    {
+        Assert.That(Math.Abs(result - expected) <= tol, $"Expected ~{expected} +/- {tol}, got {result}");
+        Assert.That(interp.StringValue, Is.EqualTo(string.Empty));
+    }
+
     [TestCase("abs(-1)", 1)]
     [TestCase("abs(0)", 0)]
     [TestCase("abs(2)", 2)]
@@ -98,12 +104,60 @@ public class StdlibFunctionsTests
         AssertSuccess(result, expected, _interp);
     }
 
+    [Test]
+    public void Power_Works()
+    {
+        AssertSuccess(_interp.Interpret("pow(2, 3)"), 8m, _interp);
+        AssertApprox(_interp.Interpret("pow(9, 0.5)"), 3m, 0.0000000000001m, _interp);
+    }
+
+    [Test]
+    public void Logarithms_Work()
+    {
+        AssertSuccess(_interp.Interpret("log(8, 2)"), 3m, _interp);
+        AssertApprox(_interp.Interpret("ln(e)"), 1m, 0.0000000000001m, _interp);
+    }
+
+    [Test]
+    public void Lerp_Works()
+    {
+        AssertSuccess(_interp.Interpret("lerp(10, 20, 0)"), 10m, _interp);
+        AssertSuccess(_interp.Interpret("lerp(10, 20, 0.25)"), 12.5m, _interp);
+        AssertSuccess(_interp.Interpret("lerp(10, 20, 1)"), 20m, _interp);
+        AssertSuccess(_interp.Interpret("lerp(10, 10, 0.5)"), 10m, _interp);
+    }
+
+    [Test]
+    public void SmoothStep_Works()
+    {
+        AssertSuccess(_interp.Interpret("smoothstep(0, 1, -1)"), 0m, _interp);
+        AssertSuccess(_interp.Interpret("smoothstep(0, 1, 0.5)"), 0.5m, _interp);
+        AssertSuccess(_interp.Interpret("smoothstep(0, 1, 2)"), 1m, _interp);
+    }
+
+    [Test]
+    public void Map_Works_And_HandlesEmptySourceRange()
+    {
+        AssertSuccess(_interp.Interpret("map(5, 0, 10, 0, 100)"), 50m, _interp);
+        AssertSuccess(_interp.Interpret("map(15, 10, 20, 100, 200)"), 150m, _interp);
+        AssertSuccess(_interp.Interpret("map(5, 1, 1, 0, 100)"), 0m, _interp);
+    }
+
+    [Test]
+    public void Normalize_Works_And_HandlesEmptyRange()
+    {
+        AssertSuccess(_interp.Interpret("normalize(5, 0, 10)"), 0.5m, _interp);
+        AssertSuccess(_interp.Interpret("normalize(15, 10, 20)"), 0.5m, _interp);
+        AssertSuccess(_interp.Interpret("normalize(5, 1, 1)"), 0m, _interp);
+    }
+
     [TestCase("pi", "3.1415926535897931")]
     [TestCase("e", "2.7182818284590451")]
     [TestCase("tau", "6.2831853071795862")]
     [TestCase("phi", "1.6180339887498948")]
     [TestCase("goldenratio", "1.6180339887498948")]
     [TestCase("eurler", "0.5772156649015329")]
+    [TestCase("euler", "0.5772156649015329")]
     [TestCase("omega", "0.5671432904097839")]
     public void Constants_AreAvailable(string expr, string expectedStr)
     {

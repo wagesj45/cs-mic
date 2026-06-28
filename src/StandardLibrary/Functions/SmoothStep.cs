@@ -5,7 +5,7 @@ using System.Text;
 namespace CSMic.StandardLibrary.Functions
 {
     /// <summary>
-    /// Represents the standard-library <c>lerp</c> smooth-step function.
+    /// Represents the standard-library <c>smoothstep</c> function.
     /// </summary>
     /// <remarks>
     /// This function evaluates a value between two edges, clamps it to the range from <c>0</c> through <c>1</c>, and
@@ -16,17 +16,17 @@ namespace CSMic.StandardLibrary.Functions
         /// <summary>
         /// Gets the expression-language name used to invoke this function.
         /// </summary>
-        /// <value><c>lerp</c>.</value>
+        /// <value><c>smoothstep</c>.</value>
         public string Name
         {
             get
             {
-                return "lerp";
+                return "smoothstep";
             }
         }
 
         /// <summary>
-        /// Gets the argument signature expected by the <c>lerp</c> smooth-step function.
+        /// Gets the argument signature expected by the <c>smoothstep</c> function.
         /// </summary>
         /// <value>Three numeric arguments named <c>startEdge</c>, <c>endEdge</c>, and <c>value</c>.</value>
         public override IEnumerable<FunctionArgument> ExpectedArguments
@@ -40,7 +40,7 @@ namespace CSMic.StandardLibrary.Functions
         }
 
         /// <summary>
-        /// Executes the <c>lerp</c> smooth-step function.
+        /// Executes the <c>smoothstep</c> function.
         /// </summary>
         /// <param name="args">
         /// The evaluated arguments supplied to the function. Exactly three numeric arguments are expected.
@@ -56,9 +56,9 @@ namespace CSMic.StandardLibrary.Functions
                 var input2 = _args[1].Value;
                 var input3 = _args[2].Value;
 
-                decimal startEdge = Convert.ToDecimal(input);
-                decimal endEdge = Convert.ToDecimal(input2);
-                decimal value = Convert.ToDecimal(input3);
+                decimal startEdge = Convert.ToDecimal(input.Value);
+                decimal endEdge = Convert.ToDecimal(input2.Value);
+                decimal value = Convert.ToDecimal(input3.Value);
 
                 var normalization = Math.Clamp((value - startEdge) / (endEdge - startEdge), 0, 1);
                 var polynomialization = normalization * normalization * (3 - (2 * normalization));

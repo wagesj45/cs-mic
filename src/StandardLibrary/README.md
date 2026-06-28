@@ -42,6 +42,7 @@ decimal result = interpreter.Interpret("max(10, abs(-12))");
 - `phi`
 - `goldenratio`
 - `eurler`
+- `euler`
 - `omega`
 
 Constants are stored as interpreter variables, so they can be used in normal expressions:
@@ -59,6 +60,14 @@ Base functions:
 - `sign(value)`
 - `min(left, right)`
 - `max(left, right)`
+- `sqrt(value)`
+- `pow(base, exponent)`
+- `log(value, base)`
+- `ln(value)`
+- `lerp(start, end, amount)`
+- `smoothstep(startEdge, endEdge, value)`
+- `map(value, oldMinimum, oldMaximum, newMinimum, newMaximum)`
+- `normalize(value, minimum, maximum)`
 
 Angle functions:
 
@@ -101,6 +110,11 @@ Number theory functions:
 - `npr(n, r)`
 - `gcd(left, right)`
 - `lcm(left, right)`
+- `fib(index)`
+- `iseven(value)`
+- `isodd(value)`
+- `isint(value)`
+- `isprime(value)`
 
 Random functions:
 
