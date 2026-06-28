@@ -7,7 +7,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<AssemblyName>CSMic.Core</AssemblyName>
-		<Version>2.0.1</Version>
+		<Version>2.0.2</Version>
 		<PackageId>CSMic</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<LangVersion>latest</LangVersion>
