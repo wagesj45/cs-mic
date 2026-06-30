@@ -6,10 +6,11 @@
 		<AssemblyName>CSMic.StandardLibrary</AssemblyName>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<Version>2.1.0</Version>
+		<Version>2.1.1</Version>
 		<PackageId>CSMic.StandardLibrary</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<LangVersion>latest</LangVersion>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>

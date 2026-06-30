@@ -118,8 +118,8 @@ public class Parser {
 
 public class Errors {
 	public int count = 0;                                    // number of errors detected
-	public System.IO.TextWriter errorStream = Console.Out;   // error messages go to this stream
-	public string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
+	public static System.IO.TextWriter errorStream = Console.Error;   // error messages go to this stream
+	public static string errMsgFormat = "-- line {0} col {1}: {2}"; // 0=line, 1=column, 2=text
 
 	public virtual void SynErr (int line, int col, int n) {
 		string s;

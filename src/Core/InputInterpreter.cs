@@ -313,7 +313,7 @@ namespace CSMic
                 if (parser.errors.count > 0)
                 {
                     // Soft error: set numeric to 0 and report a parse error message
-                    ProduceOutput(0m, parser.errors.errMsgFormat);
+                    ProduceOutput(0m, Interpreter.Errors.errMsgFormat);
                 }
                 else
                 {
